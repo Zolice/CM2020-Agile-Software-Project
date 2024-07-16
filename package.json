@@ -7,14 +7,18 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "nuxt": "^3.12.3",
     "vue": "^3.4.31"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^0.3.13",
     "daisyui": "^4.12.10",
+    "eslint": "^8.57.0",
     "tailwindcss": "^3.4.4"
   }
 }
