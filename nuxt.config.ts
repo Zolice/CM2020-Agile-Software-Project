@@ -9,4 +9,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  modules: ["@nuxt/eslint"],
+  eslint: {},
 });
