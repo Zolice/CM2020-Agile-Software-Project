@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen bg-base-200">
     <LeftSidebar
-      :toggleSidebar="toggleLeftSidebar"
-      :isSidebarOpen="isLeftSidebarOpen"
+      :toggle-sidebar="toggleLeftSidebar"
+      :is-sidebar-open="isLeftSidebarOpen"
     />
 
     <!-- Main content -->
@@ -10,14 +10,14 @@
       <!-- Move these buttons to each NuxtPage respectively -->
       <div class="flex justify-between p-2 bg-base-200">
         <button
-          @click="toggleLeftSidebar"
           class="btn btn-secondary btn-md w-fit"
+          @click="toggleLeftSidebar"
         >
           Left Sidebar
         </button>
         <button
-          @click="toggleRightSidebar"
           class="btn btn-secondary btn-md w-fit"
+          @click="toggleRightSidebar"
         >
           Right Sidebar
         </button>
@@ -30,8 +30,8 @@
     </div>
 
     <RightSidebar
-      :toggleSidebar="toggleRightSidebar"
-      :isSidebarOpen="isRightSidebarOpen"
+      :toggle-sidebar="toggleRightSidebar"
+      :is-sidebar-open="isRightSidebarOpen"
     />
   </div>
 </template>

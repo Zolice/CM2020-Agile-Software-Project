@@ -6,42 +6,39 @@
   >
     <div class="h-full bg-base-300 w-full flex flex-col align-center">
       <div class="flex justify-between items-center px-4 py-3 h-min">
-        <h1 class="title text-2xl text-center h-fit" v-if="isSidebarOpen">
-          TASKMASTER
-        </h1>
         <button
-          @click="toggleSidebar"
           class="w-fit text-center text-2xl focus:outline-none h-fit"
+          @click="toggleSidebar"
         >
           <span v-if="isSidebarOpen">-</span>
         </button>
+        <p v-if="isSidebarOpen" class="text-center h-fit">
+          Dropdown
+        </p>
       </div>
       <nav
         v-if="isSidebarOpen"
         class="flex-1 p-4 flex flex-col justify-between"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-4 h-full">
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
+        <div class="flex flex-col gap-4 h-fit overflow-scroll">
+          <span>Today</span>
+          <span>Tomorrow</span>
           <span>Other stuff</span>
         </div>
-        <span>Profile</span>
       </nav>
     </div>
   </div>
 </template>
 
+<script setup lang="jsx">
+defineProps({
+  toggleSidebar: Function,
+  isSidebarOpen: Boolean,
+});
+</script>
 <style scoped>
 .title {
   font-family: "Inter";
 }
 </style>
-
-<script setup lang="jsx">
-const props = defineProps({
-  toggleSidebar: Boolean,
-  isSidebarOpen: Function,
-});
-</script>
