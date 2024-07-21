@@ -50,7 +50,7 @@ const isLeftSidebarOpen = ref(true);
 const isRightSidebarOpen = ref(true);
 
 onMounted(() => {
-  theme.value = localStorage.getItem("theme") || "light";
+  theme.value = localStorage.getItem("theme") || "dark";
 });
 
 function toggleLeftSidebar() {
