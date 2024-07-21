@@ -18,7 +18,7 @@
       </div>
       <nav
         v-if="isSidebarOpen"
-        class="flex-1 p-4 flex flex-col justify-between h-full overflow-scroll"
+        class="flex-1 p-4 flex flex-col justify-between h-full overflow-auto"
       >
         <!-- Sidebar content here -->
         <div class="flex flex-col gap-4">

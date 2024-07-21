@@ -21,7 +21,7 @@
         class="flex-1 p-4 flex flex-col justify-between"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-4 h-fit overflow-scroll">
+        <div class="flex flex-col gap-4 h-fit overflow-auto">
           <span>Today</span>
           <span>Tomorrow</span>
           <span>Other stuff</span>

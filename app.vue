@@ -6,7 +6,7 @@
     />
 
     <!-- Main content -->
-    <div class="flex-1 flex flex-col h-screen overflow-y-clip">
+    <div class="flex-1 flex flex-col h-screen">
       <!-- Move these buttons to each NuxtPage respectively -->
       <div class="flex justify-between p-2 bg-base-200">
         <button
@@ -18,7 +18,7 @@
 
         <label class="input input-bordered flex items-center gap-2">
           Theme
-          <input type="text" class="grow" placeholder="Theme" v-model="theme"/>
+          <input v-model="theme" type="text" class="grow" placeholder="Theme" />
         </label>
 
         <button
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Display the page -->
-      <div class="h-fit overflow-scroll">
+      <div class="h-fit overflow-auto">
         <NuxtPage />
       </div>
     </div>
