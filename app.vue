@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-base-200">
+  <div class="flex h-screen bg-base-200" :data-theme="theme">
     <LeftSidebar
       :toggle-sidebar="toggleLeftSidebar"
       :is-sidebar-open="isLeftSidebarOpen"
@@ -15,6 +15,12 @@
         >
           Left Sidebar
         </button>
+
+        <label class="input input-bordered flex items-center gap-2">
+          Theme
+          <input type="text" class="grow" placeholder="Theme" v-model="theme"/>
+        </label>
+
         <button
           class="btn btn-secondary btn-md w-fit"
           @click="toggleRightSidebar"
@@ -39,8 +45,13 @@
 <script setup lang="jsx">
 import { ref } from "vue";
 
+const theme = ref("dark");
 const isLeftSidebarOpen = ref(true);
 const isRightSidebarOpen = ref(true);
+
+onMounted(() => {
+  theme.value = localStorage.getItem("theme") || "light";
+});
 
 function toggleLeftSidebar() {
   isLeftSidebarOpen.value = !isLeftSidebarOpen.value;
@@ -49,4 +60,8 @@ function toggleLeftSidebar() {
 function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
 }
+
+watch(theme, (newTheme) => {
+  localStorage.setItem("theme", newTheme);
+});
 </script>
