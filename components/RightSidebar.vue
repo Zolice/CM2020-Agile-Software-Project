@@ -2,7 +2,7 @@
   <!-- Sidebar -->
   <div
     class="transition-all duration-150 bg-base-300 block fixed md:relative h-screen z-10"
-    :class="[isSidebarOpen ? 'md:w-[16rem] w-10/12' : 'w-0']"
+    :class="[isSidebarOpen ? 'md:w-[16rem] w-10/12' : 'w-0 collapse']"
   >
     <div class="h-full bg-base-300 w-full flex flex-col align-center">
       <div class="flex justify-between items-center px-4 py-3 h-min">

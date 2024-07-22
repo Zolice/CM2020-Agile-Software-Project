@@ -2,7 +2,7 @@
   <!-- Sidebar -->
   <div
     class="transition-all duration-150 bg-base-300 block fixed md:relative h-screen z-10"
-    :class="[isSidebarOpen ? 'md:w-[16rem] w-10/12' : 'w-0']"
+    :class="[isSidebarOpen ? 'md:w-[16rem] w-10/12' : 'w-0 collapse']"
   >
     <div class="h-full bg-base-300 w-full flex flex-col align-center">
       <div class="flex justify-between items-center px-4 py-3 h-min">
@@ -26,26 +26,12 @@
           <span>Calendars</span>
           <span>Settings</span>
           <span>Other stuff</span>
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
-          <span>Other stuff</span>
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
-          <span>Other stuff</span>
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
-          <span>Other stuff</span>
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
-          <span>Other stuff</span>
         </div>
       </nav>
-      <div class="m-2 p-2 bg-neutral text-neutral-content rounded-lg">
-        <span>Profile</span>
+      <div v-if="isSidebarOpen" class="p-2">
+        <div class="p-2 bg-neutral text-neutral-content rounded-lg">
+          <span>Profile</span>
+        </div>
       </div>
     </div>
   </div>
