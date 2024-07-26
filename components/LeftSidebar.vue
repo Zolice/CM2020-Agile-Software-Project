@@ -29,6 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
+        <SettingsModal :setTheme="setTheme" />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
         </div>
@@ -38,11 +39,13 @@
 </template>
 
 <script setup lang="jsx">
-defineProps({
+const props = defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
+  setTheme: Function,
 });
 </script>
+
 <style scoped>
 .title {
   font-family: "Inter";

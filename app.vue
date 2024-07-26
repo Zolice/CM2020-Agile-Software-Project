@@ -3,6 +3,7 @@
     <LeftSidebar
       :toggle-sidebar="toggleLeftSidebar"
       :is-sidebar-open="isLeftSidebarOpen"
+      :setTheme="setTheme"
     />
 
     <!-- Main content -->
@@ -52,6 +53,10 @@ const isRightSidebarOpen = ref(true);
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
 });
+
+function setTheme(value) {
+  theme.value = value;
+}
 
 function toggleLeftSidebar() {
   isLeftSidebarOpen.value = !isLeftSidebarOpen.value;
