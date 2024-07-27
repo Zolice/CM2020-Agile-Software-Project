@@ -29,7 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
-        <SettingsModal :setTheme="setTheme" />
+        <SettingsModal :set-theme="setTheme" />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
         </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="jsx">
-const props = defineProps({
+defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
   setTheme: Function,

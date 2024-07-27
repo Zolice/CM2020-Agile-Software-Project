@@ -3,7 +3,7 @@
     <LeftSidebar
       :toggle-sidebar="toggleLeftSidebar"
       :is-sidebar-open="isLeftSidebarOpen"
-      :setTheme="setTheme"
+      :set-theme="setTheme"
     />
 
     <!-- Main content -->
@@ -16,11 +16,6 @@
         >
           Left Sidebar
         </button>
-
-        <label class="input input-bordered flex items-center gap-2">
-          Theme
-          <input v-model="theme" type="text" class="grow" placeholder="Theme" />
-        </label>
 
         <button
           class="btn btn-secondary btn-md w-fit"

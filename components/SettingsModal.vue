@@ -17,8 +17,8 @@
       </form>
       <div class="flex flex-col h-full gap-4">
         <h3 class="text-3xl font-bold">Settings</h3>
-        <div class="flex flex-row h-full overflow-auto gap-4">
-          <ul class="menu bg-base-100 rounded-box w-48 p-0">
+        <div class="flex flex-col lg:flex-row h-full overflow-auto gap-4 ">
+          <ul class="menu menu-horizontal lg:menu-vertical bg-base-100 rounded-box w-48 p-0">
             <li>
               <button
                 :class="[selected ? 'active' : '']"
@@ -46,18 +46,19 @@
               <h4 class="text-2xl">Calendar View</h4>
               <label class="label cursor-pointer w-fit pl-2">
                 <input
+                  v-model="showWeekend"
                   type="checkbox"
                   class="toggle toggle-primary toggle-sm"
                   checked="checked"
                   @change="showWeekendChanged"
-                />
+                >
                 <span class="label-text pl-2">Show Weekends</span>
               </label>
               <span class="text-sm pl-2">Start Week On</span>
               <select
                 v-model="startWeekOn"
-                @change="startWeekOnChanged"
                 class="select select-bordered select-sm w-fit max-w-xs"
+                @change="startWeekOnChanged"
               >
                 <option>Sunday</option>
                 <option>Monday</option>
@@ -74,8 +75,8 @@
               <span class="text-sm pl-2">Date Format</span>
               <select
                 v-model="dateFormat"
-                @change="dateFormatChanged"
                 class="select select-bordered select-sm w-fit max-w-xs"
+                @change="dateFormatChanged"
               >
                 <option>DD-MM-YY</option>
                 <option>MM-DD-YY</option>
@@ -84,14 +85,15 @@
               <span class="text-sm pl-2">Time Format</span>
               <select
                 v-model="timeFormat"
-                @change="timeFormatChanged"
                 class="select select-bordered select-sm w-fit max-w-xs"
+                @change="timeFormatChanged"
               >
                 <option>12-Hour-Time</option>
                 <option>24-Hour-Time</option>
               </select>
             </div>
             <button class="btn btn-primary w-48">Export Calendars</button>
+            <!-- TODO: Check if this button is necessary -->
             <button class="btn btn-primary w-48">
               Backup to Local Storage
             </button>
@@ -107,11 +109,12 @@
               >
                 Theme
                 <input
-                  @change="themeChanged"
+                  v-model="theme"
                   type="text"
                   class="grow"
                   placeholder="Theme"
-                />
+                  @change="themeChanged"
+                >
               </label>
             </div>
           </div>
@@ -129,6 +132,7 @@
       </div>
     </div>
   </dialog>
+  <BackendSettings ref="backendSettings" />
 </template>
 
 <script setup lang="jsx">
@@ -138,11 +142,32 @@ const props = defineProps({
   setTheme: Function,
 });
 
+// Backend Settings Component
+const backendSettings = ref(null);
+
+// Current Page Boolean
 const selected = ref(true); // true = general, false = calendar
+
+// General Settings
+const showWeekend = ref(true);
 const startWeekOn = ref("Monday");
 const dateFormat = ref("DD-MM-YY");
 const timeFormat = ref("12-Hour-Time");
+const theme = ref("dark");
 
+onMounted(() => {
+  // Get settings from backend
+  const settings = backendSettings.value.getSettings();
+  showWeekend.value = settings.showWeekend;
+  startWeekOn.value = settings.startWeekOn;
+  dateFormat.value = settings.dateFormat;
+  timeFormat.value = settings.timeFormat;
+
+  // Get current theme
+  theme.value = backendSettings.value.getTheme();
+});
+
+// Functions by buttons
 function selectGeneral() {
   selected.value = true;
 }
@@ -152,17 +177,22 @@ function selectCalendar() {
 }
 
 function showWeekendChanged(event) {
-  // TODO: Add Backend Functions
-  console.log(event.target.checked);
+  backendSettings.value.setShowWeekend(event.target.checked);
 }
 
 function startWeekOnChanged(event) {
-  // TODO: Add Backend Functions
-  console.log(event.target.value);
+  backendSettings.value.setStartWeekOn(event.target.value);
+}
+
+function dateFormatChanged(event) {
+  backendSettings.value.setDateFormat(event.target.value);
+}
+
+function timeFormatChanged(event) {
+  backendSettings.value.setTimeFormat(event.target.value);
 }
 
 function themeChanged(event) {
-  console.log(event.target.value);
   props.setTheme(event.target.value);
 }
 </script>
