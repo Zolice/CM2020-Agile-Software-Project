@@ -17,8 +17,10 @@
       </form>
       <div class="flex flex-col h-full gap-4">
         <h3 class="text-3xl font-bold">Settings</h3>
-        <div class="flex flex-col lg:flex-row h-full overflow-auto gap-4 ">
-          <ul class="menu menu-horizontal lg:menu-vertical bg-base-100 rounded-box w-48 p-0">
+        <div class="flex flex-col lg:flex-row h-full overflow-auto gap-4">
+          <ul
+            class="menu menu-horizontal lg:menu-vertical bg-base-100 rounded-box w-48 p-0"
+          >
             <li>
               <button
                 :class="[selected ? 'active' : '']"
@@ -51,7 +53,7 @@
                   class="toggle toggle-primary toggle-sm"
                   checked="checked"
                   @change="showWeekendChanged"
-                >
+                />
                 <span class="label-text pl-2">Show Weekends</span>
               </label>
               <span class="text-sm pl-2">Start Week On</span>
@@ -114,7 +116,7 @@
                   class="grow"
                   placeholder="Theme"
                   @change="themeChanged"
-                >
+                />
               </label>
             </div>
           </div>
@@ -126,6 +128,91 @@
             <!-- Settings -->
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Create new calendar</h4>
+              <input
+                type="text"
+                placeholder="Calendar Name"
+                class="input input-bordered"
+              />
+            </div>
+            <div class="flex flex-row gap-4">
+              <div class="flex flex-col gap-1">
+                <span class="text-sm pl-2">Colour</span>
+                <input
+                  type="color"
+                  class="w-16 h-8 border-none border-0 bg-transparent"
+                />
+              </div>
+              <div class="flex flex-col gap-1">
+                <span class="text-sm">Presets</span>
+                <div class="flex flex-wrap gap-2">
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-red-300 hover:bg-red-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-orange-300 hover:bg-orange-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-amber-300 hover:bg-amber-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-yellow-300 hover:bg-yellow-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-lime-300 hover:bg-lime-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-green-300 hover:bg-green-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-emerald-300 hover:bg-emerald-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-teal-300 hover:bg-teal-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-cyan-300 hover:bg-cyan-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-sky-300 hover:bg-sky-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-blue-300 hover:bg-blue-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-indigo-300 hover:bg-indigo-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-violet-300 hover:bg-violet-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-purple-300 hover:bg-purple-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-fuchsia-300 hover:bg-fuchsia-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-pink-300 hover:bg-pink-400"
+                  ></button>
+                  <button
+                    class="btn btn-sm p-0 w-8 rounded-full bg-rose-300 hover:bg-rose-400"
+                  ></button>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-sm pl-2">Import Calendar</span>
+              <div class="flex flex-row gap-2 items-center max-w-md">
+                <input
+                  type="text"
+                  placeholder="Calendar URL"
+                  class="input input-sm input-bordered w-full"
+                />
+                <button class="btn btn-sm btn-primary">Import</button>
+              </div>
+            </div>
+            <div class="flex flex-row gap-2">
+              <button class="btn btn-wide btn-sm btn-error">Discard</button>
+              <button class="btn btn-wide btn-sm btn-primary">Save</button>
             </div>
           </div>
         </div>
