@@ -140,61 +140,96 @@
                 <input
                   type="color"
                   class="w-16 h-8 border-none border-0 bg-transparent"
+                  v-model="calendarColour"
                 />
               </div>
               <div class="flex flex-col gap-1">
                 <span class="text-sm">Presets</span>
                 <div class="flex flex-wrap gap-2">
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-red-300 hover:bg-red-400"
+                    class="btn btn-sm btn-circle rounded-full bg-red-300 hover:bg-red-400"
+                    value="#fca5a5"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-orange-300 hover:bg-orange-400"
+                    class="btn btn-sm btn-circle rounded-full bg-orange-300 hover:bg-orange-400"
+                    value="#fdba74"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-amber-300 hover:bg-amber-400"
+                    class="btn btn-sm btn-circle rounded-full bg-amber-300 hover:bg-amber-400"
+                    value="#fcd34d"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-yellow-300 hover:bg-yellow-400"
+                    class="btn btn-sm btn-circle rounded-full bg-yellow-300 hover:bg-yellow-400"
+                    value="#fde047"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-lime-300 hover:bg-lime-400"
+                    class="btn btn-sm btn-circle rounded-full bg-lime-300 hover:bg-lime-400"
+                    value="#bef264"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-green-300 hover:bg-green-400"
+                    class="btn btn-sm btn-circle rounded-full bg-green-300 hover:bg-green-400"
+                    value="#86efac"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-emerald-300 hover:bg-emerald-400"
+                    class="btn btn-sm btn-circle rounded-full bg-emerald-300 hover:bg-emerald-400"
+                    value="#6ee7b7"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-teal-300 hover:bg-teal-400"
+                    class="btn btn-sm btn-circle rounded-full bg-teal-300 hover:bg-teal-400"
+                    value="#5eead4"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-cyan-300 hover:bg-cyan-400"
+                    class="btn btn-sm btn-circle rounded-full bg-cyan-300 hover:bg-cyan-400"
+                    value="#67e8f9"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-sky-300 hover:bg-sky-400"
+                    class="btn btn-sm btn-circle rounded-full bg-sky-300 hover:bg-sky-400"
+                    value="#7dd3fc"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-blue-300 hover:bg-blue-400"
+                    class="btn btn-sm btn-circle rounded-full bg-blue-300 hover:bg-blue-400"
+                    value="#93c5fd"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-indigo-300 hover:bg-indigo-400"
+                    class="btn btn-sm btn-circle rounded-full bg-indigo-300 hover:bg-indigo-400"
+                    value="#a5b4fc"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-violet-300 hover:bg-violet-400"
+                    class="btn btn-sm btn-circle rounded-full bg-violet-300 hover:bg-violet-400"
+                    value="#c4b5fd"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-purple-300 hover:bg-purple-400"
+                    class="btn btn-sm btn-circle rounded-full bg-purple-300 hover:bg-purple-400"
+                    value="#d8b4fe"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-fuchsia-300 hover:bg-fuchsia-400"
+                    class="btn btn-sm btn-circle rounded-full bg-fuchsia-300 hover:bg-fuchsia-400"
+                    value="#f0abfc"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-pink-300 hover:bg-pink-400"
+                    class="btn btn-sm btn-circle rounded-full bg-pink-300 hover:bg-pink-400"
+                    value="#f9a8d4"
+                    @click="setColour"
                   ></button>
                   <button
-                    class="btn btn-sm p-0 w-8 rounded-full bg-rose-300 hover:bg-rose-400"
+                    class="btn btn-sm btn-circle rounded-full bg-rose-300 hover:bg-rose-400"
+                    value="#fda4af"
+                    @click="setColour"
                   ></button>
                 </div>
               </div>
@@ -203,16 +238,29 @@
               <span class="text-sm pl-2">Import Calendar</span>
               <div class="flex flex-row gap-2 items-center max-w-md">
                 <input
-                  type="text"
+                  type="url"
                   placeholder="Calendar URL"
                   class="input input-sm input-bordered w-full"
+                  @change="validateUrl"
+                  v-model="calendarUrl"
                 />
-                <button class="btn btn-sm btn-primary">Import</button>
+                <button
+                  class="btn btn-sm btn-primary"
+                  :class="[calendarUrlError ? 'btn-disabled' : '']"
+                >
+                  Import
+                </button>
               </div>
+              <span v-if="calendarUrlError" class="text-sm text-error pl-2">{{
+                calendarUrlErrorText
+              }}</span>
+              <span v-if="calendarUrlSuccess" class="text-sm text-success pl-2"
+                >Import successful</span
+              >
             </div>
-            <div class="flex flex-row gap-2">
-              <button class="btn btn-wide btn-sm btn-error">Discard</button>
-              <button class="btn btn-wide btn-sm btn-primary">Save</button>
+            <div class="flex flex-row gap-2 w-full max-w-sm">
+              <button class="btn btn-sm grow btn-error">Discard</button>
+              <button class="btn btn-sm grow btn-primary">Save</button>
             </div>
           </div>
         </div>
@@ -241,6 +289,13 @@ const startWeekOn = ref("Monday");
 const dateFormat = ref("DD-MM-YY");
 const timeFormat = ref("12-Hour-Time");
 const theme = ref("dark");
+
+// Calendar Settings
+const calendarColour = ref("#fca5a5");
+const calendarUrl = ref("");
+const calendarUrlError = ref(false);
+const calendarUrlErrorText = ref("");
+const calendarUrlSuccess = ref(false);
 
 onMounted(() => {
   // Get settings from backend
@@ -281,5 +336,24 @@ function timeFormatChanged(event) {
 
 function themeChanged(event) {
   props.setTheme(event.target.value);
+}
+
+function setColour(event) {
+  calendarColour.value = event.target.value;
+}
+
+function validateUrl(event) {
+  if (event.target.value === "") {
+    calendarUrlError.value = false;
+    return;
+  }
+  let regex = new RegExp("^https?:\/\/");
+  if (regex.test(event.target.value)) {
+    calendarUrlError.value = false;
+    calendarUrlErrorText.value = "";
+  } else {
+    calendarUrlError.value = true;
+    calendarUrlErrorText.value = "Invalid URL";
+  }
 }
 </script>
