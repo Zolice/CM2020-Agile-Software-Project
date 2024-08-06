@@ -132,6 +132,7 @@
                 type="text"
                 placeholder="Calendar Name"
                 class="input input-bordered"
+                v-model="calendarName"
               />
             </div>
             <div class="flex flex-row gap-4">
@@ -235,7 +236,33 @@
               </div>
             </div>
             <div class="flex flex-col gap-1">
-              <span class="text-sm pl-2">Import Calendar</span>
+              <h4 class="text-xl">Import Calendar</h4>
+              <span class="text-sm pl-2">Upload a .ica File</span>
+              <div class="flex flex-row gap-2 items-center max-w-md">
+                <input
+                  type="file"
+                  class="file-input file-input-sm file-input-bordered w-full"
+                  @change="uploadICS"
+                />
+              </div>
+              <span
+                v-if="calendarFileError != ''"
+                class="text-sm text-error pl-2"
+              >
+                {{ calendarFileError }}
+              </span>
+              <span
+                v-if="calendarFileSuccess != ''"
+                class="text-sm text-success pl-2"
+              >
+                {{ calendarFileSuccess }}
+              </span>
+              <span class="text-sm pl-2"
+                >Import using URL
+                <a href="/" target="_blank" class="text-warning">
+                  (This uses our proxy!)
+                </a>
+              </span>
               <div class="flex flex-row gap-2 items-center max-w-md">
                 <input
                   type="url"
@@ -246,22 +273,41 @@
                 />
                 <button
                   class="btn btn-sm btn-primary"
-                  :class="[calendarUrlError ? 'btn-disabled' : '']"
+                  :class="[calendarUrlButton ? '' : 'btn-disabled']"
+                  @click="importCalendar"
                 >
                   Import
                 </button>
               </div>
-              <span v-if="calendarUrlError" class="text-sm text-error pl-2">{{
-                calendarUrlErrorText
-              }}</span>
-              <span v-if="calendarUrlSuccess" class="text-sm text-success pl-2"
-                >Import successful</span
+              <span
+                v-if="calendarUrlError != ''"
+                class="text-sm text-error pl-2"
               >
+                {{ calendarUrlError }}
+              </span>
+              <span
+                v-if="calendarUrlSuccess != ''"
+                class="text-sm text-success pl-2"
+              >
+                {{ calendarUrlSuccess }}
+              </span>
             </div>
             <div class="flex flex-row gap-2 w-full max-w-sm">
               <button class="btn btn-sm grow btn-error">Discard</button>
-              <button class="btn btn-sm grow btn-primary">Save</button>
+              <button
+                class="btn btn-sm grow btn-primary"
+                :class="[calendarName == '' ? 'btn-disabled' : '']"
+                @click="createCalendar"
+              >
+                Save
+              </button>
             </div>
+            <span v-if="calendarError != ''" class="text-sm text-error pl-2">
+              {{ calendarError }}
+            </span>
+            <span v-if="calendarSuccess != ''" class="text-sm text-success pl-2">
+              {{ calendarSuccess }}
+            </span>
           </div>
         </div>
       </div>
@@ -291,11 +337,23 @@ const timeFormat = ref("12-Hour-Time");
 const theme = ref("dark");
 
 // Calendar Settings
+const calendarName = ref("");
 const calendarColour = ref("#fca5a5");
+const calendarError = ref("");
+const calendarSuccess = ref("");
+
+// Calendar File Upload
+const calendarFile = ref("");
+const calendarFileError = ref("");
+const calendarFileSuccess = ref("");
+const calendarFileUpload = ref(null);
+
+// Calendar URL Upload
 const calendarUrl = ref("");
-const calendarUrlError = ref(false);
-const calendarUrlErrorText = ref("");
-const calendarUrlSuccess = ref(false);
+const calendarUrlButton = ref(false);
+const calendarUrlError = ref("");
+const calendarUrlSuccess = ref("");
+const calendarUrlUpload = ref(null);
 
 onMounted(() => {
   // Get settings from backend
@@ -342,18 +400,115 @@ function setColour(event) {
   calendarColour.value = event.target.value;
 }
 
-function validateUrl(event) {
-  if (event.target.value === "") {
-    calendarUrlError.value = false;
+function validateUrl() {
+  if (calendarUrl.value == "") {
+    calendarUrlError.value = "";
+    calendarUrlButton.value = false;
     return;
   }
   let regex = new RegExp("^https?:\/\/");
-  if (regex.test(event.target.value)) {
-    calendarUrlError.value = false;
-    calendarUrlErrorText.value = "";
+  if (regex.test(calendarUrl.value)) {
+    calendarUrlError.value = "";
+    calendarUrlButton.value = true;
+    // calendarUrlErrorText.value = "";
   } else {
-    calendarUrlError.value = true;
-    calendarUrlErrorText.value = "Invalid URL";
+    calendarUrlError.value = "Invalid URL";
+    // calendarUrlErrorText.value = "Invalid URL";
   }
 }
+
+function uploadICS(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileContent = e.target.result;
+      calendarFile.value = fileContent;
+      calendarFileUpload.value = backendSettings.value.importCalendarFile(
+        calendarFile.value
+      );
+
+      // Check if file has content
+      if (Object.keys(calendarFileUpload.value).length == 0) {
+        calendarFileError.value = "Error reading file";
+        calendarFileSuccess.value = "";
+        // Empty the file as it's not usable
+        calendarFile.value = "";
+      } else {
+        calendarFileError.value = "";
+        calendarFileSuccess.value = "Imported successfully!";
+
+        // Remove the URL file
+        calendarUrl.value = "";
+        calendarUrlUpload.value = "";
+        validateUrl();
+      }
+    };
+    reader.onerror = (e) => {
+      console.error("Error reading file:", e);
+      calendarFileError.value = "Error reading file";
+    };
+    // Read the file as text
+    reader.readAsText(file);
+  }
+}
+
+function importCalendar() {
+  console.log(calendarUrl.value);
+
+  calendarUrlUpload.value = backendSettings.value.importCalendarURL(
+    calendarUrl.value
+  );
+
+  if (Object.keys(calendarUrlUpload.value).length == 0) {
+    calendarUrlError.value = "Error importing calendar";
+    calendarUrlSuccess.value = "";
+  } else {
+    calendarUrlError.value = "";
+    calendarUrlSuccess.value = "Imported successfully!";
+
+    // Remove the file upload
+    calendarFile.value = "";
+    calendarFileUpload.value = "";
+  }
+}
+
+function createCalendar() {
+  console.log("Creating calendar");
+
+  let calendar;
+  if (calendarFileUpload.value) {
+    calendar = calendarFileUpload.value;
+  } else if (calendarUrlUpload.value) {
+    calendar = calendarUrlUpload.value;
+  } else {
+    calendar = {};
+  }
+
+  let result = backendSettings.value.createCalendar(
+    calendarName.value,
+    calendar,
+    calendarColour.value
+  );
+  
+  console.log(result)
+
+  if (result.error) {
+    console.log("1")
+    calendarError.value = result.error;
+    calendarSuccess.value = "";
+  }
+  else if(result.success) {
+    console.log("2")
+    calendarError.value = "";
+    calendarSuccess.value = "Calendar created successfully!";
+  }
+}
+
+// function uploadCalendar() {
+//   // console.log(calendarFile.value);
+//   calendarFileUpload.value = backendSettings.value.importCalendarFile(
+//     calendarFile.value
+//   );
+// }
 </script>

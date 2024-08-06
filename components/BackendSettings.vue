@@ -1,4 +1,7 @@
 <script setup lang="jsx">
+import ical from "node-ical";
+// import ical from 'ical'
+
 var settings = {};
 
 /**
@@ -106,6 +109,72 @@ function getTheme() {
   return localStorage.getItem("theme") || "dark";
 }
 
+async function importCalendarURL(url) {
+  try {
+    // Use a proxy server to bypass CORS issues
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+    const fetchUrl = proxyUrl + url;
+
+    // Log the URL being fetched
+    console.log("Importing calendar from", fetchUrl);
+
+    // Perform the fetch request
+    let response = await fetch(fetchUrl);
+
+    // Check if the response is not OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Get the response text
+    let calendar = await response.text();
+    // console.log("Calendar data:", calendar);
+
+    // Parse the calendar data here if needed
+    let parsedCalendar = ical.sync.parseICS(calendar);
+    // console.log(parsedCalendar);
+    // console.log(ical.parseICS(calendar))
+
+    //   console.log("Calendar data:", data);
+    // });
+
+    console.log(parsedCalendar);
+
+    return parsedCalendar;
+  } catch (error) {
+    // Log the error with more details
+    console.error("Failed to import calendar:", error.message);
+    console.error("Error stack:", error.stack);
+  }
+}
+
+function importCalendarFile(file) {
+  let calendar = ical.parseICS(file);
+  // console.log(calendar);
+  for (let key in calendar) {
+    // console.log(key);
+  }
+  return calendar;
+}
+
+function createCalendar(name, calendar, colour) {
+  // Get calendar from local storage
+  let calendars = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // Check if calendar already exists
+  if (calendars[name]) {
+    return { error: "Calendar already exists" };
+  }
+
+  // Add the new calendar
+  calendars[name] = { colour: colour, calendar: calendar };
+
+  // Save the updated calendars
+  localStorage.setItem("calendars", JSON.stringify(calendars));
+
+  return { success: true };
+}
+
 defineExpose({
   getSettings,
   getTheme,
@@ -113,5 +182,8 @@ defineExpose({
   setStartWeekOn,
   setDateFormat,
   setTimeFormat,
+  importCalendarURL,
+  importCalendarFile,
+  createCalendar,
 });
 </script>
