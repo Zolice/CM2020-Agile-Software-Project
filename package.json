@@ -12,6 +12,8 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "flowbite": "^2.5.1",
+    "flowbite-vue": "^0.1.5",
     "nuxt": "^3.12.3",
     "vue": "^3.4.31"
   },

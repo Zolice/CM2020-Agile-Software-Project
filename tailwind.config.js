@@ -7,6 +7,7 @@ export default {
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",
+    "./node_modules/flowbite/**/*.{js,ts}",
   ],
   theme: {
     extend: {
@@ -15,7 +16,10 @@ export default {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+          require("daisyui"),
+          require('flowbite/plugin'),
+  ],
   daisyui: {
     themes: [
       "light",
