@@ -5,7 +5,34 @@
         <img :src="avatar" alt="Avatar" />
       </div>
       <div class="profile-info">
-        <h1>{{ userName }}</h1>
+        <div class="username-container">
+          <input
+            v-if="editing"
+            v-model="userName"
+            type="text"
+            class="edit-username"
+          />
+          <h1 v-else>{{ userName }}</h1>
+          <button
+            v-if="editing"
+            class="btn btn-primary btn-sm"
+            @click="saveUsername"
+          >
+            Save
+          </button>
+          <button
+            v-if="editing"
+            class="btn btn-secondary btn-sm"
+            @click="cancelEdit"
+          >
+            Cancel
+          </button>
+          <i
+            v-if="!editing"
+            class="bi bi-pencil-square edit-icon"
+            @click="editUsername"
+          ></i>
+        </div>
         <div class="level-score">
           <span>Level {{ level }}</span>
           <div class="score-bar">
@@ -26,8 +53,15 @@
       <div class="badges-section">
         <h2>Badges</h2>
         <div class="badges">
-          <div v-for="badge in badges" :key="badge.id" class="badge">
+          <div
+            v-for="badge in badges"
+            :key="badge.id"
+            class="badge"
+            @mouseover="showTitle($event, badge.name)"
+            @mouseleave="hideTitle($event)"
+          >
             <img :src="badge.image" :alt="badge.name" />
+            <span class="badge-title">{{ badge.name }}</span>
           </div>
         </div>
       </div>
@@ -61,6 +95,8 @@ export default {
       score: 1900,
       currentStreak: 2,
       highestStreak: 3,
+      editing: false,
+      originalUserName: "",
       badges: [
         { id: 1, image: "https://via.placeholder.com/50", name: "Badge 1" },
         { id: 2, image: "https://via.placeholder.com/50", name: "Badge 2" },
@@ -82,12 +118,36 @@ export default {
   },
   computed: {
     scoreWidth() {
-      return (this.score / 2000) * 100;
+      return (this.score / 2000) * 100; // Adjust the denominator to match the maximum score
     },
   },
   methods: {
+    editUsername() {
+      this.originalUserName = this.userName;
+      this.editing = true;
+    },
+    saveUsername() {
+      this.editing = false;
+    },
+    cancelEdit() {
+      this.userName = this.originalUserName;
+      this.editing = false;
+    },
     shareAchievements() {
+      // Implement share functionality here
       alert("Achievements shared!");
+    },
+    showTitle(event, title) {
+      const span = event.target.querySelector(".badge-title");
+      if (span) {
+        span.style.visibility = "visible";
+      }
+    },
+    hideTitle(event) {
+      const span = event.target.querySelector(".badge-title");
+      if (span) {
+        span.style.visibility = "hidden";
+      }
     },
   },
 };
@@ -116,6 +176,30 @@ export default {
 .profile-info {
   flex-grow: 1;
   margin-left: 20px;
+}
+
+.username-container {
+  display: flex;
+  align-items: center;
+}
+
+.username-container h1 {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.edit-username {
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #4caf50;
+  outline: none;
+  margin-right: 10px;
+}
+
+.edit-icon {
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .level-score {
@@ -176,5 +260,20 @@ export default {
   width: 50px;
   height: 50px;
   margin: 5px;
+  position: relative;
+}
+
+.badge-title {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 3px;
+  visibility: hidden;
+  font-size: 12px;
+  white-space: nowrap;
 }
 </style>
