@@ -29,7 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
-        <SettingsModal :set-theme="setTheme" />
+        <SettingsModal />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
         </div>
@@ -42,7 +42,6 @@
 defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
-  setTheme: Function,
 });
 </script>
 

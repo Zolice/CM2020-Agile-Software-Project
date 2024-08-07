@@ -129,19 +129,19 @@
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Create new calendar</h4>
               <input
+                v-model="calendarName"
                 type="text"
                 placeholder="Calendar Name"
                 class="input input-bordered"
-                v-model="calendarName"
               />
             </div>
             <div class="flex flex-row gap-4">
               <div class="flex flex-col gap-1">
                 <span class="text-sm pl-2">Colour</span>
                 <input
+                  v-model="calendarColour"
                   type="color"
                   class="w-16 h-8 border-none border-0 bg-transparent"
-                  v-model="calendarColour"
                 />
               </div>
               <div class="flex flex-col gap-1">
@@ -265,11 +265,11 @@
               </span>
               <div class="flex flex-row gap-2 items-center max-w-md">
                 <input
+                  v-model="calendarUrl"
                   type="url"
                   placeholder="Calendar URL"
                   class="input input-sm input-bordered w-full"
                   @change="validateUrl"
-                  v-model="calendarUrl"
                 />
                 <button
                   class="btn btn-sm btn-primary"
@@ -319,12 +319,9 @@
 <script setup lang="jsx">
 import { ref } from "vue";
 
-const props = defineProps({
-  setTheme: Function,
-});
-
 // Backend Settings Component
 const backendSettings = ref(null);
+const setTheme = inject("setTheme");
 
 // Current Page Boolean
 const selected = ref(true); // true = general, false = calendar
@@ -393,7 +390,7 @@ function timeFormatChanged(event) {
 }
 
 function themeChanged(event) {
-  props.setTheme(event.target.value);
+  setTheme(event.target.value);
 }
 
 function setColour(event) {
@@ -406,14 +403,12 @@ function validateUrl() {
     calendarUrlButton.value = false;
     return;
   }
-  let regex = new RegExp("^https?:\/\/");
+  const regex = new RegExp("^https?:\/\/");
   if (regex.test(calendarUrl.value)) {
     calendarUrlError.value = "";
     calendarUrlButton.value = true;
-    // calendarUrlErrorText.value = "";
   } else {
     calendarUrlError.value = "Invalid URL";
-    // calendarUrlErrorText.value = "Invalid URL";
   }
 }
 
@@ -432,6 +427,7 @@ function uploadICS(event) {
       if (Object.keys(calendarFileUpload.value).length == 0) {
         calendarFileError.value = "Error reading file";
         calendarFileSuccess.value = "";
+
         // Empty the file as it's not usable
         calendarFile.value = "";
       } else {
@@ -441,6 +437,8 @@ function uploadICS(event) {
         // Remove the URL file
         calendarUrl.value = "";
         calendarUrlUpload.value = "";
+
+        // Disable the import button
         validateUrl();
       }
     };
@@ -454,8 +452,6 @@ function uploadICS(event) {
 }
 
 function importCalendar() {
-  console.log(calendarUrl.value);
-
   calendarUrlUpload.value = backendSettings.value.importCalendarURL(
     calendarUrl.value
   );
@@ -474,8 +470,6 @@ function importCalendar() {
 }
 
 function createCalendar() {
-  console.log("Creating calendar");
-
   let calendar;
   if (calendarFileUpload.value) {
     calendar = calendarFileUpload.value;
@@ -485,30 +479,19 @@ function createCalendar() {
     calendar = {};
   }
 
-  let result = backendSettings.value.createCalendar(
+  const result = backendSettings.value.createCalendar(
     calendarName.value,
     calendar,
     calendarColour.value
   );
-  
-  console.log(result)
 
   if (result.error) {
-    console.log("1")
     calendarError.value = result.error;
     calendarSuccess.value = "";
   }
   else if(result.success) {
-    console.log("2")
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
 }
-
-// function uploadCalendar() {
-//   // console.log(calendarFile.value);
-//   calendarFileUpload.value = backendSettings.value.importCalendarFile(
-//     calendarFile.value
-//   );
-// }
 </script>
