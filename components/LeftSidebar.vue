@@ -29,6 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
+        <ShopModal />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
         </div>
