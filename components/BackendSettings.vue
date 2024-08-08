@@ -109,37 +109,7 @@ function getTheme() {
   return localStorage.getItem("theme") || "dark";
 }
 
-async function importCalendarURL(url) {
-  try {
-    // Use a proxy server to bypass CORS issues
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    const fetchUrl = proxyUrl + url;
-
-    // Log the URL being fetched
-    console.log("Importing calendar from", fetchUrl);
-
-    // Perform the fetch request
-    const response = await fetch(fetchUrl);
-
-    // Check if the response is not OK
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    // Get the response text
-    const calendar = await response.text();
-
-    // Parse the calendar
-    const parsedCalendar = ical.sync.parseICS(calendar);
-
-    return parsedCalendar;
-  } catch (error) {
-    // Log the error with more details
-    console.error("Failed to import calendar:", error.message);
-  }
-}
-
-function importCalendarFile(file) {
+function importCalendar(file) {
   const calendar = ical.parseICS(file);
   return calendar;
 }
@@ -169,8 +139,7 @@ defineExpose({
   setStartWeekOn,
   setDateFormat,
   setTimeFormat,
-  importCalendarURL,
-  importCalendarFile,
+  importCalendar,
   createCalendar,
 });
 </script>

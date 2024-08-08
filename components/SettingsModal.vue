@@ -240,6 +240,7 @@
               <span class="text-sm pl-2">Upload a .ica File</span>
               <div class="flex flex-row gap-2 items-center max-w-md">
                 <input
+                  id="importFile"
                   type="file"
                   class="file-input file-input-sm file-input-bordered w-full"
                   @change="uploadICS"
@@ -257,43 +258,11 @@
               >
                 {{ calendarFileSuccess }}
               </span>
-              <span class="text-sm pl-2"
-                >Import using URL
-                <a href="/" target="_blank" class="text-warning">
-                  (This uses our proxy!)
-                </a>
-              </span>
-              <div class="flex flex-row gap-2 items-center max-w-md">
-                <input
-                  v-model="calendarUrl"
-                  type="url"
-                  placeholder="Calendar URL"
-                  class="input input-sm input-bordered w-full"
-                  @change="validateUrl"
-                />
-                <button
-                  class="btn btn-sm btn-primary"
-                  :class="[calendarUrlButton ? '' : 'btn-disabled']"
-                  @click="importCalendar"
-                >
-                  Import
-                </button>
-              </div>
-              <span
-                v-if="calendarUrlError != ''"
-                class="text-sm text-error pl-2"
-              >
-                {{ calendarUrlError }}
-              </span>
-              <span
-                v-if="calendarUrlSuccess != ''"
-                class="text-sm text-success pl-2"
-              >
-                {{ calendarUrlSuccess }}
-              </span>
             </div>
             <div class="flex flex-row gap-2 w-full max-w-sm">
-              <button class="btn btn-sm grow btn-error">Discard</button>
+              <button class="btn btn-sm grow btn-error" @click="discard">
+                Discard
+              </button>
               <button
                 class="btn btn-sm grow btn-primary"
                 :class="[calendarName == '' ? 'btn-disabled' : '']"
@@ -305,7 +274,10 @@
             <span v-if="calendarError != ''" class="text-sm text-error pl-2">
               {{ calendarError }}
             </span>
-            <span v-if="calendarSuccess != ''" class="text-sm text-success pl-2">
+            <span
+              v-if="calendarSuccess != ''"
+              class="text-sm text-success pl-2"
+            >
               {{ calendarSuccess }}
             </span>
           </div>
@@ -344,13 +316,6 @@ const calendarFile = ref("");
 const calendarFileError = ref("");
 const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
-
-// Calendar URL Upload
-const calendarUrl = ref("");
-const calendarUrlButton = ref(false);
-const calendarUrlError = ref("");
-const calendarUrlSuccess = ref("");
-const calendarUrlUpload = ref(null);
 
 onMounted(() => {
   // Get settings from backend
@@ -397,21 +362,6 @@ function setColour(event) {
   calendarColour.value = event.target.value;
 }
 
-function validateUrl() {
-  if (calendarUrl.value == "") {
-    calendarUrlError.value = "";
-    calendarUrlButton.value = false;
-    return;
-  }
-  const regex = new RegExp("^https?:\/\/");
-  if (regex.test(calendarUrl.value)) {
-    calendarUrlError.value = "";
-    calendarUrlButton.value = true;
-  } else {
-    calendarUrlError.value = "Invalid URL";
-  }
-}
-
 function uploadICS(event) {
   const file = event.target.files[0];
   if (file) {
@@ -419,7 +369,7 @@ function uploadICS(event) {
     reader.onload = (e) => {
       const fileContent = e.target.result;
       calendarFile.value = fileContent;
-      calendarFileUpload.value = backendSettings.value.importCalendarFile(
+      calendarFileUpload.value = backendSettings.value.importCalendar(
         calendarFile.value
       );
 
@@ -433,13 +383,6 @@ function uploadICS(event) {
       } else {
         calendarFileError.value = "";
         calendarFileSuccess.value = "Imported successfully!";
-
-        // Remove the URL file
-        calendarUrl.value = "";
-        calendarUrlUpload.value = "";
-
-        // Disable the import button
-        validateUrl();
       }
     };
     reader.onerror = (e) => {
@@ -451,33 +394,8 @@ function uploadICS(event) {
   }
 }
 
-function importCalendar() {
-  calendarUrlUpload.value = backendSettings.value.importCalendarURL(
-    calendarUrl.value
-  );
-
-  if (Object.keys(calendarUrlUpload.value).length == 0) {
-    calendarUrlError.value = "Error importing calendar";
-    calendarUrlSuccess.value = "";
-  } else {
-    calendarUrlError.value = "";
-    calendarUrlSuccess.value = "Imported successfully!";
-
-    // Remove the file upload
-    calendarFile.value = "";
-    calendarFileUpload.value = "";
-  }
-}
-
 function createCalendar() {
-  let calendar;
-  if (calendarFileUpload.value) {
-    calendar = calendarFileUpload.value;
-  } else if (calendarUrlUpload.value) {
-    calendar = calendarUrlUpload.value;
-  } else {
-    calendar = {};
-  }
+  const calendar = calendarFileUpload.value || {};
 
   const result = backendSettings.value.createCalendar(
     calendarName.value,
@@ -488,10 +406,25 @@ function createCalendar() {
   if (result.error) {
     calendarError.value = result.error;
     calendarSuccess.value = "";
-  }
-  else if(result.success) {
+  } else if (result.success) {
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
+}
+
+function discard() {
+  // Close the modal
+  settings_modal.close();
+
+  // Reset all values to default
+  calendarName.value = "";
+  calendarColour.value = "#fca5a5";
+  calendarError.value = "";
+  calendarSuccess.value = "";
+  calendarFileError.value = "";
+  calendarFileSuccess.value = "";
+
+  // Clear Import
+  importFile.value = "";
 }
 </script>
