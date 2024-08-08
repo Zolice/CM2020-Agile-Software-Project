@@ -1,6 +1,5 @@
 <template>
-  <!-- <span>Hello!</span> -->
-  <div class="flex flex-col w-fit bg-base-100 border border-black" :data-theme="theme">
+  <div class="flex flex-col w-fit bg-base-100 border border-neutral" :data-theme="theme">
     <div class="grid grid-rows-2 grid-cols-2 w-32 h-32">
       <div class="bg-primary"></div>
       <div class="bg-secondary"></div>
@@ -16,6 +15,6 @@
 const props = defineProps({
   name: String,
   theme: String,
-  points: String,
+  points: Number,
 });
 </script>

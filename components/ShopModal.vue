@@ -62,6 +62,7 @@
               class="flex flex-row w-full h-full gap-2 overflow-x-scroll transition-all duration-150"
               :class="[borderExpanded ? 'flex-wrap' : '']"
             >
+              <ShopItemComponent name="hello" points="500"/>
               <ThemeDisplayComponent
                 v-for="theme in themes"
                 v-bind:key="theme"
