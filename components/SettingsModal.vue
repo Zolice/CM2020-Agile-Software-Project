@@ -2,7 +2,7 @@
   <!-- Settings Button -->
   <button
     class="btn btn-sm btn-accent w-full justify-start"
-    onclick="settings_modal.showModal()"
+    :onclick="openSettingsModal"
   >
     Settings
   </button>
@@ -260,7 +260,10 @@
               </span>
             </div>
             <div class="flex flex-row gap-2 w-full max-w-sm">
-              <button class="btn btn-sm grow btn-error" @click="discard">
+              <button
+                class="btn btn-sm grow btn-error"
+                onclick="settings_modal.close()"
+              >
                 Discard
               </button>
               <button
@@ -318,6 +321,14 @@ const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
 
 onMounted(() => {
+  // Get current theme
+  theme.value = backendSettings.value.getTheme();
+});
+
+function openSettingsModal() {
+  // Change page to general settings
+  selected.value = true;
+
   // Get settings from backend
   const settings = backendSettings.value.getSettings();
   showWeekend.value = settings.showWeekend;
@@ -325,9 +336,24 @@ onMounted(() => {
   dateFormat.value = settings.dateFormat;
   timeFormat.value = settings.timeFormat;
 
-  // Get current theme
-  theme.value = backendSettings.value.getTheme();
-});
+  // Reset all values in calendar to default
+  calendarName.value = "";
+  calendarColour.value = "#fca5a5";
+  calendarError.value = "";
+  calendarSuccess.value = "";
+  calendarFileError.value = "";
+  calendarFileSuccess.value = "";
+
+  // Clear Import
+  // check if importFile exists
+  const importFile = document.getElementById("importFile");
+  if (importFile) {
+    importFile.value = "";
+  }
+
+  // Open settings modal
+  settings_modal.showModal();
+}
 
 // Functions by buttons
 function selectGeneral() {
@@ -410,21 +436,5 @@ function createCalendar() {
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
-}
-
-function discard() {
-  // Close the modal
-  settings_modal.close();
-
-  // Reset all values to default
-  calendarName.value = "";
-  calendarColour.value = "#fca5a5";
-  calendarError.value = "";
-  calendarSuccess.value = "";
-  calendarFileError.value = "";
-  calendarFileSuccess.value = "";
-
-  // Clear Import
-  importFile.value = "";
 }
 </script>
