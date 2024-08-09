@@ -12,10 +12,17 @@ import border4 from "~/assets/borders/border4.jpg";
 import nameTag1 from "~/assets/nametags/tag1.jpg";
 import nameTag2 from "~/assets/nametags/tag2.jpg";
 
-let userName = ref("");
-let editing = ref(false);
+const userName = ref("");
+const editing = ref(false);
 
-function getProfile() {
+/**
+ * Get the username from localStorage
+ * Create a new localStorage for userName if it doesn't exist
+ * Separated it from profileData for easier editing
+ *
+ * @returns {String}
+ */
+function getUserName() {
   if (typeof window !== "undefined") {
     const storedName = localStorage.getItem("userName");
     if (storedName) {
@@ -25,47 +32,77 @@ function getProfile() {
       localStorage.setItem("userName", userName.value);
     }
   }
-  return {
-    avatar: "https://i.pravatar.cc/150?u=1",
-    userName: userName.value,
-    level: 1,
-    score: 1000,
-    maxScore: 2000,
-    rewardPoints: 0,
-    currentStreak: 2,
-    highestStreak: 5,
-    badges: [
-      { id: 1, image: "https://i.pravatar.cc/150?u=2", name: "Badge 1" },
-      { id: 2, image: "https://i.pravatar.cc/150?u=3", name: "Badge 2" },
-      { id: 3, image: "https://i.pravatar.cc/150?u=4", name: "Badge 3" },
-      { id: 4, image: "https://i.pravatar.cc/150?u=5", name: "Badge 4" },
-      { id: 5, image: "https://i.pravatar.cc/150?u=6", name: "Badge 5" },
-      { id: 6, image: "https://i.pravatar.cc/150?u=7", name: "Badge 6" },
-    ],
-    borders: [
-      { id: 1, image: border1, name: "Border 1" },
-      { id: 2, image: border2, name: "Border 2" },
-      { id: 3, image: border3, name: "Border 3" },
-      { id: 4, image: border4, name: "Border 4" },
-    ],
-    nametags: [
-      { id: 1, image: nameTag1, name: "Name Tag 1" },
-      { id: 2, image: nameTag2, name: "Name Tag 2" },
-    ],
-  };
+  return userName.value;
 }
 
 /**
  * Save the username to localStorage
+ * @param {String} userName
  */
 function saveUsername(userName) {
   localStorage.setItem("userName", userName);
   editing.value = false;
 }
 
+/**
+ * Get the profile data from localStorage
+ * Create a new localStorage for profileData if it doesn't exist
+ *
+ * @returns {Object}
+ */
+function getProfileData() {
+  if (typeof window !== "undefined") {
+    const storedProfile = localStorage.getItem("profileData");
+    userName.value = localStorage.getItem("userName") || "";
+
+    if (storedProfile) {
+      // Parse and return stored profile data
+      const profileData = JSON.parse(storedProfile);
+      return profileData;
+    } else {
+      // If no profile data exists, create default profile data and store it
+      const defaultProfileData = {
+        avatar: "https://i.pravatar.cc/150?u=1",
+        level: 1,
+        score: 0,
+        maxScore: 2000,
+        rewardPoints: 0,
+        currentStreak: 0,
+        highestStreak: 0,
+        badges: [
+          { id: 1, image: "https://i.pravatar.cc/150?u=2", name: "Badge 1" },
+          { id: 2, image: "https://i.pravatar.cc/150?u=3", name: "Badge 2" },
+          { id: 3, image: "https://i.pravatar.cc/150?u=4", name: "Badge 3" },
+          { id: 4, image: "https://i.pravatar.cc/150?u=5", name: "Badge 4" },
+          { id: 5, image: "https://i.pravatar.cc/150?u=6", name: "Badge 5" },
+          { id: 6, image: "https://i.pravatar.cc/150?u=7", name: "Badge 6" },
+        ],
+        borders: [
+          { id: 1, image: border1, name: "Border 1" },
+          { id: 2, image: border2, name: "Border 2" },
+          { id: 3, image: border3, name: "Border 3" },
+          { id: 4, image: border4, name: "Border 4" },
+        ],
+        nametags: [
+          { id: 1, image: nameTag1, name: "Name Tag 1" },
+          { id: 2, image: nameTag2, name: "Name Tag 2" },
+        ],
+      };
+
+      // Store the default profile data in localStorage
+      localStorage.setItem("profileData", JSON.stringify(defaultProfileData));
+      return defaultProfileData;
+    }
+  }
+
+  // Return an empty object if localStorage is not available
+  return {};
+}
+
 // Expose functions for use
 defineExpose({
-  getProfile,
+  getUserName,
   saveUsername,
+  getProfileData,
 });
 </script>

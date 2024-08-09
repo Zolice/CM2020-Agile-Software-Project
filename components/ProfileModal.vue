@@ -199,10 +199,12 @@ const nametags = ref([]);
 const borders = ref([]);
 
 function openProfileModal() {
+  // Get username from backend
+  userName.value = backendProfile.value.getUserName();
+
   // Get profile data from backend
-  const profile = backendProfile.value.getProfile();
+  const profile = backendProfile.value.getProfileData();
   avatar.value = profile.avatar;
-  userName.value = profile.userName;
   level.value = profile.level;
   score.value = profile.score;
   maxScore.value = profile.maxScore;
