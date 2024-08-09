@@ -19,8 +19,28 @@ function getProfile() {
     avatar: "https://i.pravatar.cc/150?u=1",
     userName: userName.value,
     level: 1,
-    score: 0,
-    streaks: 0,
+    score: 100,
+    maxScore: 2000,
+    rewardPoints: 0,
+    currentStreak: 2,
+    highestStreak: 5,
+    badges: [
+      { id: 1, image: "https://via.placeholder.com/50", name: "Badge 1" },
+      { id: 2, image: "https://via.placeholder.com/50", name: "Badge 2" },
+      { id: 3, image: "https://via.placeholder.com/50", name: "Badge 3" },
+      { id: 4, image: "https://via.placeholder.com/50", name: "Badge 4" },
+      { id: 5, image: "https://via.placeholder.com/50", name: "Badge 5" },
+      { id: 6, image: "https://via.placeholder.com/50", name: "Badge 6" },
+    ],
+    borders: [
+      { id: 1, image: "https://via.placeholder.com/50", name: "Border 1" },
+      { id: 2, image: "https://via.placeholder.com/50", name: "Border 2" },
+      { id: 3, image: "https://via.placeholder.com/50", name: "Border 3" },
+    ],
+    nametags: [
+      { id: 1, image: "https://via.placeholder.com/50", name: "Name Tag 1" },
+      { id: 2, image: "https://via.placeholder.com/50", name: "Name Tag 2" },
+    ],
   };
 }
 
