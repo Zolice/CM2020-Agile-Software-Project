@@ -15,8 +15,18 @@
           ✕
         </button>
       </form>
+      <!-- Profile nav bar -->
       <div class="flex flex-col h-full gap-4">
         <h3 class="text-3xl font-bold">Profile</h3>
+
+        <!-- Share Achievements Button -->
+        <!-- TODO: Create share achievement modal -->
+        <div class="flex justify-end">
+          <button class="btn btn-sm btn-success" @click="shareAchievements">
+            <i class="bi bi-share"></i> Share Achievements
+          </button>
+        </div>
+
         <div class="flex flex-col h-full overflow-auto gap-4">
           <div class="flex flex-row w-full px-2 gap-4">
             <!-- Avatar and Username -->
@@ -47,14 +57,14 @@
                     @click="editUsername"
                   ></i>
                 </div>
-                <!-- Save and discard buttons for name change -->
+                <!-- Save and cancel buttons for name change -->
                 <div class="flex gap-2 mt-2">
                   <button
                     v-if="editing"
                     class="btn btn-error btn-sm"
-                    @click="discardEdit"
+                    @click="cancelEdit"
                   >
-                    Discard
+                    Cancel
                   </button>
                   <button
                     v-if="editing"
@@ -72,15 +82,19 @@
               <div class="w-full flex items-center justify-around">
                 <h4 class="flex-shrink-0 ps-4">Level {{ level }}</h4>
 
+                <!-- Level progress bar -->
                 <div class="w-2/5">
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div
+                    class="relative w-full bg-gray-200 rounded-full border-2 border-gray-400 h-4"
+                  >
                     <div
-                      class="bg-blue-600 h-2.5 rounded-full"
+                      class="absolute top-0 left-0 bg-blue-600 h-full rounded-full"
                       :style="{ width: scoreWidth + '%' }"
                     ></div>
                   </div>
                 </div>
 
+                <!-- Score and reward points -->
                 <span>Score: {{ score }}</span>
                 <span>Reward Points: {{ rewardPoints }}</span>
               </div>
@@ -96,24 +110,27 @@
           <!-- Badges, name tags, and borders -->
           <div class="row flex h-1/2">
             <div class="main-three col w-1/2">
+              <!-- Badges -->
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4">
-                  <div
-                    v-for="badge in badges"
-                    :key="badge.id"
-                    class=""
-                    :data-tip="badge.name"
-                  >
+                  <div v-for="badge in badges" :key="badge.id" class="border">
                     <img
                       :src="badge.image"
                       :alt="badge.name"
-                      class="w-12 h-12"
+                      class="w-16 h-16"
                     />
+                    <div
+                      class="absolute left-1/2 top-full mt-2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap transition-opacity duration-300"
+                      :style="{ width: badge.name.length + 'ch' }"
+                    >
+                      {{ badge.name }}
+                    </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Name tags -->
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Name Tags</h4>
                 <div class="flex flex-wrap gap-2">
@@ -125,16 +142,18 @@
                     <img
                       :src="nametag.image"
                       :alt="nametag.name"
-                      class="w-12 h-12"
+                      class="w-40 h-10"
                     />
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- Borders -->
             <div class="main-four col w-1/2">
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Borders</h4>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 mt-4">
                   <div
                     v-for="border in borders"
                     :key="border.id"
@@ -143,19 +162,13 @@
                     <img
                       :src="border.image"
                       :alt="border.name"
-                      class="w-12 h-12"
+                      class="w-16 h-16"
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- Share Achievements Button -->
-        <div class="flex justify-center mt-4">
-          <button class="btn btn-success" @click="shareAchievements">
-            Share Achievements
-          </button>
         </div>
       </div>
     </div>
@@ -164,7 +177,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 // Backend Profile Component
 const backendProfile = ref(null);
@@ -176,6 +189,7 @@ const originalUserName = ref("");
 const level = ref(1);
 const score = ref(0);
 const maxScore = ref(0);
+const scoreWidth = ref(0);
 const rewardPoints = ref(0);
 const currentStreak = ref(0);
 const highestStreak = ref(0);
@@ -200,8 +214,7 @@ function openProfileModal() {
   borders.value = profile.borders;
 
   // Derived Values
-  const scoreWidth = (score.value / maxScore.value) * 100;
-  console.log(score.value, maxScore.value, scoreWidth);
+  scoreWidth.value = (score.value / maxScore.value) * 100;
 
   // Open profile modal
   profile_modal.showModal();
@@ -217,7 +230,7 @@ function saveUsername() {
   editing.value = false;
 }
 
-function discardEdit() {
+function cancelEdit() {
   editing.value = false;
   // Reset username to original value
   userName.value = originalUserName.value;
