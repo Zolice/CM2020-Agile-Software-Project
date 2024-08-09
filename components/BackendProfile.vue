@@ -1,5 +1,5 @@
 <script setup lang="jsx">
-import { getRandomName } from "../utils/randomName.js";
+import { getRandomName } from "../utils/randomNameGenerator.js";
 import { ref } from "vue";
 
 // Import borders
