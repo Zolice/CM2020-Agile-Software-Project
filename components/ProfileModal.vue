@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Make the mobile view of this -->
   <!-- Profile Button -->
   <button
     class="btn btn-sm btn-accent w-full justify-start"
