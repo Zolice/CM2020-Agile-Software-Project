@@ -3,7 +3,6 @@ import { getRandomName } from "../utils/randomName.js";
 import { ref } from "vue";
 
 let userName = ref("");
-let originalUserName = ref("");
 let editing = ref(false);
 
 function getProfile() {
