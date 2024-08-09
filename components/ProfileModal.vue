@@ -42,17 +42,20 @@
                 <div class="flex gap-2 mt-2">
                   <button
                     v-if="editing"
-                    class="btn btn-primary btn-sm"
-                    @click="saveUsername"
+                    class="btn btn-error btn-sm"
+                    @click="discardEdit"
                   >
-                    Save
+                    Discard
                   </button>
                   <button
                     v-if="editing"
-                    class="btn btn-secondary btn-sm"
-                    @click="cancelEdit"
+                    class="btn btn-primary btn-sm"
+                    :class="[
+                      originalUserName == userName ? 'btn-disabled' : '',
+                    ]"
+                    @click="saveUsername"
                   >
-                    Cancel
+                    Save
                   </button>
                 </div>
               </div>
@@ -74,47 +77,63 @@
               <p>Current Streak: {{ currentStreak }} Days</p>
               <p>Highest Streak: {{ highestStreak }} Days</p>
             </div>
-            <!-- Badges -->
-            <div class="mt-4">
-              <h4 class="text-xl font-bold">Badges</h4>
-              <div class="flex flex-wrap gap-2">
-                <div
-                  v-for="badge in badges"
-                  :key="badge.id"
-                  class="badge"
-                  :data-tip="badge.name"
-                >
-                  <img :src="badge.image" :alt="badge.name" class="w-12 h-12" />
+
+            <div class="row">
+              <div class="col bg-primary">
+                <!-- Badges -->
+                <div class="mt-4">
+                  <h4 class="text-xl font-bold">Badges</h4>
+                  <div class="flex flex-wrap gap-2">
+                    <div
+                      v-for="badge in badges"
+                      :key="badge.id"
+                      class="badge"
+                      :data-tip="badge.name"
+                    >
+                      <img
+                        :src="badge.image"
+                        :alt="badge.name"
+                        class="w-12 h-12"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Name Tags -->
+                <div class="mt-4">
+                  <h4 class="text-xl font-bold">Name Tags</h4>
+                  <div class="flex flex-wrap gap-2">
+                    <div
+                      v-for="nametag in nametags"
+                      :key="nametag.id"
+                      class="nametag"
+                    >
+                      <img
+                        :src="nametag.image"
+                        :alt="nametag.name"
+                        class="w-12 h-12"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- Borders -->
-            <div class="mt-4">
-              <h4 class="text-xl font-bold">Borders</h4>
-              <div class="flex flex-wrap gap-2">
-                <div v-for="border in borders" :key="border.id" class="border">
-                  <img
-                    :src="border.image"
-                    :alt="border.name"
-                    class="w-12 h-12"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- Name Tags -->
-            <div class="mt-4">
-              <h4 class="text-xl font-bold">Name Tags</h4>
-              <div class="flex flex-wrap gap-2">
-                <div
-                  v-for="nametag in nametags"
-                  :key="nametag.id"
-                  class="nametag"
-                >
-                  <img
-                    :src="nametag.image"
-                    :alt="nametag.name"
-                    class="w-12 h-12"
-                  />
+              <div class="col bg-error">
+                <!-- Borders -->
+                <div class="mt-4">
+                  <h4 class="text-xl font-bold">Borders</h4>
+                  <div class="flex flex-wrap gap-2">
+                    <div
+                      v-for="border in borders"
+                      :key="border.id"
+                      class="border"
+                    >
+                      <img
+                        :src="border.image"
+                        :alt="border.name"
+                        class="w-12 h-12"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -173,7 +192,7 @@ function saveUsername() {
   editing.value = false;
 }
 
-function cancelEdit() {
+function discardEdit() {
   editing.value = false;
   // Reset username to original value
   userName.value = originalUserName.value;
