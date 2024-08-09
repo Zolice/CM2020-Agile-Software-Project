@@ -30,9 +30,7 @@
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
         <SettingsModal />
-        <div class="p-2 bg-neutral text-neutral-content rounded-lg">
-          <span>Profile</span>
-        </div>
+        <ProfileModal />
       </div>
     </div>
   </div>

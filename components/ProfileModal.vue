@@ -1,5 +1,12 @@
 <template>
-  <dialog ref="profileModal" class="profile-modal">
+  <button
+    class="btn btn-sm btn-accent w-full justify-start"
+    :onclick="openProfileModal"
+  >
+    Profile
+  </button>
+
+  <dialog id="profileModal" class="profile-modal">
     <div class="profile-container px-5 max-w-xl mx-auto">
       <div
         class="profile-header d-flex align-items-center justify-content-between mb-4"
@@ -11,7 +18,6 @@
           <div class="username-container d-flex align-items-center">
             <input
               v-if="editing"
-              v-model="userName"
               type="text"
               class="edit-username form-control fs-4 fw-bold border-0 border-bottom border-success"
             />
