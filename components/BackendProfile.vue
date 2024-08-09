@@ -1,43 +1,41 @@
-<script>
+<script setup lang="jsx">
 import { getRandomName } from "../utils/randomName.js";
+import { ref } from "vue";
 
-export default {
-  data() {
-    return {
-      userName: "",
-      originalUserName: "",
-      editing: false,
-    };
-  },
-  methods: {
-    editUsername() {
-      this.originalUserName = this.userName;
-      this.editing = true;
-    },
-    saveUsername() {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("userName", this.userName);
-      }
-      this.editing = false;
-    },
-    cancelEdit() {
-      this.userName = this.originalUserName;
-      this.editing = false;
-    },
-    initializeUserName() {
-      if (typeof window !== "undefined") {
-        const storedName = localStorage.getItem("userName");
-        if (storedName) {
-          this.userName = storedName;
-        } else {
-          this.userName = getRandomName();
-          localStorage.setItem("userName", this.userName);
-        }
-      }
-    },
-  },
-  created() {
-    this.initializeUserName();
-  },
-};
+let userName = ref("");
+let originalUserName = ref("");
+let editing = ref(false);
+
+function getProfile() {
+  if (typeof window !== "undefined") {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      userName.value = storedName;
+    } else {
+      userName.value = getRandomName();
+      localStorage.setItem("userName", userName.value);
+    }
+  }
+  return {
+    avatar: "https://i.pravatar.cc/150?u=1",
+    userName: userName.value,
+    level: 1,
+    score: 0,
+    streaks: 0,
+  };
+}
+
+/**
+ * Save the username to localStorage
+ */
+function saveUsername(userName) {
+  localStorage.setItem("userName", userName);
+  editing.value = false;
+}
+
+// Expose functions for use
+defineExpose({
+  getProfile,
+  saveUsername,
+});
 </script>
