@@ -107,6 +107,7 @@
             </div>
           </div>
 
+          <!-- TODO: Allow users to select the badges, borders and name tags  -->
           <!-- Badges, name tags, and borders -->
           <div class="row flex h-1/2">
             <div class="main-three col w-1/2">
