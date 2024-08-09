@@ -28,11 +28,6 @@
           <!-- Left Sidebar -->
         </button>
 
-        <label class="input input-bordered flex items-center gap-2">
-          Theme
-          <input v-model="theme" type="text" class="grow" placeholder="Theme" />
-        </label>
-
         <button class="btn btn-md w-fit rounded-full" @click="toggleRightSidebar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,15 +67,28 @@ import { onMounted } from "vue";
 import { useFlowbite } from "~/composables/useFlowbite";
 
 const theme = ref("dark");
-const isLeftSidebarOpen = ref(true);
-const isRightSidebarOpen = ref(true);
+const isLeftSidebarOpen = ref(false);
+const isRightSidebarOpen = ref(false);
 
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
   useFlowbite(() => {
     initFlowbite();
   });
+
+  // If viewport smaller than tablet (640px), close sidebars
+  if (window.innerWidth < 640) {
+    isLeftSidebarOpen.value = false;
+    isRightSidebarOpen.value = false;
+  } else {
+    isLeftSidebarOpen.value = true;
+    isRightSidebarOpen.value = true;
+  }
 });
+
+function setTheme(value) {
+  theme.value = value;
+}
 
 function toggleLeftSidebar() {
   isLeftSidebarOpen.value = !isLeftSidebarOpen.value;
@@ -93,4 +101,9 @@ function toggleRightSidebar() {
 watch(theme, (newTheme) => {
   localStorage.setItem("theme", newTheme);
 });
+
+// Provide functions for NuxtPage
+provide("setTheme", setTheme);
+provide("toggleLeftSidebar", toggleLeftSidebar);
+provide("isLeftSidebarOpen", isLeftSidebarOpen);
 </script>

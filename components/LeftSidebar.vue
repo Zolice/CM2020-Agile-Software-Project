@@ -29,6 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
+        <SettingsModal />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
         </div>
@@ -43,6 +44,7 @@ defineProps({
   isSidebarOpen: Boolean,
 });
 </script>
+
 <style scoped>
 .title {
   font-family: "Inter";
