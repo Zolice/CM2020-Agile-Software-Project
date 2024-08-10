@@ -9,8 +9,8 @@ import border3 from "~/assets/borders/border3.jpg";
 import border4 from "~/assets/borders/border4.jpg";
 
 // Import nametags
-import nameTag1 from "~/assets/nametags/tag1.jpg";
-import nameTag2 from "~/assets/nametags/tag2.jpg";
+import nameTag1 from "~/assets/nameTags/tag1.jpg";
+import nameTag2 from "~/assets/nameTags/tag2.jpg";
 
 const userName = ref("");
 const editing = ref(false);
