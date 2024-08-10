@@ -13,7 +13,6 @@ import nameTag1 from "~/assets/nameTags/tag1.jpg";
 import nameTag2 from "~/assets/nameTags/tag2.jpg";
 
 const userName = ref("");
-const editing = ref(false);
 
 /**
  * Get the username from localStorage
@@ -41,7 +40,6 @@ function getUserName() {
  */
 function saveUsername(userName) {
   localStorage.setItem("userName", userName);
-  editing.value = false;
 }
 
 /**
