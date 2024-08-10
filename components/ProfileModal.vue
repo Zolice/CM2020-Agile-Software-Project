@@ -115,16 +115,19 @@
               <!-- Badges -->
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  <div v-for="badge in badges" :key="badge.id" class="border">
+                <div class="flex flex-wrap gap-2 mt-4 relative">
+                  <div
+                    v-for="badge in badges"
+                    :key="badge.id"
+                    class="relative group"
+                  >
                     <img
                       :src="badge.image"
                       :alt="badge.name"
-                      class="w-16 h-16"
+                      class="w-16 h-16 rounded transition-transform transform group-hover:scale-110"
                     />
                     <div
-                      class="absolute left-1/2 top-full mt-2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap transition-opacity duration-300"
-                      :style="{ width: badge.name.length + 'ch' }"
+                      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     >
                       {{ badge.name }}
                     </div>
