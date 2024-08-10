@@ -23,7 +23,7 @@
         <!-- Share Achievements Button -->
         <!-- TODO: Create share achievement modal -->
         <div class="flex justify-end">
-          <button class="btn btn-sm btn-success" @click="shareAchievements">
+          <button class="btn btn-sm btn-primary" @click="shareAchievements">
             <i class="bi bi-share"></i> Share Achievements
           </button>
         </div>
@@ -116,18 +116,14 @@
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <div
-                    v-for="badge in badges"
-                    :key="badge.id"
-                    class="relative group"
-                  >
+                  <div v-for="badge in badges" :key="badge.id" class="border">
                     <img
                       :src="badge.image"
                       :alt="badge.name"
                       class="w-16 h-16 rounded transition-transform transform group-hover:scale-110"
                     />
                     <div
-                      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110"
                     >
                       {{ badge.name }}
                     </div>
@@ -142,7 +138,7 @@
                   <div
                     v-for="nametag in nametags"
                     :key="nametag.id"
-                    class="nametag"
+                    class="border"
                   >
                     <img
                       :src="nametag.image"
