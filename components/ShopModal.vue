@@ -15,16 +15,21 @@
         </button>
       </form>
       <div class="flex flex-col h-full gap-4">
-        <h3 class="text-3xl font-bold">Shop</h3>
-        <div
-          class="flex flex-col overflow-auto overflow-x-clip h-full w-full px-2 gap-4"
-        >
+        <div class="flex flex-col">
+          <h3 class="text-3xl font-bold">Shop</h3>
           <span class="w-full text-right">
             Reward Points: {{ rewardPoints }}
           </span>
+        </div>
+        <div
+          class="flex flex-col overflow-auto overflow-x-clip h-full w-full px-2 gap-4"
+        >
           <div
             class="flex flex-col w-full overflow-clip gap-2"
-            :class="[borderExpanded ? 'hidden' : '']"
+            :class="[
+              borderExpanded ? 'hidden' : '',
+              nameTagExpanded ? 'hidden' : '',
+            ]"
           >
             <div class="flex justify-between items-center">
               <h4 class="text-2xl">Themes</h4>
@@ -33,12 +38,12 @@
               </button>
             </div>
             <div
-              class="flex flex-row w-full h-full gap-2 overflow-x-scroll transition-all duration-150"
+              class="flex flex-row w-full h-full gap-2 overflow-x-auto transition-all duration-150"
               :class="[themeExpanded ? 'flex-wrap' : '']"
             >
               <ThemeDisplayComponent
                 v-for="theme in themes"
-                v-bind:key="theme"
+                :key="theme"
                 :name="theme.name"
                 :theme="theme.theme"
                 :points="theme.points"
@@ -47,7 +52,10 @@
           </div>
           <div
             class="flex flex-col w-full overflow-clip gap-2"
-            :class="[themeExpanded ? 'hidden' : '']"
+            :class="[
+              themeExpanded ? 'hidden' : '',
+              nameTagExpanded ? 'hidden' : '',
+            ]"
           >
             <div class="flex justify-between items-center">
               <h4 class="text-2xl">Borders</h4>
@@ -59,16 +67,79 @@
               </button>
             </div>
             <div
-              class="flex flex-row w-full h-full gap-2 overflow-x-scroll transition-all duration-150"
+              class="flex flex-row w-full h-full gap-2 overflow-x-auto transition-all duration-150"
               :class="[borderExpanded ? 'flex-wrap' : '']"
             >
-              <ShopItemComponent name="hello" points="500"/>
-              <ThemeDisplayComponent
-                v-for="theme in themes"
-                v-bind:key="theme"
-                :name="theme.name"
-                :theme="theme.theme"
-                :points="theme.points"
+              <BorderComponent
+                v-for="item in borders"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+            </div>
+          </div>
+          <div
+            class="flex flex-col w-full overflow-clip gap-2"
+            :class="[
+              themeExpanded ? 'hidden' : '',
+              borderExpanded ? 'hidden' : '',
+            ]"
+          >
+            <div class="flex justify-between items-center">
+              <h4 class="text-2xl">Name tags</h4>
+              <button
+                class="btn btn-sm btn-primary"
+                @click="toggleNameTagExpand"
+              >
+                See {{ nameTagExpanded ? "less" : "more" }}
+              </button>
+            </div>
+            <div
+              class="flex flex-row w-full h-full gap-2 overflow-x-auto transition-all duration-150"
+              :class="[nameTagExpanded ? 'flex-wrap' : '']"
+            >
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
+              />
+              <NameTagComponent
+                v-for="item in nameTags"
+                :key="item"
+                :name="item.name"
+                :points="item.points"
+                :img="item.img"
               />
             </div>
           </div>
@@ -79,6 +150,8 @@
 </template>
 
 <script setup lang="jsx">
+import BordersComponent from "./BorderComponent.vue";
+import NameTagComponent from "./NameTagComponent.vue";
 import ThemeDisplayComponent from "./ThemeDisplayComponent.vue";
 
 const rewardPoints = ref(100);
@@ -118,8 +191,21 @@ const themes = [
   { name: "Sunset", theme: "sunset", points: 500 },
 ];
 
+const borders = [
+  { name: "Border 1", points: 500, img: "/_nuxt/assets/borders/border1.jpg" },
+  { name: "Border 2", points: 500, img: "/_nuxt/assets/borders/border2.jpg" },
+  { name: "Border 3", points: 500, img: "/_nuxt/assets/borders/border3.jpg" },
+  { name: "Border 4", points: 500, img: "/_nuxt/assets/borders/border4.jpg" },
+];
+
+const nameTags = [
+  { name: "Nametag 1", points: 500, img: "/_nuxt/assets/nameTags/tag1.jpg" },
+  { name: "Nametag 2", points: 500, img: "/_nuxt/assets/nameTags/tag2.jpg" },
+];
+
 const themeExpanded = ref(false);
 const borderExpanded = ref(false);
+const nameTagExpanded = ref(false);
 
 function toggleThemeExpand() {
   themeExpanded.value = !themeExpanded.value;
@@ -127,5 +213,9 @@ function toggleThemeExpand() {
 
 function toggleBorderExpand() {
   borderExpanded.value = !borderExpanded.value;
+}
+
+function toggleNameTagExpand() {
+  nameTagExpanded.value = !nameTagExpanded.value;
 }
 </script>
