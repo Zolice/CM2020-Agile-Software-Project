@@ -1,7 +1,7 @@
 <template>
   <!-- Button -->
   <button
-    class="btn btn-sm btn-secondary w-full justify-start"
+    class="btn btn-sm btn-accent w-full justify-start"
     onclick="shop_modal.showModal()"
   >
     Shop
@@ -44,9 +44,13 @@
               <ThemeDisplayComponent
                 v-for="theme in themes"
                 :key="theme"
+                :raw="item"
                 :name="theme.name"
                 :theme="theme.theme"
                 :points="theme.points"
+                :owned="true"
+                :click="purchase"
+                message="Owned"
               />
             </div>
           </div>
@@ -76,6 +80,9 @@
                 :name="item.name"
                 :points="item.points"
                 :img="item.img"
+                :owned="true"
+                :click="purchase"
+                message="Owned"
               />
             </div>
           </div>
@@ -105,55 +112,62 @@
                 :name="item.name"
                 :points="item.points"
                 :img="item.img"
-              />
-              <NameTagComponent
-                v-for="item in nameTags"
-                :key="item"
-                :name="item.name"
-                :points="item.points"
-                :img="item.img"
-              />
-              <NameTagComponent
-                v-for="item in nameTags"
-                :key="item"
-                :name="item.name"
-                :points="item.points"
-                :img="item.img"
-              />
-              <NameTagComponent
-                v-for="item in nameTags"
-                :key="item"
-                :name="item.name"
-                :points="item.points"
-                :img="item.img"
-              />
-              <NameTagComponent
-                v-for="item in nameTags"
-                :key="item"
-                :name="item.name"
-                :points="item.points"
-                :img="item.img"
-              />
-              <NameTagComponent
-                v-for="item in nameTags"
-                :key="item"
-                :name="item.name"
-                :points="item.points"
-                :img="item.img"
+                :owned="true"
+                :click="purchase"
+                message="Owned"
               />
             </div>
           </div>
         </div>
       </div>
+      <!-- Modal for confirming a purchase -->
+      <dialog id="shoppingModal" class="modal">
+        <div class="modal-box">
+          <form method="dialog">
+            <button
+              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
+              ✕
+            </button>
+          </form>
+          <h3 class="text-lg font-bold">Buy {{ puchaseItem }}</h3>
+          <p class="py-4">Confirm your purchase of the following item:</p>
+          <ThemeDisplayComponent
+            v-if="purchaseItemType == 'theme'"
+            :name="purchaseItem.name"
+            :theme="purchaseItem.theme"
+            :points="purchaseItem.points"
+            :owned="false"
+          />
+          <BorderComponent
+            v-if="purchaseItemType == 'border'"
+            :name="purchaseItem.name"
+            :points="purchaseItem.points"
+            :img="purchaseItem.img"
+            :owned="false"
+          />
+          <NameTagComponent
+            v-if="purchaseItemType == 'nameTag'"
+            :name="purchaseItem.name"
+            :points="purchaseItem.points"
+            :img="purchaseItem.img"
+            :owned="false"
+          />
+          <div class="flex w-full justify-end gap-2">
+            <button class="btn btn-error" onclick="shoppingModal.close()">
+              Cancel
+            </button>
+            <button class="btn btn-primary" @click="purchaseConfirm">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   </dialog>
 </template>
 
 <script setup lang="jsx">
-import BordersComponent from "./BorderComponent.vue";
-import NameTagComponent from "./NameTagComponent.vue";
-import ThemeDisplayComponent from "./ThemeDisplayComponent.vue";
-
 const rewardPoints = ref(100);
 
 const themes = [
@@ -192,20 +206,30 @@ const themes = [
 ];
 
 const borders = [
-  { name: "Border 1", points: 500, img: "/_nuxt/assets/borders/border1.jpg" },
-  { name: "Border 2", points: 500, img: "/_nuxt/assets/borders/border2.jpg" },
-  { name: "Border 3", points: 500, img: "/_nuxt/assets/borders/border3.jpg" },
-  { name: "Border 4", points: 500, img: "/_nuxt/assets/borders/border4.jpg" },
+  { name: "Border 1", points: 500, img: "/borders/border1.jpg" },
+  { name: "Border 2", points: 500, img: "/borders/border2.jpg" },
+  { name: "Border 3", points: 500, img: "/borders/border3.jpg" },
+  { name: "Border 4", points: 500, img: "/borders/border4.jpg" },
 ];
 
 const nameTags = [
-  { name: "Nametag 1", points: 500, img: "/_nuxt/assets/nameTags/tag1.jpg" },
-  { name: "Nametag 2", points: 500, img: "/_nuxt/assets/nameTags/tag2.jpg" },
+  { name: "Nametag 1", points: 500, img: "/nameTags/tag1.jpg" },
+  { name: "Nametag 2", points: 500, img: "/nameTags/tag2.jpg" },
 ];
 
 const themeExpanded = ref(false);
 const borderExpanded = ref(false);
 const nameTagExpanded = ref(false);
+
+// Purchasing
+const purchaseItem = ref({
+  name: "purchase",
+  theme: "dark",
+  points: 500,
+  img: "/borders/border1.jpg",
+  owned: false
+});
+const purchaseItemType = ref("");
 
 function toggleThemeExpand() {
   themeExpanded.value = !themeExpanded.value;
@@ -217,5 +241,16 @@ function toggleBorderExpand() {
 
 function toggleNameTagExpand() {
   nameTagExpanded.value = !nameTagExpanded.value;
+}
+
+function purchase(item, type) {
+  purchaseItem.value = item;
+  purchaseItemType.value = type;
+  // console.log(purchaseItem)
+  shoppingModal.showModal();
+}
+
+function purchaseConfirm() {
+  console.log("Purchased", purchaseItem.value);
 }
 </script>
