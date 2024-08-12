@@ -86,10 +86,10 @@
                 <!-- Level progress bar -->
                 <div class="w-2/5">
                   <div
-                    class="relative w-full bg-gray-200 rounded-full border-2 border-gray-400 h-4"
+                    class="relative w-full bg-neutral rounded-full border-2 border-gray-400 h-4"
                   >
                     <div
-                      class="absolute top-0 left-0 bg-blue-600 h-full rounded-full"
+                      class="absolute top-0 left-0 bg-primary h-full rounded-full"
                       :style="{ width: scoreWidth + '%' }"
                     ></div>
                   </div>
@@ -108,14 +108,15 @@
             </div>
           </div>
 
-          <!-- TODO: Allow users to select the badges, borders and name tags  -->
           <!-- Badges, name tags, and borders -->
           <div class="row flex h-1/2">
             <div class="main-three col w-1/2">
               <!-- Badges -->
+              <!-- TODO: Allow users to select the badges, borders and name tags  -->
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4 relative">
+                  <!-- TODO: Considering making this a component -->
                   <div v-for="badge in badges" :key="badge.id" class="border">
                     <img
                       :src="badge.image"
@@ -132,6 +133,7 @@
               </div>
 
               <!-- Name tags -->
+              <!-- TODO: Considering making this a component -->
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Name Tags</h4>
                 <div class="flex flex-wrap gap-2">
@@ -151,6 +153,7 @@
             </div>
 
             <!-- Borders -->
+            <!-- TODO: Considering making this a component -->
             <div class="main-four col w-1/2">
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Borders</h4>
