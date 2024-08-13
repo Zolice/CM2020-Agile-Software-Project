@@ -53,6 +53,7 @@ const nameTags = [
 ];
 function getThemeList() {
   // Get owned themes from profile
+  console.log(backendProfile.value.getProfileData());
   const owned = backendProfile.value.getProfileData().themes;
   console.log(owned);
 
@@ -60,7 +61,8 @@ function getThemeList() {
   let themeList = themes;
   console.log(themeList);
 
-  // for each owned theme
+  // If you get an error here, go into localStorage and 
+  // delete the data for key: `profileData`
   owned.forEach((ownedTheme) => {
     // Update owned status of themes
     themeList.forEach((theme) => {

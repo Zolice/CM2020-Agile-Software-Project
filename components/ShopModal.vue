@@ -2,7 +2,7 @@
   <!-- Button -->
   <button
     class="btn btn-sm btn-accent w-full justify-start"
-    onclick="shop_modal.showModal()"
+    @click="openShopModal"
   >
     Shop
   </button>
@@ -122,15 +122,14 @@
       <!-- Modal for confirming a purchase -->
       <dialog id="shoppingModal" class="modal">
         <div class="modal-box">
-          <form method="dialog">
-            <button
-              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-              ✕
-            </button>
-          </form>
-          <h3 class="text-lg font-bold">Buy {{ purchaseItemName }} {{ purchaseItemType }}</h3>
-          <p class="py-4">Confirm your purchase of the following item:</p>
+          <h3 class="text-lg font-bold">
+            Purchase {{ purchaseItemName }} {{ purchaseItemType }}
+          </h3>
+
+          <p v-if="!purchaseSuccessful" class="py-4">
+            Confirm your purchase of the following item:
+          </p>
+          <p v-else class="py-4">Purchase successful</p>
           <ThemeDisplayComponent
             v-if="purchaseItemType == 'theme'"
             :name="purchaseItem.name"
@@ -158,16 +157,26 @@
           <p v-if="purchaseItem.owned" class="text-error">
             You already own this item!
           </p>
-          <div class="flex w-full justify-end gap-2">
+          <div v-if="!purchaseSuccessful" class="flex w-full justify-end gap-2">
             <button class="btn btn-error" onclick="shoppingModal.close()">
               Cancel
             </button>
             <button
               class="btn btn-primary"
-              :class="[purchaseItem.owned || purchaseItem.points > rewardPoints ? 'btn-disabled' : '']"
+              :class="[
+                purchaseItem.owned || purchaseItem.points > rewardPoints
+                  ? 'btn-disabled'
+                  : '',
+              ]"
               @click="purchaseConfirm"
             >
               Confirm
+            </button>
+          </div>
+
+          <div v-else class="flex w-full justify-end gap-2">
+            <button class="btn btn-primary" @click="closePurchaseModal">
+              Close
             </button>
           </div>
         </div>
@@ -204,8 +213,13 @@ const purchaseItem = ref({
 });
 const purchaseItemName = ref("");
 const purchaseItemType = ref("");
+const purchaseSuccessful = ref(false);
 
 onMounted(() => {
+  refresh();
+});
+
+function refresh() {
   // Get reward points from backend
   console.log(backendProfile.value.getProfileData());
   rewardPoints.value = backendProfile.value.getProfileData().rewardPoints;
@@ -219,7 +233,24 @@ onMounted(() => {
 
   // Get name tags from backend
   nameTags.value = backendShop.value.getNameTagsList();
-});
+
+  // Reset purchase data
+  purchaseItem.value = {
+    name: "purchase",
+    theme: "dark",
+    points: 500,
+    img: "/borders/border1.jpg",
+    owned: false,
+  };
+  purchaseItemName.value = "";
+  purchaseItemType.value = "";
+  purchaseSuccessful.value = false;
+}
+
+function openShopModal() {
+  refresh() 
+  shop_modal.showModal();
+}
 
 function toggleThemeExpand() {
   themeExpanded.value = !themeExpanded.value;
@@ -237,11 +268,52 @@ function purchase(item, type) {
   purchaseItem.value = item;
   purchaseItemName.value = item.name;
   purchaseItemType.value = type;
-  // console.log(purchaseItem)
   shoppingModal.showModal();
 }
 
 function purchaseConfirm() {
-  console.log("Purchased", purchaseItem.value);
+  // Get the user profile
+  const profile = backendProfile.value.getProfileData();
+
+  // Check if the user has enough points to purchase the item
+  if (purchaseItem.value.points > profile.rewardPoints) {
+    rewardPoints.value = profile.rewardPoints; // By updating this value, the UI will update accordingly
+    return;
+  }
+
+  // Switch on the type of item being purchased
+  switch (purchaseItemType.value) {
+    case "theme":
+      // Add theme to profile
+      profile.themes.push(purchaseItem.value);
+      break;
+    case "border":
+      // Add border to profile
+      profile.borders.push(purchaseItem.value);
+      break;
+    case "nameTag":
+      // Add name tag to profile
+      profile.nametags.push(purchaseItem.value);
+      break;
+    default:
+      return console.error("Invalid purchase type");
+  }
+
+  // Deduct the points from the user's profile
+  profile.rewardPoints -= purchaseItem.value.points;
+
+  // Save the updated profile data
+  backendProfile.value.updateProfileData(profile);
+
+  // Display success message
+  purchaseSuccessful.value = true;
+}
+
+function closePurchaseModal() {
+  // Update modal data
+  refresh();
+
+  // Close the modal
+  shoppingModal.close();
 }
 </script>

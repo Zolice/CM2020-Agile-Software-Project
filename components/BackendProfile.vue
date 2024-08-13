@@ -14,6 +14,14 @@ import nameTag2 from "~/assets/nameTags/tag2.jpg";
 
 const userName = ref("");
 
+onMounted(() => {
+  // Run getUserName() to initialize userName
+  getUserName();
+
+  // Run getProfileData() to initialize profileData
+  getProfileData();
+});
+
 /**
  * Get the username from localStorage
  * Create a new localStorage for userName if it doesn't exist
@@ -86,8 +94,8 @@ function getProfileData() {
           { id: 2, image: nameTag2, name: "Name Tag 2" },
         ],
         themes: [
-          { name: "Light", theme: "light", points: 500 },
-          { name: "Dark", theme: "dark", points: 500 },
+          { name: "Light", theme: "light", points: 500, owned: true },
+          { name: "Dark", theme: "dark", points: 500, owned: true },
         ],
       };
 
@@ -101,10 +109,21 @@ function getProfileData() {
   return {};
 }
 
+/**
+ * Update the profile data in localStorage
+ *
+ * @param data {Object}
+ */
+function updateProfileData(data) {
+  if (data == null) return;
+  localStorage.setItem("profileData", JSON.stringify(data));
+}
+
 // Expose functions for use
 defineExpose({
   getUserName,
   saveUsername,
   getProfileData,
+  updateProfileData,
 });
 </script>
