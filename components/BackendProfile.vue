@@ -85,6 +85,10 @@ function getProfileData() {
           { id: 1, image: nameTag1, name: "Name Tag 1" },
           { id: 2, image: nameTag2, name: "Name Tag 2" },
         ],
+        themes: [
+          { name: "Light", theme: "light", points: 500 },
+          { name: "Dark", theme: "dark", points: 500 },
+        ],
       };
 
       // Store the default profile data in localStorage

@@ -36,6 +36,7 @@ const item = {
   name: props.name,
   theme: props.theme,
   points: props.points,
+  owned: props.owned,
 };
 
 function clickHandler() {

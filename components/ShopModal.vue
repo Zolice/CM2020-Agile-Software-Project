@@ -44,11 +44,10 @@
               <ThemeDisplayComponent
                 v-for="theme in themes"
                 :key="theme"
-                :raw="item"
                 :name="theme.name"
                 :theme="theme.theme"
                 :points="theme.points"
-                :owned="true"
+                :owned="theme.owned"
                 :click="purchase"
                 message="Owned"
               />
@@ -130,7 +129,7 @@
               ✕
             </button>
           </form>
-          <h3 class="text-lg font-bold">Buy {{ puchaseItem }}</h3>
+          <h3 class="text-lg font-bold">Buy {{ purchaseItemName }} {{ purchaseItemType }}</h3>
           <p class="py-4">Confirm your purchase of the following item:</p>
           <ThemeDisplayComponent
             v-if="purchaseItemType == 'theme'"
@@ -153,11 +152,21 @@
             :img="purchaseItem.img"
             :owned="false"
           />
+          <p v-if="purchaseItem.points > rewardPoints" class="text-error">
+            You do not have enough points to buy this!
+          </p>
+          <p v-if="purchaseItem.owned" class="text-error">
+            You already own this item!
+          </p>
           <div class="flex w-full justify-end gap-2">
             <button class="btn btn-error" onclick="shoppingModal.close()">
               Cancel
             </button>
-            <button class="btn btn-primary" @click="purchaseConfirm">
+            <button
+              class="btn btn-primary"
+              :class="[purchaseItem.owned || purchaseItem.points > rewardPoints ? 'btn-disabled' : '']"
+              @click="purchaseConfirm"
+            >
               Confirm
             </button>
           </div>
@@ -165,57 +174,21 @@
       </dialog>
     </div>
   </dialog>
+  <BackendProfile ref="backendProfile" />
+  <BackendShop ref="backendShop" />
 </template>
 
 <script setup lang="jsx">
-const rewardPoints = ref(100);
+// Backend Profile Component
+const backendProfile = ref(null);
+const backendShop = ref(null);
+const rewardPoints = ref(0);
 
-const themes = [
-  { name: "Light", theme: "light", points: 500 },
-  { name: "Dark", theme: "dark", points: 500 },
-  { name: "Cupcake", theme: "cupcake", points: 500 },
-  { name: "Bumblebee", theme: "bumblebee", points: 500 },
-  { name: "Emerald", theme: "emerald", points: 500 },
-  { name: "Corporate", theme: "corporate", points: 500 },
-  { name: "Synthwave", theme: "synthwave", points: 500 },
-  { name: "Retro", theme: "retro", points: 500 },
-  { name: "Cyberpunk", theme: "cyberpunk", points: 500 },
-  { name: "Valentine", theme: "valentine", points: 500 },
-  { name: "Halloween", theme: "halloween", points: 500 },
-  { name: "Garden", theme: "garden", points: 500 },
-  { name: "Forest", theme: "forest", points: 500 },
-  { name: "Aqua", theme: "aqua", points: 500 },
-  { name: "Lofi", theme: "lofi", points: 500 },
-  { name: "Pastel", theme: "pastel", points: 500 },
-  { name: "Fantasy", theme: "fantasy", points: 500 },
-  { name: "Wireframe", theme: "wireframe", points: 500 },
-  { name: "Black", theme: "black", points: 500 },
-  { name: "Luxury", theme: "luxury", points: 500 },
-  { name: "Dracula", theme: "dracula", points: 500 },
-  { name: "Cmyk", theme: "cmyk", points: 500 },
-  { name: "Autumn", theme: "autumn", points: 500 },
-  { name: "Business", theme: "business", points: 500 },
-  { name: "Acid", theme: "acid", points: 500 },
-  { name: "Lemonade", theme: "lemonade", points: 500 },
-  { name: "Night", theme: "night", points: 500 },
-  { name: "Coffee", theme: "coffee", points: 500 },
-  { name: "Winter", theme: "winter", points: 500 },
-  { name: "Dim", theme: "dim", points: 500 },
-  { name: "Nord", theme: "nord", points: 500 },
-  { name: "Sunset", theme: "sunset", points: 500 },
-];
+const themes = ref([]);
 
-const borders = [
-  { name: "Border 1", points: 500, img: "/borders/border1.jpg" },
-  { name: "Border 2", points: 500, img: "/borders/border2.jpg" },
-  { name: "Border 3", points: 500, img: "/borders/border3.jpg" },
-  { name: "Border 4", points: 500, img: "/borders/border4.jpg" },
-];
+const borders = ref([]);
 
-const nameTags = [
-  { name: "Nametag 1", points: 500, img: "/nameTags/tag1.jpg" },
-  { name: "Nametag 2", points: 500, img: "/nameTags/tag2.jpg" },
-];
+const nameTags = ref([]);
 
 const themeExpanded = ref(false);
 const borderExpanded = ref(false);
@@ -227,9 +200,26 @@ const purchaseItem = ref({
   theme: "dark",
   points: 500,
   img: "/borders/border1.jpg",
-  owned: false
+  owned: false,
 });
+const purchaseItemName = ref("");
 const purchaseItemType = ref("");
+
+onMounted(() => {
+  // Get reward points from backend
+  console.log(backendProfile.value.getProfileData());
+  rewardPoints.value = backendProfile.value.getProfileData().rewardPoints;
+
+  // Get themes from backend
+  themes.value = backendShop.value.getThemeList();
+  console.log(themes.value);
+
+  // Get borders from backend
+  borders.value = backendShop.value.getBordersList();
+
+  // Get name tags from backend
+  nameTags.value = backendShop.value.getNameTagsList();
+});
 
 function toggleThemeExpand() {
   themeExpanded.value = !themeExpanded.value;
@@ -245,6 +235,7 @@ function toggleNameTagExpand() {
 
 function purchase(item, type) {
   purchaseItem.value = item;
+  purchaseItemName.value = item.name;
   purchaseItemType.value = type;
   // console.log(purchaseItem)
   shoppingModal.showModal();
