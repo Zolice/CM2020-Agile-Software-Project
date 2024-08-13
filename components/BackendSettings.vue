@@ -1,6 +1,5 @@
 <script setup lang="jsx">
-import ical from "node-ical";
-// import ical from 'ical'
+import ical from "ical";
 
 let settings = {};
 
