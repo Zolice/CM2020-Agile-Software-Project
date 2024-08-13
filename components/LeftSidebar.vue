@@ -29,10 +29,9 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
+        <!-- TODO: Add a space between the buttons -->
         <SettingsModal />
-        <div class="p-2 bg-neutral text-neutral-content rounded-lg">
-          <span>Profile</span>
-        </div>
+        <ProfileModal />
       </div>
     </div>
   </div>
