@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// import '../assets/css/output.css';
+
 </script>
 <template>
-  <div class="flex m-2 p-1 space-x-15 items-center">
+  <div class="flex flex-row w-full p-2 justify-between">
     <!-- Monthly view dropdown button -->
     <button
       id="dropdownDefaultButton"
       data-dropdown-toggle="dropdownView"
-      class="btn btn-secondary font-medium rounded-lg text-sm px-4 py-0.5 h-10 text-center inline-flex items-center"
+      class="btn btn-secondary font-medium rounded-lg text-sm px-4 py-0.5 h-10 text-center flewc items-center"
       type="button"
     >
       Monthly
@@ -53,7 +53,7 @@
       </ul>
     </div>
 
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center space-x-2 justify-center mx-2">
       <!-- calendar month previous button -->
       <button
         class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
@@ -99,12 +99,37 @@
         </svg>
       </button>
     </div>
+    <!-- Add Task Button -->
     <button class="btn btn-secondary rounded-lg font-medium text-sm" type="button">
       Add Task
     </button>
   </div>
+  
 
-  <div class="grid grid-cols-7 border mx-1">
+  <div class=" grid grid-cols-7 gap-px border-b  border-black text-center text-s font-semibold lg:flex-none leading-6">
+    <div class="flex justify-center py-2">
+      <Span>Sunday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Monday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Tuesday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Wednesday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Thursday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Friday</Span>
+    </div>
+    <div class="flex justify-center py-2">
+      <Span>Saturday</Span>
+    </div>
+    
+    
     <div>01</div>
     <div>01</div>
     <div>01</div>

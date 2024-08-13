@@ -66,6 +66,7 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import { useFlowbite } from "~/composables/useFlowbite";
 
+
 const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
