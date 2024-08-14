@@ -59,7 +59,6 @@
 
 <script setup>
 import { ref } from "vue";
-import html2canvas from "html2canvas";
 
 const backendProfile = ref(null);
 const isModalOpen = ref(false);
@@ -95,18 +94,11 @@ function openShareModal() {
 // Close the Share Modal
 function closeShareModal() {
   isModalOpen.value = false;
-  document.getElementById("share_achievement_modal").close();
+  share_achievement_modal.close();
 }
 
 // Download the content as an image
 function downloadImage() {
-  html2canvas(document.getElementById("share_achievement_modal")).then(
-    (canvas) => {
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = `${userName.value}_TaskMaster.png`;
-      link.click();
-    }
-  );
+  // TODO: Implement the downloadImage function
 }
 </script>
