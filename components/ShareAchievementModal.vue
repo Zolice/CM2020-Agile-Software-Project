@@ -38,11 +38,13 @@
           <Badges :badges="badges" />
         </div>
 
-        <div class="flex justify-between mt-4">
-          <button class="btn btn-secondary" @click="closeShareModal">
+        <div class="flex justify-between mt-4 w-full">
+          <button class="btn btn-error w-1/2 me-3" @click="closeShareModal">
             Discard
           </button>
-          <button class="btn btn-success" @click="downloadImage">Save</button>
+          <button class="btn btn-primary w-1/2" @click="downloadImage">
+            Save
+          </button>
         </div>
       </div>
     </div>
