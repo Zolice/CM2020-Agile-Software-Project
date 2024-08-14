@@ -37,9 +37,6 @@
         </div>
 
         <div class="flex justify-between mt-4">
-          <button class="btn btn-secondary" @click="closeShareModal">
-            Discard
-          </button>
           <button class="btn btn-success" @click="downloadImage">Save</button>
         </div>
       </div>
