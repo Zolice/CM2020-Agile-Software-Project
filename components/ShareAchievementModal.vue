@@ -6,15 +6,20 @@
     </button>
   </div>
 
-  <!-- Share Modal -->
-  <dialog id="share_achievement_modal" class="modal">
-    <div class="modal-box w-full max-w-md">
-      <form method="dialog">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-          ✕
-        </button>
-      </form>
+  <!-- Background Overlay to dim the background -->
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 bg-black opacity-50 z-40"
+    @click="closeShareModal"
+  ></div>
 
+  <!-- Share Achievement Modal -->
+  <dialog
+    id="share_achievement_modal"
+    class="overflow-hidden w-1/2 bg-transparent"
+  >
+    <!-- Modal Content -->
+    <div class="modal-box w-full max-w-md mx-auto p-6">
       <div ref="modalContent" class="text-center">
         <h2 class="text-xl font-bold mb-4">TASKMASTER</h2>
         <img
@@ -32,23 +37,25 @@
         <p class="mb-2">Score: {{ score }}</p>
         <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
 
-        <div
-          class="flex flex-wrap gap-2 mt-4 relative justify-center align-center"
-        >
+        <div class="flex flex-wrap gap-2 mt-4 justify-center">
           <Badges :badges="badges" />
-        </div>
-
-        <div class="flex justify-between mt-4 w-full">
-          <button class="btn btn-error w-1/2 me-3" @click="closeShareModal">
-            Discard
-          </button>
-          <button class="btn btn-primary w-1/2" @click="downloadImage">
-            Save
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Buttons outside the modal box -->
+    <div
+      class="modal-action w-auto flex justify-center align-center gap-4 mt-4"
+    >
+      <button class="btn btn-error w-2/5 max-w-xs" @click="closeShareModal">
+        Discard
+      </button>
+      <button class="btn btn-primary w-2/5 max-w-xs" @click="downloadImage">
+        Save
+      </button>
+    </div>
   </dialog>
+
   <BackendProfile ref="backendProfile" />
 </template>
 
@@ -57,6 +64,7 @@ import { ref } from "vue";
 import html2canvas from "html2canvas";
 
 const backendProfile = ref(null);
+const isModalOpen = ref(false);
 
 const avatar = ref("");
 const userName = ref("");
@@ -69,6 +77,8 @@ const scoreWidth = ref(0);
 
 // Open the Share Modal
 function openShareModal() {
+  isModalOpen.value = true;
+
   userName.value = backendProfile.value.getUserName();
 
   const profile = backendProfile.value.getProfileData();
@@ -86,6 +96,7 @@ function openShareModal() {
 
 // Close the Share Modal
 function closeShareModal() {
+  isModalOpen.value = false;
   document.getElementById("share_achievement_modal").close();
 }
 
@@ -95,7 +106,7 @@ function downloadImage() {
     (canvas) => {
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
-      link.download = `${profileData.value.name}_TaskMaster.png`;
+      link.download = `${userName.value}_TaskMaster.png`;
       link.click();
     }
   );
