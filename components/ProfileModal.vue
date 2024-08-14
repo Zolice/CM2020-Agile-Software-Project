@@ -75,10 +75,8 @@
               </div>
 
               <div class="w-full flex items-center justify-around">
-                <h4 class="flex-shrink-0 ps-4">Level {{ level }}</h4>
-
                 <!-- Level progress bar -->
-                <LevelProgressBar :scoreWidth="scoreWidth" />
+                <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
                 <span>Score: {{ score }}</span>
