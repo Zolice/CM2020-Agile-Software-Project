@@ -24,8 +24,10 @@
         />
         <h3 class="text-lg font-semibold">{{ userName }}</h3>
 
-        <!-- Level progress bar -->
-        <LevelProgressBar :scoreWidth="scoreWidth" />
+        <div class="w-full flex items-center justify-around">
+          <!-- Level progress bar -->
+          <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
+        </div>
 
         <p class="mb-2">Score: {{ score }}</p>
         <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
@@ -46,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import html2canvas from "html2canvas";
 
 const backendProfile = ref(null);
@@ -62,9 +64,10 @@ const scoreWidth = ref(0);
 
 // Open the Share Modal
 function openShareModal() {
+  userName.value = backendProfile.value.getUserName();
+
   const profile = backendProfile.value.getProfileData();
   avatar.value = profile.avatar;
-  userName.value = profile.name;
   level.value = profile.level;
   score.value = profile.score;
   maxScore.value = profile.maxScore;
