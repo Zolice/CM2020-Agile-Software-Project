@@ -1,5 +1,5 @@
 <template>
-  <h4 class="flex-shrink-0 ps-4">Level {{ level }}</h4>
+  <h4 class="flex-shrink-0 ps-4">Level {{ level }} &nbsp; &nbsp;</h4>
   <div class="w-2/5">
     <div
       class="relative w-full bg-neutral rounded-full border-2 border-gray-400 h-4"

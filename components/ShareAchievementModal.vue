@@ -22,9 +22,9 @@
           alt="Avatar"
           class="rounded-full w-24 h-24 mx-auto mb-4"
         />
-        <h3 class="text-lg font-semibold">{{ userName }}</h3>
+        <h3 class="text-lg font-semibold pb-3">{{ userName }}</h3>
 
-        <div class="w-full flex items-center justify-around">
+        <div class="w-full flex items-center justify-center pb-3">
           <!-- Level progress bar -->
           <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
         </div>
@@ -39,6 +39,9 @@
         </div>
 
         <div class="flex justify-between mt-4">
+          <button class="btn btn-secondary" @click="closeShareModal">
+            Discard
+          </button>
           <button class="btn btn-success" @click="downloadImage">Save</button>
         </div>
       </div>
