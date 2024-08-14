@@ -116,19 +116,7 @@
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <!-- TODO: Considering making this a component -->
-                  <div v-for="badge in badges" :key="badge.id" class="border">
-                    <img
-                      :src="badge.image"
-                      :alt="badge.name"
-                      class="w-16 h-16 rounded transition-transform transform group-hover:scale-110"
-                    />
-                    <div
-                      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110"
-                    >
-                      {{ badge.name }}
-                    </div>
-                  </div>
+                  <Badges :badges="badges" />
                 </div>
               </div>
 
