@@ -16,10 +16,10 @@
   <!-- Share Achievement Modal -->
   <dialog
     id="share_achievement_modal"
-    class="overflow-hidden w-1/2 bg-transparent"
+    class="overflow-hidden w-1/2 bg-transparent p-5"
   >
     <!-- Modal Content -->
-    <div class="modal-box w-full max-w-md mx-auto p-6">
+    <div class="modal-box w-full max-w-md mx-auto">
       <div ref="modalContent" class="text-center">
         <h2 class="text-xl font-bold mb-4">TASKMASTER</h2>
         <img
@@ -44,9 +44,7 @@
     </div>
 
     <!-- Buttons outside the modal box -->
-    <div
-      class="modal-action w-auto flex justify-center align-center gap-4 mt-4"
-    >
+    <div class="modal-action w-auto flex justify-center align-center px-9">
       <button class="btn btn-error w-2/5 max-w-xs" @click="closeShareModal">
         Discard
       </button>
