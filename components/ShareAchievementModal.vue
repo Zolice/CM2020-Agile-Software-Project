@@ -16,7 +16,7 @@
   <!-- Share Achievement Modal -->
   <dialog
     id="share_achievement_modal"
-    class="overflow-hidden w-1/2 bg-transparent p-5"
+    class="overflow-hidden w-1/2 bg-transparent"
   >
     <!-- Modal Content -->
     <div class="modal-box w-full max-w-md mx-auto">
@@ -45,10 +45,10 @@
 
     <!-- Buttons outside the modal box -->
     <div class="modal-action w-full max-w-md mx-auto flex justify-between">
-      <button class="btn btn-error w-[48%]" @click="closeShareModal">
+      <button class="btn btn-error w-[49%]" @click="closeShareModal">
         Discard
       </button>
-      <button class="btn btn-primary w-[48%]" @click="downloadImage">
+      <button class="btn btn-primary w-[49%]" @click="downloadImage">
         Save
       </button>
     </div>
