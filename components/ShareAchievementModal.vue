@@ -44,11 +44,11 @@
     </div>
 
     <!-- Buttons outside the modal box -->
-    <div class="modal-action w-auto flex justify-center align-center px-9">
-      <button class="btn btn-error w-2/5 max-w-xs" @click="closeShareModal">
+    <div class="modal-action w-full max-w-md mx-auto flex justify-between">
+      <button class="btn btn-error w-[48%]" @click="closeShareModal">
         Discard
       </button>
-      <button class="btn btn-primary w-2/5 max-w-xs" @click="downloadImage">
+      <button class="btn btn-primary w-[48%]" @click="downloadImage">
         Save
       </button>
     </div>
