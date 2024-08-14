@@ -18,59 +18,65 @@
       <div ref="modalContent" class="text-center">
         <h2 class="text-xl font-bold mb-4">TASKMASTER</h2>
         <img
-          :src="profileData.avatar"
+          :src="avatar"
           alt="Avatar"
           class="rounded-full w-24 h-24 mx-auto mb-4"
         />
-        <h3 class="text-lg font-semibold">{{ profileData.name }}</h3>
-        <div
-          class="bg-blue-200 text-blue-800 px-4 py-1 rounded-full inline-block mb-4"
-        >
-          {{ profileData.level }}
-        </div>
-        <p class="mb-2">Score: {{ profileData.score }}</p>
-        <p class="mb-4">Highest Streak: {{ profileData.streak }} Days</p>
+        <h3 class="text-lg font-semibold">{{ userName }}</h3>
+
+        <!-- Level progress bar -->
+        <LevelProgressBar :scoreWidth="scoreWidth" />
+
+        <p class="mb-2">Score: {{ score }}</p>
+        <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
 
         <div
           class="flex flex-wrap gap-2 mt-4 relative justify-center align-center"
         >
-          <Badges :badges="profileData.badges" />
+          <Badges :badges="badges" />
         </div>
 
         <div class="flex justify-between mt-4">
           <button class="btn btn-secondary" @click="closeShareModal">
             Discard
           </button>
-          <button class="btn btn-success" @click="downloadImage">
-            Get TaskMaster Now!
-          </button>
+          <button class="btn btn-success" @click="downloadImage">Save</button>
         </div>
       </div>
     </div>
   </dialog>
+  <BackendProfile ref="backendProfile" />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import html2canvas from "html2canvas";
 
-// Profile Data
-const profileData = ref({
-  name: "",
-  avatar: "",
-  level: "",
-  score: 0,
-  streak: 0,
-  badges: [],
-});
+const backendProfile = ref(null);
+
+const avatar = ref("");
+const userName = ref("");
+const level = ref(1);
+const score = ref(0);
+const maxScore = ref(0);
+const highestStreak = ref(0);
+const badges = ref([]);
+const scoreWidth = ref(0);
 
 // Open the Share Modal
 function openShareModal() {
-  const data = JSON.parse(localStorage.getItem("profileData"));
-  if (data) {
-    profileData.value = data;
-  }
-  document.getElementById("share_achievement_modal").showModal();
+  const profile = backendProfile.value.getProfileData();
+  avatar.value = profile.avatar;
+  userName.value = profile.name;
+  level.value = profile.level;
+  score.value = profile.score;
+  maxScore.value = profile.maxScore;
+  highestStreak.value = profile.highestStreak;
+  badges.value = profile.badges;
+
+  scoreWidth.value = (score.value / maxScore.value) * 100;
+
+  share_achievement_modal.showModal();
 }
 
 // Close the Share Modal
