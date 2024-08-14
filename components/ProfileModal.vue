@@ -20,13 +20,7 @@
       <div class="flex flex-col h-full gap-4">
         <h3 class="text-3xl font-bold">Profile</h3>
 
-        <!-- Share Achievements Button -->
-        <!-- TODO: Create share achievement modal -->
-        <div class="flex justify-end">
-          <button class="btn btn-sm btn-primary" @click="shareAchievements">
-            <i class="bi bi-share"></i> Share Achievements
-          </button>
-        </div>
+        <ShareAchievementModal />
 
         <div class="flex flex-col h-full overflow-auto gap-4">
           <div class="flex flex-row w-full px-2 gap-4">
