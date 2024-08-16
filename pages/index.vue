@@ -87,7 +87,7 @@ if (!!d.getTime() && month <= 11 && month >= 0) {
     </div>
 
     <div class="flex flex-row items-center space-x-2 justify-center mx-2">
-      <!-- calendar month previous button -->
+      <!-- Calendar Previous Month Button -->
       <button
         class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
         type="button"
@@ -108,12 +108,12 @@ if (!!d.getTime() && month <= 11 && month >= 0) {
         </svg>
       </button>
 
-      <!-- calendar month name -->
+      <!-- Calendar Month name -->
       <h1 class="text-lg">
         {{ months[month] + " " + year }}
       </h1>
 
-      <!-- calendar month next button -->
+      <!-- Calendar Next Month Button -->
       <button
         class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
         type="button"
@@ -144,14 +144,17 @@ if (!!d.getTime() && month <= 11 && month >= 0) {
   </div>
 
   <div class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 px-3 w-full">
+    <!-- Day Names -->
     <div class="dayNames-container grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-s leading-6 text-black ">
         <div v-for="dayName in dayNames" :class="['dayName text-center font-semibold bg-accent bg-opacity-50 py-2 lg:flex-none', dayName]" :key="year+'-'+months[month]+'-'+dayName"><h5>{{ dayName }}</h5></div>
     </div>
+    <!-- Dates -->
     <div class="dates-container grid grid-cols-7 gap-px ">
         <div v-for="date in dates" :class="['date relative bg-gray-50 px-3 py-2 text-black w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px', dayNames[date.day]]" :key="year+'-'+months[month]+'-'+date.date" :id="year+'-'+month+'-'+date.date" :style="`grid-area: ${(date.date > firstSatDate) ? (Math.ceil((date.date - firstSatDate)/7))+1 : 1}/${date.day + 1}/span 1/span 1`">{{ date.date }}</div>
     </div>
-</div>
+  </div>
 
+  <!-- Test for Listing tasks - to remove later -->
   <div
     class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
   >
