@@ -1,13 +1,46 @@
-<script setup lang="ts">
+<script setup>
+var months = [
+  "JANUARY",
+  "FEBRUARY",
+  "MARCH",
+  "APRIL",
+  "MAY",
+  "JUNE",
+  "JULY",
+  "AUGUST",
+  "SEPTEMBER",
+  "OCTOBER",
+  "NOVEMBER",
+  "DECEMBER",
+];
+var dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+var dates = [];
+var firstSatDate = "";
+// set the default values to be the current date
+var year = new Date().getFullYear();
+var month = new Date().getMonth();
 
+
+var d = new Date(year, month);
+if (!!d.getTime() && month <= 11 && month >= 0) {
+  //to handle errors if arguments are not valid.
+  while (d.getMonth() == month) {
+    dates.push({ date: d.getDate(), day: d.getDay() });
+    d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
+  }
+  firstSatDate = 7 - dates[0].day; //compute the date of the first Saturday of the given month
+} else {
+  dates.push({}); //push an empty object into the 'dates' array
+}
 </script>
+
 <template>
-  <div class="flex flex-row w-full p-2 justify-between">
+  <div class="flex flex-row w-full p-2 px-4 justify-between">
     <!-- Monthly view dropdown button -->
     <button
       id="dropdownDefaultButton"
       data-dropdown-toggle="dropdownView"
-      class="btn btn-secondary font-medium rounded-lg text-sm px-4 py-0.5 h-10 text-center flewc items-center"
+      class="btn bg-white bg-opacity-50 font-medium rounded-lg text-sm px-4 py-0.5 h-10 text-center flewc items-center outline outline-1"
       type="button"
     >
       Monthly
@@ -76,7 +109,9 @@
       </button>
 
       <!-- calendar month name -->
-      <h1 class="text-lg">June 2024</h1>
+      <h1 class="text-lg">
+        {{ months[month] + " " + year }}
+      </h1>
 
       <!-- calendar month next button -->
       <button
@@ -100,52 +135,64 @@
       </button>
     </div>
     <!-- Add Task Button -->
-    <button class="btn btn-secondary rounded-lg font-medium text-sm" type="button">
+    <button
+      class="btn bg-white bg-opacity-50 outline outline-1 rounded-lg font-medium text-sm"
+      type="button"
+    >
       Add Task
     </button>
   </div>
-  
 
-  <div class=" grid grid-cols-7 gap-px border-b  border-black text-center text-s font-semibold lg:flex-none leading-6">
-    <div class="flex justify-center py-2">
-      <Span>Sunday</Span>
+  <div class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 px-3 w-full">
+    <div class="dayNames-container grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-s leading-6 text-black ">
+        <div v-for="dayName in dayNames" :class="['dayName text-center font-semibold bg-accent bg-opacity-50 py-2 lg:flex-none', dayName]" :key="year+'-'+months[month]+'-'+dayName"><h5>{{ dayName }}</h5></div>
     </div>
-    <div class="flex justify-center py-2">
-      <Span>Monday</Span>
+    <div class="dates-container grid grid-cols-7 gap-px ">
+        <div v-for="date in dates" :class="['date relative bg-gray-50 px-3 py-2 text-black w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px', dayNames[date.day]]" :key="year+'-'+months[month]+'-'+date.date" :id="year+'-'+month+'-'+date.date" :style="`grid-area: ${(date.date > firstSatDate) ? (Math.ceil((date.date - firstSatDate)/7))+1 : 1}/${date.day + 1}/span 1/span 1`">{{ date.date }}</div>
     </div>
-    <div class="flex justify-center py-2">
-      <Span>Tuesday</Span>
-    </div>
-    <div class="flex justify-center py-2">
-      <Span>Wednesday</Span>
-    </div>
-    <div class="flex justify-center py-2">
-      <Span>Thursday</Span>
-    </div>
-    <div class="flex justify-center py-2">
-      <Span>Friday</Span>
-    </div>
-    <div class="flex justify-center py-2">
-      <Span>Saturday</Span>
-    </div>
+</div>
+
+  <div
+    class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
+  >
     
-    
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
-    <div>01</div>
+    <div class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto">
+      <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
+        <div class="relative bg-gray-50 px-3 py-2 text-black">
+          <time datetime="2024-5-26">10</time>
+          <ol class="mt-2">
+            <li>
+              <a href="#" class="group flex">
+                <p
+                  class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
+                >
+                  Assignment Due -- Algorithms and Data Structures II
+                </p>
+                <time
+                  datetime="2022-01-03T10:00"
+                  class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
+                  >10AM</time
+                >
+              </a>
+            </li>
+            <li>
+              <a href="#" class="group flex">
+                <p
+                  class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
+                >
+                  Assignment Due -- Databases, Networks and the Web
+                </p>
+                <time
+                  datetime="2022-01-03T14:00"
+                  class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
+                  >2PM</time
+                >
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

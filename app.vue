@@ -48,6 +48,8 @@
         </button>
       </div>
 
+      <MonthView />
+
       <!-- Display the page -->
       <div class="h-fit overflow-auto">
         <NuxtPage />
@@ -65,7 +67,6 @@
 import { ref } from "vue";
 import { onMounted } from "vue";
 import { useFlowbite } from "~/composables/useFlowbite";
-
 
 const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
