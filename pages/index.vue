@@ -32,7 +32,7 @@ if (!!d.getTime() && month <= 11 && month >= 0) {
   dates.value.push({}); //push an empty object into the 'dates' array
 }
 
-//Sample logic for previous month button
+// previous month button
 function previousMonth() {
   // Using current month, reduce it by 1 month
   month -= 1;
@@ -59,15 +59,29 @@ function previousMonth() {
 }
 
 //Sample logic for next month button
-function nextMonth(month, year) {
-  if (month == 11) {
-    this.month = 0;
-    this.year += 1;
-    console.log(month, year);
-  } else {
-    this.month += 1;
-    console.log(month, year);
+function nextMonth() {
+  // Using curent month, increase by 1
+  month += 1;
+  // If the month is more than 11, set it to 0 (January) and increase the year by 1
+  if (month > 11) {
+    month = 0;
+    year += 1;
   }
+  // Clear the dates array
+  dates.value = [];
+
+  var d = new Date(year, month);
+  if (!!d.getTime() && month <= 11 && month >= 0) {
+    //to handle errors if arguments are not valid.
+    while (d.getMonth() == month) {
+      dates.value.push({ date: d.getDate(), day: d.getDay() });
+      d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
+    }
+    firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
+  } else {
+    dates.value.push({}); //push an empty object into the 'dates' array
+  }
+
 }
 </script>
 
@@ -155,7 +169,7 @@ function nextMonth(month, year) {
       <button
         class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
         type="button"
-        @click="nextMonth(month, year)"
+        @click="nextMonth"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -211,9 +225,7 @@ function nextMonth(month, year) {
         :key="year + '-' + months[month] + '-' + date.date"
         :id="year + '-' + month + '-' + date.date"
         :style="`grid-area: ${
-          date.date > firstSatDate
-            ? Math.ceil((date.date - firstSatDate) / 7) + 1
-            : 1
+          date.date > firstSatDate ? Math.ceil((date.date - firstSatDate) / 7) + 1 : 1
         }/${date.day + 1}/span 1/span 1`"
       >
         {{ date.date }}
@@ -226,9 +238,7 @@ function nextMonth(month, year) {
     class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
   >
     <div class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto">
-      <div
-        class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"
-      >
+      <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
         <div class="relative bg-gray-50 px-3 py-2 text-black">
           <time datetime="2024-5-26">10</time>
           <ol class="mt-2">
