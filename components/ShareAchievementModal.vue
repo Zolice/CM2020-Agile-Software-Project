@@ -1,3 +1,4 @@
+<!-- TODO: Create Mobile view and make width consistent -->
 <template>
   <!-- Modal Trigger -->
   <div class="flex justify-end">
