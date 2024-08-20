@@ -126,10 +126,9 @@
             Purchase {{ purchaseItemName }} {{ purchaseItemType }}
           </h3>
 
-          <p v-if="!purchaseSuccessful" class="py-4">
+          <p class="py-4">
             Confirm your purchase of the following item:
           </p>
-          <p v-else class="py-4">Purchase successful</p>
           <ThemeDisplayComponent
             v-if="purchaseItemType == 'theme'"
             :name="purchaseItem.name"
@@ -157,7 +156,7 @@
           <p v-if="purchaseItem.owned" class="text-error">
             You already own this item!
           </p>
-          <div v-if="!purchaseSuccessful" class="flex w-full justify-end gap-2">
+          <div class="flex w-full justify-end gap-2">
             <button class="btn btn-error" onclick="shoppingModal.close()">
               Cancel
             </button>
@@ -173,12 +172,6 @@
               Confirm
             </button>
           </div>
-
-          <div v-else class="flex w-full justify-end gap-2">
-            <button class="btn btn-primary" @click="closePurchaseModal">
-              Close
-            </button>
-          </div>
         </div>
       </dialog>
     </div>
@@ -188,22 +181,24 @@
 </template>
 
 <script setup lang="jsx">
+// Import notifications function
+const postNotification = inject("postNotification");
+
 // Backend Profile Component
 const backendProfile = ref(null);
 const backendShop = ref(null);
+
+// Shop Content
 const rewardPoints = ref(0);
-
 const themes = ref([]);
-
 const borders = ref([]);
-
 const nameTags = ref([]);
-
 const themeExpanded = ref(false);
 const borderExpanded = ref(false);
 const nameTagExpanded = ref(false);
 
-// Purchasing
+// Purchase Modal
+// Default item
 const purchaseItem = ref({
   name: "purchase",
   theme: "dark",
@@ -213,7 +208,6 @@ const purchaseItem = ref({
 });
 const purchaseItemName = ref("");
 const purchaseItemType = ref("");
-const purchaseSuccessful = ref(false);
 
 onMounted(() => {
   refresh();
@@ -221,12 +215,10 @@ onMounted(() => {
 
 function refresh() {
   // Get reward points from backend
-  console.log(backendProfile.value.getProfileData());
   rewardPoints.value = backendProfile.value.getProfileData().rewardPoints;
 
   // Get themes from backend
   themes.value = backendShop.value.getThemeList();
-  console.log(themes.value);
 
   // Get borders from backend
   borders.value = backendShop.value.getBordersList();
@@ -244,11 +236,10 @@ function refresh() {
   };
   purchaseItemName.value = "";
   purchaseItemType.value = "";
-  purchaseSuccessful.value = false;
 }
 
 function openShopModal() {
-  refresh() 
+  refresh();
   shop_modal.showModal();
 }
 
@@ -306,10 +297,11 @@ function purchaseConfirm() {
   backendProfile.value.updateProfileData(profile);
 
   // Display success message
-  purchaseSuccessful.value = true;
-}
+  postNotification(
+    "success",
+    "Purchased " + purchaseItem.value.name + " successfully!"
+  );
 
-function closePurchaseModal() {
   // Update modal data
   refresh();
 

@@ -3,8 +3,10 @@
 </template>
 
 <script setup lang="jsx">
+// Add backend profile component to access its functions
 const backendProfile = ref(null);
 
+// List of all themes
 const themes = [
   { name: "Light", theme: "light", points: 500, owned: false },
   { name: "Dark", theme: "dark", points: 500, owned: false },
@@ -40,6 +42,7 @@ const themes = [
   { name: "Sunset", theme: "sunset", points: 500, owned: false },
 ];
 
+// List of all borders
 const borders = [
   { name: "Border 1", points: 500, owned: false, img: "/borders/border1.jpg" },
   { name: "Border 2", points: 500, owned: false, img: "/borders/border2.jpg" },
@@ -47,21 +50,25 @@ const borders = [
   { name: "Border 4", points: 500, owned: false, img: "/borders/border4.jpg" },
 ];
 
+// List of all name tags
 const nameTags = [
   { name: "Nametag 1", points: 500, img: "/nameTags/tag1.jpg", owned: false },
   { name: "Nametag 2", points: 500, img: "/nameTags/tag2.jpg", owned: false },
 ];
+
+/**
+ * Get the list of themes with owned status
+ *
+ * @returns {Array} List of themes
+ */
 function getThemeList() {
   // Get owned themes from profile
-  console.log(backendProfile.value.getProfileData());
   const owned = backendProfile.value.getProfileData().themes;
-  console.log(owned);
 
-  // make a copy of themes
-  let themeList = themes;
-  console.log(themeList);
+  // Make a copy of the list of themes to work on
+  const themeList = themes;
 
-  // If you get an error here, go into localStorage and 
+  // If you get an error here, go into localStorage and
   // delete the data for key: `profileData`
   owned.forEach((ownedTheme) => {
     // Update owned status of themes
@@ -71,18 +78,15 @@ function getThemeList() {
       }
     });
   });
-  console.log(themeList);
   return themeList;
 }
 
 function getBordersList() {
   // Get owned borders from profile
   const owned = backendProfile.value.getProfileData().borders;
-  console.log(owned);
 
-  // make a copy of borders
-  let borderList = borders;
-  console.log(borderList);
+  // Make a copy of the list of borders to work on
+  const borderList = borders;
 
   // for each owned border
   owned.forEach((ownedBorder) => {
@@ -93,18 +97,15 @@ function getBordersList() {
       }
     });
   });
-  console.log(borderList);
   return borderList;
 }
 
 function getNameTagsList() {
   // Get owned name tags from profile
   const owned = backendProfile.value.getProfileData().nametags;
-  console.log(owned);
 
-  // make a copy of name tags
-  let nameTagList = nameTags;
-  console.log(nameTagList);
+  // Make a copy of the list of name tags to work on
+  const nameTagList = nameTags;
 
   // for each owned name tag
   owned.forEach((ownedNameTag) => {
@@ -115,7 +116,6 @@ function getNameTagsList() {
       }
     });
   });
-  console.log(nameTagList);
   return nameTagList;
 }
 
