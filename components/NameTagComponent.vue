@@ -1,19 +1,15 @@
 <template>
   <div
-    class="flex flex-col bg-base-100 border border-neutral w-fit"
+    class="grid grid-rows-2 grid-flow-row grid-cols-1"
     @click="clickHandler"
   >
-    <div
-      class="flex items-center align-middle min-w-32 w-full h-16 overflow-clip"
-    >
-      <div class="grid grid-rows-1 grid-cols-1 h-full">
-        <img class="h-full row-start-1 col-start-1" :src="img" />
-        <div class="flex w-full justify-end row-start-1 col-start-1 p-2">
-          <span class="badge badge-ghost" :class="[owned ? '' : 'hidden']">
-            Owned
-          </span>
-        </div>
-      </div>
+    <div class="col-start-1 row-start-1">
+      <img class="h-16 w-64" :src="img" />
+    </div>
+    <div class="flex w-full justify-end p-2 col-start-1 row-start-1">
+      <span class="badge badge-ghost" :class="[owned ? '' : 'hidden']">
+        Owned
+      </span>
     </div>
     <div class="flex flex-col items-center w-full py-1">
       <span>{{ name }}</span>
