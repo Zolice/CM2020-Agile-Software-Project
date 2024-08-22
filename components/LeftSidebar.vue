@@ -13,7 +13,21 @@
           class="w-fit text-center text-2xl focus:outline-none h-fit"
           @click="toggleSidebar"
         >
-          <span v-if="isSidebarOpen">-</span>
+          <span v-if="isSidebarOpen"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              /></svg
+          ></span>
         </button>
       </div>
       <nav
@@ -28,10 +42,14 @@
           <span>Other stuff</span>
         </div>
       </nav>
-      <div v-if="isSidebarOpen" class="p-2">
-        <ShopModal />
-        <SettingsModal />
-        <ProfileModal />
+      <!-- Bottom part of the sidebar -->
+      <div v-if="isSidebarOpen" class="flex flex-col p-2">
+        <div class="divider"></div>
+        <div class="flex flex-col gap-1">
+          <ShopModal />
+          <SettingsModal />
+          <ProfileModal />
+        </div>
       </div>
     </div>
   </div>

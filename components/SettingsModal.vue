@@ -1,10 +1,11 @@
 <template>
   <!-- Settings Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
-    :onclick="openSettingsModal"
+    class="btn btn-sm btn-secondary w-full flex flex-row"
+    @click="openSettingsModal"
   >
-    Settings
+    <i class="bi bi-gear-fill"></i>
+    <span class="text-center">Settings</span>
   </button>
 
   <!-- Settings Modal -->
