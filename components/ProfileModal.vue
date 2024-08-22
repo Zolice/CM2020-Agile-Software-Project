@@ -20,13 +20,7 @@
       <div class="flex flex-col h-full gap-4">
         <h3 class="text-3xl font-bold">Profile</h3>
 
-        <!-- Share Achievements Button -->
-        <!-- TODO: Create share achievement modal -->
-        <div class="flex justify-end">
-          <button class="btn btn-sm btn-primary" @click="shareAchievements">
-            <i class="bi bi-share"></i> Share Achievements
-          </button>
-        </div>
+        <ShareAchievementModal />
 
         <div class="flex flex-col h-full overflow-auto gap-4">
           <div class="flex flex-row w-full px-2 gap-4">
@@ -81,19 +75,8 @@
               </div>
 
               <div class="w-full flex items-center justify-around">
-                <h4 class="flex-shrink-0 ps-4">Level {{ level }}</h4>
-
                 <!-- Level progress bar -->
-                <div class="w-2/5">
-                  <div
-                    class="relative w-full bg-neutral rounded-full border-2 border-gray-400 h-4"
-                  >
-                    <div
-                      class="absolute top-0 left-0 bg-primary h-full rounded-full"
-                      :style="{ width: scoreWidth + '%' }"
-                    ></div>
-                  </div>
-                </div>
+                <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
                 <span>Score: {{ score }}</span>
@@ -116,62 +99,16 @@
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <!-- TODO: Considering making this a component -->
-                  <div v-for="badge in badges" :key="badge.id" class="border">
-                    <img
-                      :src="badge.image"
-                      :alt="badge.name"
-                      class="w-16 h-16 rounded transition-transform transform group-hover:scale-110"
-                    />
-                    <div
-                      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110"
-                    >
-                      {{ badge.name }}
-                    </div>
-                  </div>
+                  <Badges :badges="badges" />
                 </div>
               </div>
 
               <!-- Name tags -->
-              <!-- TODO: Considering making this a component -->
-              <div class="mt-4">
-                <h4 class="text-xl font-bold">Name Tags</h4>
-                <div class="flex flex-wrap gap-2">
-                  <div
-                    v-for="nametag in nametags"
-                    :key="nametag.id"
-                    class="border"
-                  >
-                    <img
-                      :src="nametag.image"
-                      :alt="nametag.name"
-                      class="w-40 h-10"
-                    />
-                  </div>
-                </div>
-              </div>
+              <NameTags :nametags="nametags" />
             </div>
 
             <!-- Borders -->
-            <!-- TODO: Considering making this a component -->
-            <div class="main-four col w-1/2">
-              <div class="mt-4">
-                <h4 class="text-xl font-bold">Borders</h4>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  <div
-                    v-for="border in borders"
-                    :key="border.id"
-                    class="border"
-                  >
-                    <img
-                      :src="border.image"
-                      :alt="border.name"
-                      class="w-16 h-16"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Borders :borders="borders" />
           </div>
         </div>
       </div>
