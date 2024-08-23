@@ -105,19 +105,10 @@
             </div>
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Appearance</h4>
-              <span class="text-sm">Choose a theme to use. You can buy more themes from the store.</span>
-              <!-- <label
-                class="input input-bordered input-sm flex items-center gap-2 w-48"
+              <span class="text-sm"
+                >Choose a theme to use. You can buy more themes from the
+                store.</span
               >
-                Theme
-                <input
-                  v-model="currentTheme"
-                  type="text"
-                  class="grow"
-                  placeholder="Theme"
-                  @change="themeChanged"
-                />
-              </label> -->
             </div>
             <div class="flex flex-row gap-2 flex-wrap">
               <ThemeDisplayComponent
@@ -127,8 +118,8 @@
                 :theme="theme.theme"
                 :points="theme.points"
                 :badge="theme.applied"
-                badgeContent="Applied"
-                displayType="settings"
+                badge-content="Applied"
+                display-type="settings"
                 message="Owned"
                 :click="themeChanged"
               />
@@ -335,8 +326,7 @@ const calendarFileError = ref("");
 const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
 
-onMounted(() => {
-});
+onMounted(() => {});
 
 function openSettingsModal() {
   // Change page to general settings
@@ -397,6 +387,9 @@ function timeFormatChanged(event) {
 }
 
 function themeChanged(item, type) {
+  // Make sure this is for changing theme
+  if (type != "theme") return;
+
   // Set the theme
   setTheme(item.theme);
 

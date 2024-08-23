@@ -114,6 +114,11 @@ function getTheme() {
   return localStorage.getItem("theme") || "dark";
 }
 
+/**
+ * Get the available themes
+ * 
+ * @returns {Array} Available themes
+ */
 function getAvailableThemes() {
   // get profile data from backend profile
   const profileData = backendProfile.value.getProfileData();
