@@ -119,6 +119,20 @@
                 />
               </label>
             </div>
+            <div
+              class="flex flex-row gap-2 flex-wrap"
+            >
+              <ThemeDisplayComponent
+                v-for="theme in themeList"
+                :key="theme"
+                :name="theme.name"
+                :theme="theme.theme"
+                :points="theme.points"
+                :owned="theme.owned"
+                :click="purchase"
+                message="Owned"
+              />
+            </div>
           </div>
           <!-- Calendar -->
           <div
@@ -307,6 +321,7 @@ const startWeekOn = ref("Monday");
 const dateFormat = ref("DD-MM-YY");
 const timeFormat = ref("12-Hour-Time");
 const theme = ref("dark");
+const themeList = ref([]);
 
 // Calendar Settings
 const calendarName = ref("");
@@ -323,6 +338,9 @@ const calendarFileUpload = ref(null);
 onMounted(() => {
   // Get current theme
   theme.value = backendSettings.value.getTheme();
+
+  // Get available themes
+  themeList.value = backendSettings.value.getAvailableThemes();
 });
 
 function openSettingsModal() {

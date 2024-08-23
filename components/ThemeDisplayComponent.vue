@@ -8,7 +8,7 @@
       <div class="bg-primary"></div>
       <div class="bg-secondary flex justify-end p-1">
         <div class="badge badge-ghost" :class="[owned ? '' : 'hidden']">
-          Owned
+          {{ message }} 
         </div>
       </div>
       <div class="bg-accent"></div>
