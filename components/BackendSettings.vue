@@ -118,6 +118,18 @@ function getAvailableThemes() {
   // get profile data from backend profile
   const profileData = backendProfile.value.getProfileData();
   
+  // get currently applied theme
+  const currentTheme = getTheme();
+
+  // add applied=true to the current theme
+  profileData.themes.forEach((theme) => {
+    if (theme.theme === currentTheme) {
+      theme.applied = true;
+    } else {
+      theme.applied = false;
+    }
+  });
+
   // return the themes
   return profileData.themes
 }
