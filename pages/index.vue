@@ -15,21 +15,67 @@ var months = [
 ];
 var dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 var dates = ref([]);
+
+var previousDates = ref([]);
+var nextDates = ref([]);
 var firstSatDate = "";
 // set the default values to be the current date
 var year = new Date().getFullYear();
 var month = new Date().getMonth();
 
-var d = new Date(year, month);
-if (!!d.getTime() && month <= 11 && month >= 0) {
-  //to handle errors if arguments are not valid.
-  while (d.getMonth() == month) {
-    dates.value.push({ date: d.getDate(), day: d.getDay() });
-    d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
+onMounted(() => {
+  updateDates();
+});
+
+function updateDates() {
+  // Assume the value months and year are set
+  // Clear the dates array
+  dates.value = [];
+
+  var d = new Date(year, month);
+  if (!!d.getTime() && month <= 11 && month >= 0) {
+    //to handle errors if arguments are not valid.
+    while (d.getMonth() == month) {
+      dates.value.push({ date: d.getDate(), day: d.getDay() });
+      d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
+    }
+    firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
+  } else {
+    dates.value.push({}); //push an empty object into the 'dates' array
   }
-  firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
-} else {
-  dates.value.push({}); //push an empty object into the 'dates' array
+
+  // Check which day the first day of the month falls on
+  // If not the start of the week, add the previous month's dates
+  // Get the start day from settings
+  const settings = JSON.parse(localStorage.getItem("settings")) || {};
+  const startDay = settings.startWeekOn.substring(0, 3).toUpperCase() || "SUN";
+  
+  d = new Date(year, month);
+  previousDates.value = [];
+  if (startDay != dayNames[d.getDay()]) {
+    // loop until all added
+    do {
+      d = new Date(d.getTime() - 1000 * 60 * 60 * 24);
+      previousDates.value.push({
+        date: d.getDate(),
+        day: d.getDay(),
+      });
+    } while (startDay !== dayNames[d.getDay()]);
+  }
+
+  // If the last day of the month is not the end of the week, add the next month's dates
+  d = new Date(year, month + 1, 0);
+  nextDates.value = [];
+  if (dayNames[d.getDay()] !== startDay) {
+    d = new Date(year, month + 1);
+    while (dayNames[d.getDay()] !== startDay) {
+      nextDates.value.push({
+        date: d.getDate(),
+        day: d.getDay(),
+      });
+      d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
+    }
+  }
 }
 
 // previous month button
@@ -42,20 +88,7 @@ function previousMonth() {
     year -= 1;
   }
 
-  // Clear the dates array
-  dates.value = [];
-
-  var d = new Date(year, month);
-  if (!!d.getTime() && month <= 11 && month >= 0) {
-    //to handle errors if arguments are not valid.
-    while (d.getMonth() == month) {
-      dates.value.push({ date: d.getDate(), day: d.getDay() });
-      d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
-    }
-    firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
-  } else {
-    dates.value.push({}); //push an empty object into the 'dates' array
-  }
+  updateDates();
 }
 
 //Sample logic for next month button
@@ -67,21 +100,8 @@ function nextMonth() {
     month = 0;
     year += 1;
   }
-  // Clear the dates array
-  dates.value = [];
 
-  var d = new Date(year, month);
-  if (!!d.getTime() && month <= 11 && month >= 0) {
-    //to handle errors if arguments are not valid.
-    while (d.getMonth() == month) {
-      dates.value.push({ date: d.getDate(), day: d.getDay() });
-      d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
-    }
-    firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
-  } else {
-    dates.value.push({}); //push an empty object into the 'dates' array
-  }
-
+  updateDates();
 }
 </script>
 
@@ -91,7 +111,7 @@ function nextMonth() {
     <button
       id="dropdownDefaultButton"
       data-dropdown-toggle="dropdownView"
-      class="btn bg-white bg-opacity-50 font-medium rounded-lg text-sm px-4 py-0.5 h-10 text-center flewc items-center outline outline-1"
+      class="btn btn-primary px-4 py-0.5 text-center items-center"
       type="button"
     >
       Monthly
@@ -189,7 +209,7 @@ function nextMonth() {
     </div>
     <!-- Add Task Button -->
     <button
-      class="btn bg-white bg-opacity-50 outline outline-1 rounded-lg font-medium text-sm"
+      class="btn btn-primary px-4 py-0.5 text-center items-center"
       type="button"
     >
       Add Task
@@ -217,16 +237,45 @@ function nextMonth() {
     <!-- Dates -->
     <div class="dates-container grid grid-cols-7 gap-px">
       <div
+        v-for="date in previousDates"
+        :class="[
+          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
+          dayNames[date.day],
+        ]"
+        :key="year + '-' + months[month] + '-' + date.date"
+        :id="year + '-' + month + '-' + date.date"
+        :style="`grid-area: 1/${date.day + 1}/span 1/span 1`"
+      >
+        {{ date.date }}
+      </div>
+      <div
         v-for="date in dates"
         :class="[
-          'date relative bg-gray-50 px-3 py-2 text-black w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
+          'date relative bg-base-200 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
           dayNames[date.day],
         ]"
         :key="year + '-' + months[month] + '-' + date.date"
         :id="year + '-' + month + '-' + date.date"
         :style="`grid-area: ${
-          date.date > firstSatDate ? Math.ceil((date.date - firstSatDate) / 7) + 1 : 1
+          date.date > firstSatDate
+            ? Math.ceil((date.date - firstSatDate) / 7) + 1
+            : 1
         }/${date.day + 1}/span 1/span 1`"
+      >
+        {{ date.date }}
+      </div>
+      <div
+        v-for="date in nextDates"
+        :class="[
+          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
+          dayNames[date.day],
+        ]"
+        :key="year + '-' + months[month] + '-' + date.date"
+        :id="year + '-' + month + '-' + date.date"
+        :style="`grid-area: ${
+          Math.ceil((31 - firstSatDate) / 7) + 1
+        }
+        /${date.day + 1}/span 1/span 1`"
       >
         {{ date.date }}
       </div>
@@ -238,7 +287,9 @@ function nextMonth() {
     class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
   >
     <div class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto">
-      <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
+      <div
+        class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"
+      >
         <div class="relative bg-gray-50 px-3 py-2 text-black">
           <time datetime="2024-5-26">10</time>
           <ol class="mt-2">
