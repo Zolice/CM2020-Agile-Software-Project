@@ -30,26 +30,24 @@
           ></span>
         </button>
       </div>
-      <div class="flex justify-between items-center px-4 pb-3 h-min">
+      <div class="flex flex-col px-4 pb-3 h-min">
         <span>Calendar</span>
+        <span>Calendars</span>
       </div>
       <nav
         v-if="isSidebarOpen"
         class="flex-1 px-4 flex flex-col justify-between h-full overflow-auto"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-4">
-          <div class="flex flex-col gap-1 h-min">
-            <span>Calendars</span>
-            <CalendarListItem
-              v-for="calendar in calendarList"
-              :key="calendar.name"
-              :calendar-name="calendar.name"
-              :colour="calendar.colour"
-              :display="calendar.display"
-              :toggle-display-calendar="toggleDisplayCalendar"
-            />
-          </div>
+        <div class="flex flex-col gap-1">
+          <CalendarListItem
+            v-for="calendar in calendarList"
+            :key="calendar.name"
+            :calendar-name="calendar.name"
+            :colour="calendar.colour"
+            :display="calendar.display"
+            :toggle-display-calendar="toggleDisplayCalendar"
+          />
         </div>
       </nav>
       <!-- Bottom part of the sidebar -->
@@ -75,14 +73,13 @@ const calendarList = ref([]);
 
 onMounted(() => {
   // Fetch calendar list
-  let calendars = JSON.parse(localStorage.getItem("calendars")) || {};
+  const calendars = JSON.parse(localStorage.getItem("calendars")) || {};
 
   // Get all keys
-  let keys = Object.keys(calendars);
+  const keys = Object.keys(calendars);
 
   // For each key, add it to the calendar list
   keys.forEach((key) => {
-    console.log(calendars[key]);
     calendarList.value.push({
       name: key,
       colour: calendars[key].colour,
@@ -92,9 +89,8 @@ onMounted(() => {
 });
 
 function toggleDisplayCalendar(calendar, value) {
-  console.log(calendar, value)
   // get updated list of calendars
-  let calendars = JSON.parse(localStorage.getItem("calendars")) || {};
+  const calendars = JSON.parse(localStorage.getItem("calendars")) || {};
 
   // update the display value
   calendars[calendar].display = value;
