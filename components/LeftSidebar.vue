@@ -29,6 +29,7 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
+        <AddTaskModal />
         <SettingsModal />
         <div class="p-2 bg-neutral text-neutral-content rounded-lg">
           <span>Profile</span>
