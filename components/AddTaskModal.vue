@@ -3,7 +3,7 @@
   <button
     class="btn btn-primary btn-sm text-center items-center"
     type="button"
-    :onclick="openAddTaskModal"
+    @click="openAddTaskModal"
   >
     Add Task
   </button>
@@ -17,10 +17,10 @@
         </button>
       </form>
       <div class="flex flex-col h-full gap-4">
-        <h3 class="text-3xl font-bold">New Task</h3>
-        <div class="flex flex-col lg:flex-row h-full overflow-auto gap-4">
+        <h3 class="text-3xl font-bold w-fit">New Task</h3>
+        <div class="flex flex-col lg:flex-row h-full overflow-auto gap-3">
           <div
-            class="flex flex-col overflow-auto h-full w-full px-2 pb-2 gap-4"
+            class="flex flex-col overflow-auto h-full w-full px-2 py-1 gap-4"
           >
             <!-- Title -->
             <div class="flex flex-col gap-1">
@@ -33,7 +33,7 @@
             </div>
             <!-- Date & Time Pickers -->
             <div class="flex flex-row gap-4">
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 items-start">
                 <span class="text-sm pl-2">Start Time</span>
                 <input
                   id="startTime"
@@ -43,7 +43,7 @@
                   class="input input-bordered input-sm"
                 />
               </div>
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 items-start">
                 <span class="text-sm pl-2">End Time</span>
                 <input
                   id="endTime"
@@ -67,11 +67,11 @@
             </div>
             <!-- Priority / Category -->
             <div class="flex flex-row gap-4">
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 items-start">
                 <span class="text-sm pl-2">Priority Level</span>
                 <select
                   v-model="priorityLevel"
-                  class="select select-bordered select-sm w-fit max-w-xs"
+                  class="select select-bordered select-sm"
                   @change="priorityLevelChanged"
                 >
                   <option>Low</option>
@@ -79,11 +79,11 @@
                   <option>High</option>
                 </select>
               </div>
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 items-start">
                 <span class="text-sm pl-2">Calendar / Category</span>
                 <select
                   v-model="calendarCategory"
-                  class="select select-bordered select-sm w-fit max-w-xs"
+                  class="select select-bordered select-sm w-fit"
                   :class="[
                     calendarCategory == 'No calendars available'
                       ? 'btn-disabled'
@@ -170,12 +170,15 @@ const priorityLevel = ref("Medium");
 onMounted(() => {});
 
 function openAddTaskModal() {
+  console.log("hello");
   // Get all calendars
   // calendar list
   const calendars = backendSettings.value.getCalendars();
+  console.log("hello");
 
   // Get keys of calendar list
   calendarCategoryList.value = Object.keys(calendars);
+  console.log("hello");
 
   // Set the default calendar
   if (calendarCategoryList.value.length > 0) {
@@ -183,6 +186,7 @@ function openAddTaskModal() {
   } else {
     calendarCategory.value = "No calendars available";
   }
+  console.log("hello");
 
   // Clear all values
   addTitle.value = "";
@@ -191,9 +195,11 @@ function openAddTaskModal() {
   endTime.value = "";
   repeatTask.value = "Don't Repeat";
   priorityLevel.value = "Medium";
+  console.log("hello");
 
   // Open add task modal
   add_task_modal.showModal();
+  console.log("hello");
 }
 
 function createTask() {
@@ -244,6 +250,7 @@ function createTask() {
     status: "CONFIRMED",
     summary: addTitle.value,
     transparency: "TRANSPARENT",
+    // Extra information added by TM
     description: addDescription.value,
     priority: priorityLevel.value,
   };
