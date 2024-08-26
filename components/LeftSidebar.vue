@@ -29,7 +29,6 @@
         </div>
       </nav>
       <div v-if="isSidebarOpen" class="p-2">
-        <AddTaskModal />
         <ShopModal />
         <SettingsModal />
         <ProfileModal />

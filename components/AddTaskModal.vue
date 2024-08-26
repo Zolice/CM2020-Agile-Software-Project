@@ -1,7 +1,8 @@
 <template>
   <!-- Add Task Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
+    class="btn btn-primary btn-sm text-center items-center"
+    type="button"
     :onclick="openAddTaskModal"
   >
     Add Task
