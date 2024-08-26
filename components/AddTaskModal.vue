@@ -171,15 +171,12 @@ const priorityLevel = ref("Medium");
 onMounted(() => {});
 
 function openAddTaskModal() {
-  console.log("hello");
   // Get all calendars
   // calendar list
   const calendars = backendSettings.value.getCalendars();
-  console.log("hello");
 
   // Get keys of calendar list
   calendarCategoryList.value = Object.keys(calendars);
-  console.log("hello");
 
   // Set the default calendar
   if (calendarCategoryList.value.length > 0) {
@@ -187,7 +184,6 @@ function openAddTaskModal() {
   } else {
     calendarCategory.value = "No calendars available";
   }
-  console.log("hello");
 
   // Clear all values
   addTitle.value = "";
@@ -196,11 +192,9 @@ function openAddTaskModal() {
   endTime.value = "";
   repeatTask.value = "Don't Repeat";
   priorityLevel.value = "Medium";
-  console.log("hello");
 
   // Open add task modal
   add_task_modal.showModal();
-  console.log("hello");
 }
 
 function createTask() {
