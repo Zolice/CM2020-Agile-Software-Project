@@ -326,8 +326,6 @@ const calendarFileError = ref("");
 const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
 
-onMounted(() => {});
-
 function openSettingsModal() {
   // Change page to general settings
   selected.value = true;
