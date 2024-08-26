@@ -32,7 +32,7 @@
               />
             </div>
             <!-- Date & Time Pickers -->
-            <div class="flex flex-row gap-4">
+            <div class="flex md:flex-row gap-4 flex-wrap">
               <div class="flex flex-col gap-1 items-start">
                 <span class="text-sm pl-2">Start Time</span>
                 <input
@@ -53,7 +53,8 @@
                   class="input input-bordered input-sm"
                 />
               </div>
-              <div class="flex flex-col justify-end">
+              <div class="flex flex-col gap-1 items-start">
+                <span class="text-sm pl-2">Repeat</span>
                 <!-- Repeat Task -->
                 <select
                   v-model="repeatTask"
