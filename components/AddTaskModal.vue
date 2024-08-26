@@ -216,6 +216,7 @@ function createTask() {
     // Extra information added by TM
     "description": "This is a description",
     "priority": "Medium",
+    "state": "Complete" // Complete, Incomplete
   }
   */
 
@@ -248,6 +249,7 @@ function createTask() {
     // Extra information added by TM
     description: addDescription.value,
     priority: priorityLevel.value,
+    state: "Incomplete",
   };
 
   // Add the event to the calendar
