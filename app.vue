@@ -51,12 +51,10 @@ onMounted(() => {
   if (window.innerWidth < 640) {
     isLeftSidebarOpen.value = false;
     isRightSidebarOpen.value = false;
-  }
-  else {
+  } else {
     isLeftSidebarOpen.value = true;
     isRightSidebarOpen.value = true;
   }
-
 });
 
 function setTheme(value) {
@@ -71,6 +69,12 @@ function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
 }
 
+function postNotification(type, message, duration = 5000) {
+  // TODO: Implement a proper notification system
+
+  alert(message);
+}
+
 watch(theme, (newTheme) => {
   localStorage.setItem("theme", newTheme);
 });
@@ -79,4 +83,5 @@ watch(theme, (newTheme) => {
 provide("setTheme", setTheme);
 provide("toggleLeftSidebar", toggleLeftSidebar);
 provide("isLeftSidebarOpen", isLeftSidebarOpen);
+provide("postNotification", postNotification);
 </script>
