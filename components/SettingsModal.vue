@@ -106,19 +106,24 @@
             </div>
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Appearance</h4>
-              <span class="text-sm">Theme input is temporary.</span>
-              <label
-                class="input input-bordered input-sm flex items-center gap-2 w-48"
+              <span class="text-sm"
+                >Choose a theme to use. You can buy more themes from the
+                store.</span
               >
-                Theme
-                <input
-                  v-model="theme"
-                  type="text"
-                  class="grow"
-                  placeholder="Theme"
-                  @change="themeChanged"
-                />
-              </label>
+            </div>
+            <div class="flex flex-row gap-2 flex-wrap">
+              <ThemeDisplayComponent
+                v-for="theme in themeList"
+                :key="theme"
+                :name="theme.name"
+                :theme="theme.theme"
+                :points="theme.points"
+                :badge="theme.applied"
+                badge-content="Applied"
+                display-type="settings"
+                message="Owned"
+                :click="themeChanged"
+              />
             </div>
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Reset all settings</h4>
@@ -361,7 +366,8 @@ const showWeekend = ref(true);
 const startWeekOn = ref("Monday");
 const dateFormat = ref("DD-MM-YY");
 const timeFormat = ref("12-Hour-Time");
-const theme = ref("dark");
+// const currentTheme = ref("dark");
+const themeList = ref([]);
 
 // Calendar Settings
 const calendarName = ref("");
@@ -374,11 +380,6 @@ const calendarFile = ref("");
 const calendarFileError = ref("");
 const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
-
-onMounted(() => {
-  // Get current theme
-  theme.value = backendSettings.value.getTheme();
-});
 
 function openSettingsModal() {
   // Change page to general settings
@@ -405,6 +406,9 @@ function openSettingsModal() {
   if (importFile) {
     importFile.value = "";
   }
+
+  // Get available themes
+  themeList.value = backendSettings.value.getAvailableThemes();
 
   // Open settings modal
   settings_modal.showModal();
@@ -435,8 +439,18 @@ function timeFormatChanged(event) {
   backendSettings.value.setTimeFormat(event.target.value);
 }
 
-function themeChanged(event) {
-  setTheme(event.target.value);
+function themeChanged(item, type) {
+  // Make sure this is for changing theme
+  if (type != "theme") return;
+
+  // Set the theme
+  setTheme(item.theme);
+
+  // add a 50ms delay for the theme value to be updated to backend
+  setTimeout(() => {
+    // Reload themes
+    themeList.value = backendSettings.value.getAvailableThemes();
+  }, 50);
 }
 
 function setColour(event) {

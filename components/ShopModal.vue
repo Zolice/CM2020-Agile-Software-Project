@@ -48,7 +48,8 @@
                 :name="theme.name"
                 :theme="theme.theme"
                 :points="theme.points"
-                :owned="theme.owned"
+                :badge="theme.owned"
+                badge-content="Owned"
                 :click="purchase"
                 message="Owned"
               />
@@ -133,7 +134,7 @@
             :name="purchaseItem.name"
             :theme="purchaseItem.theme"
             :points="purchaseItem.points"
-            :owned="false"
+            :badge="false"
           />
           <BorderComponent
             v-if="purchaseItemType == 'border'"
