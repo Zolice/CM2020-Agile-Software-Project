@@ -1,10 +1,11 @@
 <template>
   <div class="hero bg-base-200 min-h-screen">
     <div class="hero-content text-center">
-      <div class="max-w-md">
+      <div class="max-w-md flex flex-col gap-2 items-center">
         <h1 class="text-5xl font-bold">{{ title }}</h1>
         <p class="py-6">{{ msg }}</p>
-        <button class="btn btn-primary" @click="click">Get Started</button>
+        <button class="btn btn-primary w-fit" @click="click">Get Started</button>
+        <AddTaskModal />
       </div>
     </div>
   </div>
