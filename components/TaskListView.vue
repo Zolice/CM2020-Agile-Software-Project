@@ -11,24 +11,28 @@
         :description="task.description"
       />
     </div>
-    <span class="text-lg">Today's Tasks</span>
-    <TaskDisplay
-      v-for="task in todayTasks"
-      :key="task"
-      :name="task.summary"
-      :due-date="new Date(task.end).toLocaleString()"
-      colour="red"
-      :description="task.description"
-    />
-    <span class="text-lg">Upcoming</span>
-    <TaskDisplay
-      v-for="task in upcomingTasks"
-      :key="task"
-      :name="task.summary"
-      :due-date="new Date(task.end).toLocaleString()"
-      colour="green"
-      :description="task.description"
-    />
+    <div class="flex flex-col gap-1">
+      <span class="text-lg">Today's Tasks</span>
+      <TaskDisplay
+        v-for="task in todayTasks"
+        :key="task"
+        :name="task.summary"
+        :due-date="new Date(task.end).toLocaleString()"
+        colour="red"
+        :description="task.description"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="text-lg">Upcoming</span>
+      <TaskDisplay
+        v-for="task in upcomingTasks"
+        :key="task"
+        :name="task.summary"
+        :due-date="new Date(task.end).toLocaleString()"
+        colour="green"
+        :description="task.description"
+      />
+    </div>
   </div>
 </template>
 
@@ -55,25 +59,27 @@ function refresh() {
 
   // get each calendar
   keys.forEach((key) => {
-    let tasks = Object.keys(calendar[key].calendar);
-    // get each task
-    tasks.forEach((taskKey) => {
-      // if the task is overdue, add it to the overdueTasks list
-      let task = calendar[key].calendar[taskKey];
+    if (calendar[key].display) {
+      let tasks = Object.keys(calendar[key].calendar);
+      // get each task
+      tasks.forEach((taskKey) => {
+        // if the task is overdue, add it to the overdueTasks list
+        let task = calendar[key].calendar[taskKey];
 
-      let taskDate = new Date(task.end);
-      if (taskDate < today) {
-        overdueTasks.value.push(task);
-      }
-      // if the task is due today, add it to the todayTasks list
-      else if (taskDate == today) {
-        todayTasks.value.push(task);
-      }
-      // if the task is upcoming, add it to the upcomingTasks list
-      else {
-        upcomingTasks.value.push(task);
-      }
-    });
+        let taskDate = new Date(task.end);
+        if (taskDate < today) {
+          overdueTasks.value.push(task);
+        }
+        // if the task is due today, add it to the todayTasks list
+        else if (taskDate == today) {
+          todayTasks.value.push(task);
+        }
+        // if the task is upcoming, add it to the upcomingTasks list
+        else {
+          upcomingTasks.value.push(task);
+        }
+      });
+    }
   });
 
   // for each task list, sort by date

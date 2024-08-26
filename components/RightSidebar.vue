@@ -42,9 +42,7 @@
       >
         <!-- Sidebar content here -->
         <TaskListView v-if="sidebarType == 'Task List'" />
-        <div v-else class="flex flex-col gap-2 h-fit overflow-auto">
-          <span class="text-lg">Overdue</span>
-        </div>
+        <TimelineView v-else />
       </nav>
     </div>
   </div>

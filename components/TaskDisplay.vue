@@ -12,7 +12,7 @@
     >
       Due on {{ dueDate }}
     </span>
-    <span class="text-xs line-clamp-2 hover:line-clamp-6 text-start font-normal">
+    <span class="text-xs line-clamp-2 text-start font-normal">
       {{ description }}
     </span>
   </div>
