@@ -162,6 +162,22 @@ function createCalendar(name, calendar, colour) {
   return { success: true };
 }
 
+function getCalendars() {
+  // Get calendar from local storage
+  return JSON.parse(localStorage.getItem("calendars")) || {};
+}
+
+function addEvent(calendar, event) {
+  // Get calendar from local storage
+  const calendars = getCalendars();
+
+  // Add the event to the calendar
+  calendars[calendar].calendar[event.uid] = event;
+
+  // Save the updated calendars
+  localStorage.setItem("calendars", JSON.stringify(calendars));
+}
+
 function resetAllSettings() {
   localStorage.removeItem("settings");
   localStorage.removeItem("theme");
@@ -180,6 +196,8 @@ defineExpose({
   setTimeFormat,
   importCalendar,
   createCalendar,
+  getCalendars,
+  addEvent,
   resetAllSettings,
 });
 </script>
