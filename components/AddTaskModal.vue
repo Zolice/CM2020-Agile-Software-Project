@@ -35,9 +35,9 @@
               <div class="flex flex-col gap-1">
                 <span class="text-sm pl-2">Start Time</span>
                 <input
+                  id="startTime"
                   v-model="startTime"
                   type="datetime-local"
-                  id="startTime"
                   name="startTime"
                   class="input input-bordered input-sm"
                 />
@@ -45,9 +45,9 @@
               <div class="flex flex-col gap-1">
                 <span class="text-sm pl-2">End Time</span>
                 <input
+                  id="endTime"
                   v-model="endTime"
                   type="datetime-local"
-                  id="endTime"
                   name="endTime"
                   class="input input-bordered input-sm"
                 />
@@ -83,17 +83,17 @@
                 <select
                   v-model="calendarCategory"
                   class="select select-bordered select-sm w-fit max-w-xs"
-                  @change="calendarCategoryChanged"
                   :class="[
                     calendarCategory == 'No calendars available'
                       ? 'btn-disabled'
                       : '',
                   ]"
+                  @change="calendarCategoryChanged"
                 >
                   <option
+                    v-if="calendarCategoryList.length == 0"
                     selected
                     disabled
-                    v-if="calendarCategoryList.length == 0"
                   >
                     No calendars available
                   </option>
@@ -121,7 +121,11 @@
         </div>
         <!-- Discard & Save buttons-->
         <div class="flex flex-row gap-2 w-full justify-end items-center">
-          <span class="text-sm text-error">Create a calendar to add a task!</span>
+          <span
+            v-if="calendarCategory == 'No calendars available'"
+            class="text-sm text-error"
+            >Create a calendar to add a task!</span
+          >
           <button class="btn btn-sm btn-error" onclick="add_task_modal.close()">
             Discard
           </button>
@@ -179,7 +183,13 @@ function openAddTaskModal() {
     calendarCategory.value = "No calendars available";
   }
 
-  console.log(calendarCategory.value);
+  // Clear all values
+  addTitle.value = "";
+  addDescription.value = "";
+  startTime.value = "";
+  endTime.value = "";
+  repeatTask.value = "Don't Repeat";
+  priorityLevel.value = "Medium";
 
   // Open add task modal
   add_task_modal.showModal();
