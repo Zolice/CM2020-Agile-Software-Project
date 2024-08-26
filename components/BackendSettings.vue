@@ -1,5 +1,11 @@
+<template>
+  <BackendProfile ref="backendProfile" />
+</template>
+
 <script setup lang="jsx">
 import ical from "ical";
+
+const backendProfile = ref(null)
 
 let settings = {};
 
@@ -108,6 +114,31 @@ function getTheme() {
   return localStorage.getItem("theme") || "dark";
 }
 
+/**
+ * Get the available themes
+ * 
+ * @returns {Array} Available themes
+ */
+function getAvailableThemes() {
+  // get profile data from backend profile
+  const profileData = backendProfile.value.getProfileData();
+  
+  // get currently applied theme
+  const currentTheme = getTheme();
+
+  // add applied=true to the current theme
+  profileData.themes.forEach((theme) => {
+    if (theme.theme === currentTheme) {
+      theme.applied = true;
+    } else {
+      theme.applied = false;
+    }
+  });
+
+  // return the themes
+  return profileData.themes
+}
+
 function importCalendar(file) {
   const calendar = ical.parseICS(file);
   return calendar;
@@ -134,6 +165,7 @@ function createCalendar(name, calendar, colour) {
 defineExpose({
   getSettings,
   getTheme,
+  getAvailableThemes,
   setShowWeekend,
   setStartWeekOn,
   setDateFormat,
