@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row items-center space-x-2 justify-center mx-2">
-    <!-- Calendar Previous Month Button -->
+    <!-- Calendar Previous Button -->
     <button
       class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
@@ -22,12 +22,12 @@
       </svg>
     </button>
 
-    <!-- Calendar Month name -->
+    <!-- Calendar Name -->
     <h1 class="text-lg">
       {{ displayText }}
     </h1>
 
-    <!-- Calendar Next Month Button -->
+    <!-- Calendar Next Button -->
     <button
       class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
