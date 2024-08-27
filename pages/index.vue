@@ -119,60 +119,12 @@ function nextMonth() {
 
 <template>
   <div class="flex flex-row w-full p-2 px-4 justify-between">
-    <!-- Monthly view dropdown button -->
-    <button
-      id="dropdownDefaultButton"
-      data-dropdown-toggle="dropdownView"
-      class="btn btn-primary px-4 py-0.5 text-center items-center"
-      type="button"
-    >
-      {{ calendarViewType }}
-      <svg
-        class="w-2.5 h-1.5 ms-3"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 10 6"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="m1 1 4 4 4-4"
-        />
-      </svg>
-    </button>
-
-    <!-- Dropdown menu -->
-    <div
-      id="dropdownView"
-      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-    >
-      <ul
-        class="py-2 text-sm text-gray-700 dark:text-gray-200"
-        aria-labelledby="dropdownDefaultButton"
-      >
-        <li
-          @click="updateCalendarViewType('Weekly')"
-          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          Weekly
-        </li>
-        <li
-          @click="updateCalendarViewType('Daily')"
-          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          Daily
-        </li>
-        <li
-          @click="updateCalendarViewType('Monthly')"
-          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          Monthly
-        </li>
-      </ul>
-    </div>
+    <!-- Dropdown button to change views -->
+    <select v-model="calendarViewType" class="select select-sm">
+      <option>Monthly</option>
+      <option>Weekly</option>
+      <option>Daily</option>
+    </select>
 
     <!-- Arrows to navigate back and forth different months -->
     <NextCalendar
@@ -190,8 +142,9 @@ function nextMonth() {
     </button>
   </div>
 
+  <!-- Render monthly view -->
   <MonthlyView
-    :v-if="calendarViewType === 'Monthly'"
+    v-if="calendarViewType === 'Monthly'"
     :months="months"
     :dayNames="dayNames"
     :dates="dates"
@@ -202,7 +155,15 @@ function nextMonth() {
     :month="month"
   />
 
-  <div :v-else-if="calendarViewType === 'Weekly'">Supposed to be Weekly</div>
+  <!-- Render Weekly view -->
+  <!-- TODO: Replace with weekly view component -->
+  <div v-else-if="calendarViewType === 'Weekly'">Supposed to be Weekly</div>
+
+  <!-- Render Daily view -->
+  <!-- TODO: Replace with daily view component -->
+  <div v-else-if="calendarViewType === 'Daily'">
+    Supposed to be Daily View stuff
+  </div>
 
   <!-- Test for Listing tasks - to remove later -->
   <div
