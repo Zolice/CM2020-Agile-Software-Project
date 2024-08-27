@@ -1,5 +1,7 @@
 <script setup>
-var months = [
+const calendarViewType = ref("Monthly");
+const displayText = ref("");
+const months = [
   "JANUARY",
   "FEBRUARY",
   "MARCH",
@@ -13,18 +15,54 @@ var months = [
   "NOVEMBER",
   "DECEMBER",
 ];
-var dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-var dates = ref([]);
+const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const hours = [
+  "12:00 AM",
+  "01:00 AM",
+  "02:00 AM",
+  "03:00 AM",
+  "04:00 AM",
+  "05:00 AM",
+  "06:00 AM",
+  "07:00 AM",
+  "08:00 AM",
+  "09:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "01:00 PM",
+  "02:00 PM",
+  "03:00 PM",
+  "04:00 PM",
+  "05:00 PM",
+  "06:00 PM",
+  "07:00 PM",
+  "08:00 PM",
+  "09:00 PM",
+  "10:00 PM",
+  "11:00 PM",
+];
+const dates = ref([]);
 
-var previousDates = ref([]);
-var nextDates = ref([]);
-var firstSatDate = "";
+const previousDates = ref([]);
+const nextDates = ref([]);
+let firstSatDate = "";
+
 // set the default values to be the current date
-var year = new Date().getFullYear();
-var month = new Date().getMonth();
+let year = new Date().getFullYear();
+let month = new Date().getMonth();
+let day = new Date().getDate();
 
 onMounted(() => {
+  calendarViewType.value =
+    localStorage.getItem("calendarViewType") || "Monthly";
   updateDates();
+  updateDisplayText(calendarViewType.value);
+});
+
+watch(calendarViewType, (value) => {
+  localStorage.setItem("calendarViewType", value);
+  updateDisplayText(value);
 });
 
 function updateDates() {
@@ -32,7 +70,7 @@ function updateDates() {
   // Clear the dates array
   dates.value = [];
 
-  var d = new Date(year, month);
+  let d = new Date(year, month);
   if (!!d.getTime() && month <= 11 && month >= 0) {
     //to handle errors if arguments are not valid.
     while (d.getMonth() == month) {
@@ -49,7 +87,7 @@ function updateDates() {
   // Get the start day from settings
   const settings = JSON.parse(localStorage.getItem("settings")) || {};
   const startDay = settings.startWeekOn.substring(0, 3).toUpperCase() || "SUN";
-  
+
   d = new Date(year, month);
   previousDates.value = [];
   if (startDay != dayNames[d.getDay()]) {
@@ -78,135 +116,100 @@ function updateDates() {
   }
 }
 
-// previous month button
-function previousMonth() {
-  // Using current month, reduce it by 1 month
-  month -= 1;
-  // If the month is less than 0, set it to 11 (December) and reduce the year by 1
-  if (month < 0) {
-    month = 11;
-    year -= 1;
+// Changes the display text based on the view
+function updateDisplayText(view) {
+  if (view === "Monthly") {
+    displayText.value = `${months[month]} ${year}`;
   }
-
-  updateDates();
+  // TODO: Add for weekly view
+  if (view === "Daily") {
+    displayText.value = `${day} ${months[month]} ${year}, ${
+      dayNames[new Date(year, month, day).getDay()]
+    }`;
+  }
 }
 
-//Sample logic for next month button
-function nextMonth() {
-  // Using curent month, increase by 1
-  month += 1;
-  // If the month is more than 11, set it to 0 (January) and increase the year by 1
-  if (month > 11) {
-    month = 0;
-    year += 1;
+// Navigates the calendar based on the view and direction
+// view: Monthly, Weekly, Daily
+// direction: previous, next
+function navigateCalendar(view, direction) {
+  // For monthly view
+  if (view === "Monthly") {
+    // Previous month
+    if (direction === "previous") {
+      // Using current month, reduce it by 1 month
+      month -= 1;
+      // If the month is less than 0, set it to 11 (December) and reduce the year by 1
+      if (month < 0) {
+        month = 11;
+        year -= 1;
+      }
+    }
+    // Next month
+    else {
+      // Using curent month, increase by 1
+      month += 1;
+      // If the month is more than 11, set it to 0 (January) and increase the year by 1
+      if (month > 11) {
+        month = 0;
+        year += 1;
+      }
+    }
   }
+  // TODO: Add for weekly view
 
+  // For Daily view
+  else if (view === "Daily") {
+    // Previous week
+    if (direction === "previous") {
+      // Using current day, reduce it by 1 day
+      day -= 1;
+      // If the day is less than 1, set it to the last day of the previous month
+      if (day < 1) {
+        month -= 1;
+        if (month < 0) {
+          month = 11;
+          year -= 1;
+        }
+        day = new Date(year, month + 1, 0).getDate();
+      }
+    }
+    // Next week
+    else {
+      // Using current day, increase by 1 day
+      day += 1;
+      // If the day is more than the last day of the month, set it to 1
+      if (day > new Date(year, month + 1, 0).getDate()) {
+        day = 1;
+        month += 1;
+        if (month > 11) {
+          month = 0;
+          year += 1;
+        }
+      }
+    }
+  }
   updateDates();
+  updateDisplayText(view);
 }
 </script>
 
 <template>
   <div class="flex flex-row w-full p-2 px-4 justify-between">
-    <!-- Monthly view dropdown button -->
-    <button
-      id="dropdownDefaultButton"
-      data-dropdown-toggle="dropdownView"
-      class="btn btn-primary px-4 py-0.5 text-center items-center"
-      type="button"
-    >
-      Monthly
-      <svg
-        class="w-2.5 h-1.5 ms-3"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 10 6"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="m1 1 4 4 4-4"
-        />
-      </svg>
-    </button>
-    <!-- Dropdown menu -->
-    <div
-      id="dropdownView"
-      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-    >
-      <ul
-        class="py-2 text-sm text-gray-700 dark:text-gray-200"
-        aria-labelledby="dropdownDefaultButton"
-      >
-        <li>
-          <a
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Weekly</a
-          >
-        </li>
-        <li>
-          <a
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Daily</a
-          >
-        </li>
-      </ul>
-    </div>
+    <!-- Dropdown button to change views -->
+    <select v-model="calendarViewType" class="select select-sm">
+      <option>Monthly</option>
+      <option>Weekly</option>
+      <option>Daily</option>
+    </select>
 
-    <div class="flex flex-row items-center space-x-2 justify-center mx-2">
-      <!-- Calendar Previous Month Button -->
-      <button
-        class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
-        type="button"
-        @click="previousMonth"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
-      </button>
+    <!-- Arrows to navigate back and forth different months -->
+    <NextCalendar
+      :navigate-calendar="navigateCalendar"
+      :view="calendarViewType"
+      :display-text="displayText"
+    />
 
-      <!-- Calendar Month name -->
-      <h1 class="text-lg">
-        {{ months[month] + " " + year }}
-      </h1>
-
-      <!-- Calendar Next Month Button -->
-      <button
-        class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
-        type="button"
-        @click="nextMonth"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m8.25 4.5 7.5 7.5-7.5 7.5"
-          />
-        </svg>
-      </button>
-    </div>
     <!-- Add Task Button -->
     <button
       class="btn btn-primary px-4 py-0.5 text-center items-center"
@@ -216,71 +219,25 @@ function nextMonth() {
     </button>
   </div>
 
-  <div
-    class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 px-3 w-full"
-  >
-    <!-- Day Names -->
-    <div
-      class="dayNames-container grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-s leading-6 text-black"
-    >
-      <div
-        v-for="dayName in dayNames"
-        :class="[
-          'dayName text-center font-semibold bg-accent bg-opacity-50 py-2 lg:flex-none',
-          dayName,
-        ]"
-        :key="year + '-' + months[month] + '-' + dayName"
-      >
-        <h5>{{ dayName }}</h5>
-      </div>
-    </div>
-    <!-- Dates -->
-    <div class="dates-container grid grid-cols-7 gap-px">
-      <div
-        v-for="date in previousDates"
-        :class="[
-          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: 1/${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-      <div
-        v-for="date in dates"
-        :class="[
-          'date relative bg-base-200 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: ${
-          date.date > firstSatDate
-            ? Math.ceil((date.date - firstSatDate) / 7) + 1
-            : 1
-        }/${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-      <div
-        v-for="date in nextDates"
-        :class="[
-          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: ${
-          Math.ceil((31 - firstSatDate) / 7) + 1
-        }
-        /${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-    </div>
-  </div>
+  <!-- Render monthly view -->
+  <MonthlyView
+    v-if="calendarViewType === 'Monthly'"
+    :months="months"
+    :day-names="dayNames"
+    :dates="dates"
+    :previous-dates="previousDates"
+    :next-dates="nextDates"
+    :first-sat-date="firstSatDate"
+    :year="year"
+    :month="month"
+  />
+
+  <!-- Render Weekly view -->
+  <!-- TODO: Replace with weekly view component -->
+  <div v-else-if="calendarViewType === 'Weekly'">Supposed to be Weekly</div>
+
+  <!-- Render Daily view -->
+  <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />
 
   <!-- Test for Listing tasks - to remove later -->
   <div

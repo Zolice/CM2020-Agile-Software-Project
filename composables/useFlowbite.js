@@ -1,7 +1,7 @@
 export function useFlowbite(callback) {
-    if (process.client) {
-      import('flowbite').then((flowbite) => {
-        callback(flowbite);
-      });
-    }
+  if (import.meta.client) {
+    import("flowbite").then((flowbite) => {
+      callback(flowbite);
+    });
   }
+}
