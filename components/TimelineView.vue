@@ -53,7 +53,7 @@ function refresh() {
   // get list of keys
   const keys = Object.keys(calendar);
 
-  constallTasks = [];
+  const allTasks = [];
 
   // get each calendar
   keys.forEach((key) => {
