@@ -121,11 +121,11 @@ function updateDisplayText(view) {
   if (view === "Monthly") {
     displayText.value = `${months[month]} ${year}`;
   }
-  if (view === "Weekly") {
-    displayText.value = `${months[month]} ${year}`;
-  }
+  // TODO: Add for weekly view
   if (view === "Daily") {
-    displayText.value = `${months[month]} ${day}, ${year}`;
+    displayText.value = `${day} ${months[month]} ${year}, ${
+      dayNames[new Date(year, month, day).getDay()]
+    }`;
   }
 }
 
@@ -162,7 +162,6 @@ function navigateCalendar(view, direction) {
   else if (view === "Daily") {
     // Previous week
     if (direction === "previous") {
-      console.log(day);
       // Using current day, reduce it by 1 day
       day -= 1;
       // If the day is less than 1, set it to the last day of the previous month
