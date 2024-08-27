@@ -49,7 +49,7 @@ function updateDates() {
   // Get the start day from settings
   const settings = JSON.parse(localStorage.getItem("settings")) || {};
   const startDay = settings.startWeekOn.substring(0, 3).toUpperCase() || "SUN";
-  
+
   d = new Date(year, month);
   previousDates.value = [];
   if (startDay != dayNames[d.getDay()]) {
@@ -157,56 +157,13 @@ function nextMonth() {
       </ul>
     </div>
 
-    <div class="flex flex-row items-center space-x-2 justify-center mx-2">
-      <!-- Calendar Previous Month Button -->
-      <button
-        class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
-        type="button"
-        @click="previousMonth"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
-      </button>
+    <!-- Arrows to navigate back and forth different months -->
+    <NextCalendar
+      :previousFunction="previousMonth"
+      :nextFunction="nextMonth"
+      :displayText="`${months[month]} ${year}`"
+    />
 
-      <!-- Calendar Month name -->
-      <h1 class="text-lg">
-        {{ months[month] + " " + year }}
-      </h1>
-
-      <!-- Calendar Next Month Button -->
-      <button
-        class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
-        type="button"
-        @click="nextMonth"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m8.25 4.5 7.5 7.5-7.5 7.5"
-          />
-        </svg>
-      </button>
-    </div>
     <!-- Add Task Button -->
     <button
       class="btn btn-primary px-4 py-0.5 text-center items-center"
@@ -272,9 +229,7 @@ function nextMonth() {
         ]"
         :key="year + '-' + months[month] + '-' + date.date"
         :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: ${
-          Math.ceil((31 - firstSatDate) / 7) + 1
-        }
+        :style="`grid-area: ${Math.ceil((31 - firstSatDate) / 7) + 1}
         /${date.day + 1}/span 1/span 1`"
       >
         {{ date.date }}
