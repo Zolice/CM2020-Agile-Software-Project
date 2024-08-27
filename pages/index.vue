@@ -1,6 +1,6 @@
 <script setup>
 const calendarViewType = ref("Monthly");
-
+const displayText = ref("");
 var months = [
   "JANUARY",
   "FEBRUARY",
@@ -57,10 +57,12 @@ onMounted(() => {
   calendarViewType.value =
     localStorage.getItem("calendarViewType") || "Monthly";
   updateDates();
+  updateDisplayText(calendarViewType.value);
 });
 
 watch(calendarViewType, (value) => {
   localStorage.setItem("calendarViewType", value);
+  updateDisplayText(value);
 });
 
 function updateDates() {
@@ -114,10 +116,22 @@ function updateDates() {
   }
 }
 
-function displayText(view) {
-  return `${months[month]} ${year}`;
+// Changes the display text based on the view
+function updateDisplayText(view) {
+  if (view === "Monthly") {
+    displayText.value = `${months[month]} ${year}`;
+  }
+  if (view === "Weekly") {
+    displayText.value = `${months[month]} ${year}`;
+  }
+  if (view === "Daily") {
+    displayText.value = `${months[month]} ${day}, ${year}`;
+  }
 }
 
+// Navigates the calendar based on the view and direction
+// view: Monthly, Weekly, Daily
+// direction: previous, next
 function navigateCalendar(view, direction) {
   // For monthly view
   if (view === "Monthly") {
@@ -141,9 +155,8 @@ function navigateCalendar(view, direction) {
         year += 1;
       }
     }
-    updateDates();
   }
-  // TODO: Add for daily view
+  // TODO: Add for weekly view
 
   // For Daily view
   else if (view === "Daily") {
@@ -177,6 +190,8 @@ function navigateCalendar(view, direction) {
       }
     }
   }
+  updateDates();
+  updateDisplayText(view);
 }
 </script>
 
@@ -193,7 +208,7 @@ function navigateCalendar(view, direction) {
     <NextCalendar
       :navigateCalendar="navigateCalendar"
       :view="calendarViewType"
-      :displayText="`${months[month]} ${year}`"
+      :displayText="displayText"
     />
 
     <!-- Add Task Button -->
