@@ -4,7 +4,7 @@
   >
     <table class="table-auto w-full border-b border-black">
       <tbody>
-        <tr v-for="hour in hours">
+        <tr v-for="(hour, index) in hours" :key="index">
           <!-- Hours Column -->
           <td
             class="px-4 py-2 w-[10%] border-black bg-gray-200 text-s leading-6 text-black"
