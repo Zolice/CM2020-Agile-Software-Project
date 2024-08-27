@@ -1,5 +1,5 @@
 <script setup>
-const viewType = ref("Monthly");
+const calendarViewType = ref("Monthly");
 
 var months = [
   "JANUARY",
@@ -26,12 +26,17 @@ var year = new Date().getFullYear();
 var month = new Date().getMonth();
 
 onMounted(() => {
+  calendarViewType.value =
+    localStorage.getItem("calendarViewType") || "Monthly";
   updateDates();
 });
 
-function updateViewType(type) {
-  viewType.value = type;
-  dropdownOpen.value = false;
+watch(calendarViewType, (value) => {
+  localStorage.setItem("calendarViewType", value);
+});
+
+function updateCalendarViewType(type) {
+  calendarViewType.value = type;
 }
 
 function updateDates() {
@@ -121,7 +126,7 @@ function nextMonth() {
       class="btn btn-primary px-4 py-0.5 text-center items-center"
       type="button"
     >
-      {{ viewType }}
+      {{ calendarViewType }}
       <svg
         class="w-2.5 h-1.5 ms-3"
         aria-hidden="true"
@@ -149,19 +154,19 @@ function nextMonth() {
         aria-labelledby="dropdownDefaultButton"
       >
         <li
-          @click="updateViewType('Weekly')"
+          @click="updateCalendarViewType('Weekly')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Weekly
         </li>
         <li
-          @click="updateViewType('Daily')"
+          @click="updateCalendarViewType('Daily')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Daily
         </li>
         <li
-          @click="updateViewType('Monthly')"
+          @click="updateCalendarViewType('Monthly')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Monthly
@@ -186,7 +191,7 @@ function nextMonth() {
   </div>
 
   <MonthlyView
-    :v-if="viewType === 'Monthly'"
+    :v-if="calendarViewType === 'Monthly'"
     :months="months"
     :dayNames="dayNames"
     :dates="dates"
@@ -197,7 +202,7 @@ function nextMonth() {
     :month="month"
   />
 
-  <div :v-if="viewType === 'Weekly'">Supposed to be Weekly</div>
+  <div :v-else-if="calendarViewType === 'Weekly'">Supposed to be Weekly</div>
 
   <!-- Test for Listing tasks - to remove later -->
   <div
