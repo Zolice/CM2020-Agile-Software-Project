@@ -64,6 +64,8 @@
 </template>
 
 <script setup lang="jsx">
+const startRefresh = inject("startRefresh");
+
 defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
@@ -97,6 +99,9 @@ function toggleDisplayCalendar(calendar, value) {
 
   // save the updated list of calendars
   localStorage.setItem("calendars", JSON.stringify(calendars));
+
+  // call refresh function
+  startRefresh();
 }
 </script>
 

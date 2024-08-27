@@ -10,6 +10,7 @@
         colour="red"
         :description="task.description"
       />
+      <span v-if="overdueTasks.length == 0" class="text-xs">No tasks</span>
     </div>
     <div class="flex flex-col gap-1">
       <span class="text-lg">Today's Tasks</span>
@@ -21,6 +22,7 @@
         colour="red"
         :description="task.description"
       />
+      <span v-if="todayTasks.length == 0" class="text-xs">No tasks</span>
     </div>
     <div class="flex flex-col gap-1">
       <span class="text-lg">Upcoming</span>
@@ -32,20 +34,31 @@
         colour="green"
         :description="task.description"
       />
+      <span v-if="upcomingTasks.length == 0" class="text-xs">No tasks</span>
     </div>
   </div>
 </template>
 
 <script setup lang="jsx">
+const watchRefresh = inject("watchRefresh");
+
 const overdueTasks = ref([]);
 const todayTasks = ref([]);
 const upcomingTasks = ref([]);
 
 onMounted(() => {
   refresh();
+
+  // register refresh callback
+  watchRefresh(refresh)
 });
 
 function refresh() {
+  // clear all previous values
+  overdueTasks.value = [];
+  todayTasks.value = [];
+  upcomingTasks.value = [];
+
   // Get updated calendar list
   let calendar = JSON.parse(localStorage.getItem("calendars")) || {};
 

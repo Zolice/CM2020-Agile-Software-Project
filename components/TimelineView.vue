@@ -16,13 +16,21 @@
 </template>
 
 <script setup lang="jsx">
+const watchRefresh = inject("watchRefresh");
+
 const taskList = ref([]);
 
 onMounted(() => {
   refresh();
+
+  // register refresh callback
+  watchRefresh(refresh);
 });
 
 function refresh() {
+  // clear all previous values
+  taskList.value = [];
+
   // Get updated calendar list
   let calendar = JSON.parse(localStorage.getItem("calendars")) || {};
 
@@ -51,6 +59,7 @@ function refresh() {
 
   // get each calendar
   keys.forEach((key) => {
+    console.log(calendar[key].display)
     if (calendar[key].display) {
       let tasks = Object.keys(calendar[key].calendar);
       // get each task

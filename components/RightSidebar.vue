@@ -56,5 +56,13 @@ defineProps({
 });
 
 // Settings
-const sidebarType = ref("Timeline");
+const sidebarType = ref("Task List");
+
+onMounted(() => {
+  sidebarType.value = localStorage.getItem("sidebarView") || "Task List";
+});
+
+watch(sidebarType, (value) => {
+  localStorage.setItem("sidebarView", value);
+});
 </script>
