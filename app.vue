@@ -28,7 +28,10 @@
           <!-- Left Sidebar -->
         </button>
 
-        <button class="btn btn-md w-fit rounded-full" @click="toggleRightSidebar">
+        <button
+          class="btn btn-md w-fit rounded-full"
+          @click="toggleRightSidebar"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -64,8 +67,6 @@
 </template>
 
 <script setup lang="jsx">
-import { ref } from "vue";
-import { onMounted } from "vue";
 import { useFlowbite } from "~/composables/useFlowbite";
 
 const theme = ref("dark");
