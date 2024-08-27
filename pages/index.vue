@@ -205,9 +205,9 @@ function navigateCalendar(view, direction) {
 
     <!-- Arrows to navigate back and forth different months -->
     <NextCalendar
-      :navigateCalendar="navigateCalendar"
+      :navigate-calendar="navigateCalendar"
       :view="calendarViewType"
-      :displayText="displayText"
+      :display-text="displayText"
     />
 
     <!-- Add Task Button -->
@@ -223,11 +223,11 @@ function navigateCalendar(view, direction) {
   <MonthlyView
     v-if="calendarViewType === 'Monthly'"
     :months="months"
-    :dayNames="dayNames"
+    :day-names="dayNames"
     :dates="dates"
-    :previousDates="previousDates"
-    :nextDates="nextDates"
-    :firstSatDate="firstSatDate"
+    :previous-dates="previousDates"
+    :next-dates="nextDates"
+    :first-sat-date="firstSatDate"
     :year="year"
     :month="month"
   />
