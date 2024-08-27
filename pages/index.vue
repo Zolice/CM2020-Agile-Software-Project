@@ -1,4 +1,6 @@
 <script setup>
+var viewType = "Monthly";
+
 var months = [
   "JANUARY",
   "FEBRUARY",
@@ -114,7 +116,7 @@ function nextMonth() {
       class="btn btn-primary px-4 py-0.5 text-center items-center"
       type="button"
     >
-      Monthly
+      {{ viewType }}
       <svg
         class="w-2.5 h-1.5 ms-3"
         aria-hidden="true"
@@ -140,23 +142,26 @@ function nextMonth() {
         class="py-2 text-sm text-gray-700 dark:text-gray-200"
         aria-labelledby="dropdownDefaultButton"
       >
-        <li>
-          <a
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Weekly</a
-          >
+        <li
+          @click="viewType = 'Weekly'"
+          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          Weekly
         </li>
-        <li>
-          <a
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Daily</a
-          >
+        <li
+          @click="viewType = 'Daily'"
+          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          Daily
+        </li>
+        <li
+          @click="viewType = 'Monthly'"
+          class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          Monthly
         </li>
       </ul>
     </div>
-
     <!-- Arrows to navigate back and forth different months -->
     <NextCalendar
       :previousFunction="previousMonth"
@@ -173,69 +178,16 @@ function nextMonth() {
     </button>
   </div>
 
-  <div
-    class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 px-3 w-full"
-  >
-    <!-- Day Names -->
-    <div
-      class="dayNames-container grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-s leading-6 text-black"
-    >
-      <div
-        v-for="dayName in dayNames"
-        :class="[
-          'dayName text-center font-semibold bg-accent bg-opacity-50 py-2 lg:flex-none',
-          dayName,
-        ]"
-        :key="year + '-' + months[month] + '-' + dayName"
-      >
-        <h5>{{ dayName }}</h5>
-      </div>
-    </div>
-    <!-- Dates -->
-    <div class="dates-container grid grid-cols-7 gap-px">
-      <div
-        v-for="date in previousDates"
-        :class="[
-          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: 1/${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-      <div
-        v-for="date in dates"
-        :class="[
-          'date relative bg-base-200 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: ${
-          date.date > firstSatDate
-            ? Math.ceil((date.date - firstSatDate) / 7) + 1
-            : 1
-        }/${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-      <div
-        v-for="date in nextDates"
-        :class="[
-          'date relative bg-base-100 px-3 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
-        :key="year + '-' + months[month] + '-' + date.date"
-        :id="year + '-' + month + '-' + date.date"
-        :style="`grid-area: ${Math.ceil((31 - firstSatDate) / 7) + 1}
-        /${date.day + 1}/span 1/span 1`"
-      >
-        {{ date.date }}
-      </div>
-    </div>
-  </div>
+  <MonthlyView
+    :months="months"
+    :dayNames="dayNames"
+    :dates="dates"
+    :previousDates="previousDates"
+    :nextDates="nextDates"
+    :firstSatDate="firstSatDate"
+    :year="year"
+    :month="month"
+  />
 
   <!-- Test for Listing tasks - to remove later -->
   <div
