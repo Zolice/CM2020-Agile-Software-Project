@@ -1,7 +1,7 @@
 <script setup>
 const calendarViewType = ref("Monthly");
 const displayText = ref("");
-var months = [
+const months = [
   "JANUARY",
   "FEBRUARY",
   "MARCH",
@@ -15,7 +15,7 @@ var months = [
   "NOVEMBER",
   "DECEMBER",
 ];
-var dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const hours = [
   "12:00 AM",
   "01:00 AM",
@@ -42,16 +42,16 @@ const hours = [
   "10:00 PM",
   "11:00 PM",
 ];
-var dates = ref([]);
+const dates = ref([]);
 
-var previousDates = ref([]);
-var nextDates = ref([]);
-var firstSatDate = "";
+const previousDates = ref([]);
+const nextDates = ref([]);
+let firstSatDate = "";
 
 // set the default values to be the current date
-var year = new Date().getFullYear();
-var month = new Date().getMonth();
-var day = new Date().getDate();
+let year = new Date().getFullYear();
+let month = new Date().getMonth();
+let day = new Date().getDate();
 
 onMounted(() => {
   calendarViewType.value =
@@ -70,7 +70,7 @@ function updateDates() {
   // Clear the dates array
   dates.value = [];
 
-  var d = new Date(year, month);
+  let d = new Date(year, month);
   if (!!d.getTime() && month <= 11 && month >= 0) {
     //to handle errors if arguments are not valid.
     while (d.getMonth() == month) {
