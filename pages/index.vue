@@ -21,6 +21,7 @@ var dates = ref([]);
 var previousDates = ref([]);
 var nextDates = ref([]);
 var firstSatDate = "";
+
 // set the default values to be the current date
 var year = new Date().getFullYear();
 var month = new Date().getMonth();
@@ -34,10 +35,6 @@ onMounted(() => {
 watch(calendarViewType, (value) => {
   localStorage.setItem("calendarViewType", value);
 });
-
-function updateCalendarViewType(type) {
-  calendarViewType.value = type;
-}
 
 function updateDates() {
   // Assume the value months and year are set
