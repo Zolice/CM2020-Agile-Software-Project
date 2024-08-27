@@ -51,6 +51,7 @@ var firstSatDate = "";
 // set the default values to be the current date
 var year = new Date().getFullYear();
 var month = new Date().getMonth();
+var day = new Date().getDate();
 
 onMounted(() => {
   calendarViewType.value =
@@ -113,30 +114,69 @@ function updateDates() {
   }
 }
 
-// previous month button
-function previousMonth() {
-  // Using current month, reduce it by 1 month
-  month -= 1;
-  // If the month is less than 0, set it to 11 (December) and reduce the year by 1
-  if (month < 0) {
-    month = 11;
-    year -= 1;
-  }
-
-  updateDates();
+function displayText(view) {
+  return `${months[month]} ${year}`;
 }
 
-//Sample logic for next month button
-function nextMonth() {
-  // Using curent month, increase by 1
-  month += 1;
-  // If the month is more than 11, set it to 0 (January) and increase the year by 1
-  if (month > 11) {
-    month = 0;
-    year += 1;
+function navigateCalendar(view, direction) {
+  // For monthly view
+  if (view === "Monthly") {
+    // Previous month
+    if (direction === "previous") {
+      // Using current month, reduce it by 1 month
+      month -= 1;
+      // If the month is less than 0, set it to 11 (December) and reduce the year by 1
+      if (month < 0) {
+        month = 11;
+        year -= 1;
+      }
+    }
+    // Next month
+    else {
+      // Using curent month, increase by 1
+      month += 1;
+      // If the month is more than 11, set it to 0 (January) and increase the year by 1
+      if (month > 11) {
+        month = 0;
+        year += 1;
+      }
+    }
+    updateDates();
   }
+  // TODO: Add for daily view
 
-  updateDates();
+  // For Daily view
+  else if (view === "Daily") {
+    // Previous week
+    if (direction === "previous") {
+      console.log(day);
+      // Using current day, reduce it by 1 day
+      day -= 1;
+      // If the day is less than 1, set it to the last day of the previous month
+      if (day < 1) {
+        month -= 1;
+        if (month < 0) {
+          month = 11;
+          year -= 1;
+        }
+        day = new Date(year, month + 1, 0).getDate();
+      }
+    }
+    // Next week
+    else {
+      // Using current day, increase by 1 day
+      day += 1;
+      // If the day is more than the last day of the month, set it to 1
+      if (day > new Date(year, month + 1, 0).getDate()) {
+        day = 1;
+        month += 1;
+        if (month > 11) {
+          month = 0;
+          year += 1;
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -151,8 +191,8 @@ function nextMonth() {
 
     <!-- Arrows to navigate back and forth different months -->
     <NextCalendar
-      :previousFunction="previousMonth"
-      :nextFunction="nextMonth"
+      :navigateCalendar="navigateCalendar"
+      :view="calendarViewType"
       :displayText="`${months[month]} ${year}`"
     />
 

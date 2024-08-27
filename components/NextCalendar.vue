@@ -4,7 +4,7 @@
     <button
       class="btn font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
-      @click="previousFunction"
+      @click="navigateCalendar(view, 'previous')"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@
     <button
       class="btn font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
-      @click="nextFunction"
+      @click="navigateCalendar(view, 'next')"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -53,8 +53,8 @@
 
 <script setup lang="jsx">
 defineProps({
-  previousFunction: Function,
-  nextFunction: Function,
+  navigateCalendar: Function,
+  view: String,
   displayText: String,
 });
 </script>
