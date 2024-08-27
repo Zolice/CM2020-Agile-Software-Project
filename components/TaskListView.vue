@@ -60,26 +60,25 @@ function refresh() {
   upcomingTasks.value = [];
 
   // Get updated calendar list
-  let calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
 
   // get today's date
-  let today = new Date();
-  console.log(today);
+  const today = new Date();
 
   // for each calendar, if it's to be displayed, parse through all the tasks
   // get list of keys
-  let keys = Object.keys(calendar);
+  const keys = Object.keys(calendar);
 
   // get each calendar
   keys.forEach((key) => {
     if (calendar[key].display) {
-      let tasks = Object.keys(calendar[key].calendar);
+      const tasks = Object.keys(calendar[key].calendar);
       // get each task
       tasks.forEach((taskKey) => {
         // if the task is overdue, add it to the overdueTasks list
-        let task = calendar[key].calendar[taskKey];
+        const task = calendar[key].calendar[taskKey];
 
-        let taskDate = new Date(task.end);
+        const taskDate = new Date(task.end);
         if (taskDate < today) {
           overdueTasks.value.push(task);
         }
