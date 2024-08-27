@@ -1,5 +1,5 @@
 <script setup>
-var viewType = "Monthly";
+const viewType = ref("Monthly");
 
 var months = [
   "JANUARY",
@@ -28,6 +28,11 @@ var month = new Date().getMonth();
 onMounted(() => {
   updateDates();
 });
+
+function updateViewType(type) {
+  viewType.value = type;
+  dropdownOpen.value = false;
+}
 
 function updateDates() {
   // Assume the value months and year are set
@@ -133,6 +138,7 @@ function nextMonth() {
         />
       </svg>
     </button>
+
     <!-- Dropdown menu -->
     <div
       id="dropdownView"
@@ -143,25 +149,26 @@ function nextMonth() {
         aria-labelledby="dropdownDefaultButton"
       >
         <li
-          @click="viewType = 'Weekly'"
+          @click="updateViewType('Weekly')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Weekly
         </li>
         <li
-          @click="viewType = 'Daily'"
+          @click="updateViewType('Daily')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Daily
         </li>
         <li
-          @click="viewType = 'Monthly'"
+          @click="updateViewType('Monthly')"
           class="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Monthly
         </li>
       </ul>
     </div>
+
     <!-- Arrows to navigate back and forth different months -->
     <NextCalendar
       :previousFunction="previousMonth"
@@ -179,6 +186,7 @@ function nextMonth() {
   </div>
 
   <MonthlyView
+    :v-if="viewType === 'Monthly'"
     :months="months"
     :dayNames="dayNames"
     :dates="dates"
@@ -188,6 +196,8 @@ function nextMonth() {
     :year="year"
     :month="month"
   />
+
+  <div :v-if="viewType === 'Weekly'">Supposed to be Weekly</div>
 
   <!-- Test for Listing tasks - to remove later -->
   <div
