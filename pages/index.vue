@@ -133,61 +133,51 @@ function updateDisplayText(view) {
 // view: Monthly, Weekly, Daily
 // direction: previous, next
 function navigateCalendar(view, direction) {
-  // For monthly view
-  if (view === "Monthly") {
-    // Previous month
-    if (direction === "previous") {
-      // Using current month, reduce it by 1 month
-      month -= 1;
-      // If the month is less than 0, set it to 11 (December) and reduce the year by 1
-      if (month < 0) {
-        month = 11;
-        year -= 1;
-      }
-    }
-    // Next month
-    else {
-      // Using curent month, increase by 1
-      month += 1;
-      // If the month is more than 11, set it to 0 (January) and increase the year by 1
-      if (month > 11) {
-        month = 0;
-        year += 1;
-      }
-    }
-  }
-  // TODO: Add for weekly view
-
-  // For Daily view
-  else if (view === "Daily") {
-    // Previous week
-    if (direction === "previous") {
-      // Using current day, reduce it by 1 day
-      day -= 1;
-      // If the day is less than 1, set it to the last day of the previous month
-      if (day < 1) {
+  switch (view) {
+    case "Monthly":
+      if (direction === "previous") {
         month -= 1;
         if (month < 0) {
           month = 11;
           year -= 1;
         }
-        day = new Date(year, month + 1, 0).getDate();
-      }
-    }
-    // Next week
-    else {
-      // Using current day, increase by 1 day
-      day += 1;
-      // If the day is more than the last day of the month, set it to 1
-      if (day > new Date(year, month + 1, 0).getDate()) {
-        day = 1;
+      } else {
         month += 1;
         if (month > 11) {
           month = 0;
           year += 1;
         }
       }
-    }
+      break;
+    // TODO: Add for weekly view
+    case "Daily":
+      if (direction === "previous") {
+        day -= 1;
+        if (day < 1) {
+          month -= 1;
+          if (month < 0) {
+            month = 11;
+            year -= 1;
+          }
+          day = new Date(year, month + 1, 0).getDate();
+        }
+      } else {
+        day += 1;
+        if (day > new Date(year, month + 1, 0).getDate()) {
+          day = 1;
+          month += 1;
+          if (month > 11) {
+            month = 0;
+            year += 1;
+          }
+        }
+      }
+      break;
+    case "Weekly":
+      //TODO: Implement weekly navigation
+      break;
+    default:
+      break;
   }
   updateDates();
   updateDisplayText(view);
