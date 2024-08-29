@@ -517,7 +517,7 @@ function createCalendar() {
   settings_modal.close();
 
   // Display a notification
-  postNotification("success", `${calendarName.value} created!`, "success");
+  postNotification("success", `${calendarName.value} created!`, 5000);
 }
 
 function resetAllSettings() {
