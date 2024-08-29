@@ -105,7 +105,6 @@
                   >
                     {{ category }}
                   </option>
-                  <!-- <option>Assignment</option> -->
                 </select>
               </div>
             </div>
