@@ -131,10 +131,10 @@
                 By resetting all settings, the following will be removed:
               </span>
               <ul class="list-disc pl-8">
-                    <li>Calendar data</li>
-                    <li>Profile data</li>
-                    <li>All settings</li>
-                    <li>Appearance settings</li>
+                <li>Calendar data</li>
+                <li>Profile data</li>
+                <li>All settings</li>
+                <li>Appearance settings</li>
               </ul>
               <span class="text-warning">This action cannot be reversed. </span>
               <!-- Open the modal using ID.showModal() method -->
@@ -354,6 +354,9 @@
 <script setup lang="jsx">
 import { ref } from "vue";
 
+const postNotification = inject("postNotification");
+const startRefresh = inject("startRefresh");
+
 // Backend Settings Component
 const backendSettings = ref(null);
 const setTheme = inject("setTheme");
@@ -501,17 +504,26 @@ function createCalendar() {
   if (result.error) {
     calendarError.value = result.error;
     calendarSuccess.value = "";
+    return;
   } else if (result.success) {
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
+
+  // Refresh all components
+  startRefresh();
+
+  // Close the modal
+  settings_modal.close();
+
+  // Display a notification
+  postNotification("success", `${calendarName.value} created!`, "success");
 }
 
 function resetAllSettings() {
   // Reset all settings
   backendSettings.value.resetAllSettings();
 
-  console.log("shd be clear")
   // Refresh the page
   location.reload();
 }
