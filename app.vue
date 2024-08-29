@@ -34,6 +34,26 @@
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
+
+    <!-- Notifications -->
+    <div class="toast z-50">
+      <!-- <NotificationDisplay
+        type="info"
+        title="Complete"
+        message="Irure proident est eiusmod excepteur adipisicing do velit et occaecat enim voluptate quis. Quis voluptate in pariatur ullamco consequat nisi commodo ipsum ea nisi reprehenderit duis deserunt. Nulla Lorem minim fugiat culpa esse ex sint dolore ipsum fugiat ullamco eiusmod fugiat aliqua. Aliqua labore reprehenderit Lorem irure. Adipisicing ex mollit dolore consectetur. Nostrud deserunt eu consequat nulla ea esse laborum sit nulla enim dolor ut. Aliquip mollit consectetur cupidatat ad ea minim id laboris."
+        duration="5000"
+        img="/borders/border1.jpg"
+      /> -->
+      <NotificationDisplay
+        v-for="notification in notifications"
+        :key="notification.title"
+        :type="notification.type"
+        :title="notification.title"
+        :message="notification.message"
+        :duration="notification.duration"
+        :img="notification.img"
+      />
+    </div>
   </div>
 </template>
 
@@ -46,6 +66,8 @@ const isRightSidebarOpen = ref(false);
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
+
+const notifications = ref([]);
 
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
@@ -72,10 +94,36 @@ function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
 }
 
-function postNotification(type, message, duration = 5000) {
-  // TODO: Implement a proper notification system
+function postNotification(
+  type = "info",
+  title,
+  message,
+  duration = 10000,
+  img = ""
+) {
 
-  alert(message);
+  // create notification object
+  const notification = {
+    type,
+    title,
+    message,
+    duration,
+    img,
+  };
+
+    // Add notification to the list
+  notifications.value.push(notification);
+
+  // Remove notification after duration
+  setTimeout(() => {
+    // Delete the notification
+    notifications.value.splice(
+      notifications.value.findIndex((n) => {
+        n != notification;
+      }),
+      1
+    );
+  }, duration);
 }
 
 watch(theme, (newTheme) => {
