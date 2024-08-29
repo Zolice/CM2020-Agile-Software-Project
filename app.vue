@@ -37,13 +37,6 @@
 
     <!-- Notifications -->
     <div class="toast z-50">
-      <!-- <NotificationDisplay
-        type="info"
-        title="Complete"
-        message="Irure proident est eiusmod excepteur adipisicing do velit et occaecat enim voluptate quis. Quis voluptate in pariatur ullamco consequat nisi commodo ipsum ea nisi reprehenderit duis deserunt. Nulla Lorem minim fugiat culpa esse ex sint dolore ipsum fugiat ullamco eiusmod fugiat aliqua. Aliqua labore reprehenderit Lorem irure. Adipisicing ex mollit dolore consectetur. Nostrud deserunt eu consequat nulla ea esse laborum sit nulla enim dolor ut. Aliquip mollit consectetur cupidatat ad ea minim id laboris."
-        duration="5000"
-        img="/borders/border1.jpg"
-      /> -->
       <NotificationDisplay
         v-for="notification in notifications"
         :key="notification.title"
