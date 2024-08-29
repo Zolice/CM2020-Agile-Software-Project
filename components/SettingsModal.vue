@@ -1,10 +1,11 @@
 <template>
   <!-- Settings Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
-    :onclick="openSettingsModal"
+    class="btn btn-sm btn-secondary w-full flex flex-row"
+    @click="openSettingsModal"
   >
-    Settings
+    <i class="bi bi-gear-fill"></i>
+    <span class="text-center">Settings</span>
   </button>
 
   <!-- Settings Modal -->
@@ -123,6 +124,60 @@
                 message="Owned"
                 :click="themeChanged"
               />
+            </div>
+            <div class="flex flex-col gap-1">
+              <h4 class="text-2xl">Reset all settings</h4>
+              <span>
+                By resetting all settings, the following will be removed:
+              </span>
+              <ul class="list-disc pl-8">
+                    <li>Calendar data</li>
+                    <li>Profile data</li>
+                    <li>All settings</li>
+                    <li>Appearance settings</li>
+              </ul>
+              <span class="text-warning">This action cannot be reversed. </span>
+              <!-- Open the modal using ID.showModal() method -->
+              <button
+                class="btn btn-error w-48"
+                onclick="reset_modal.showModal()"
+              >
+                Reset
+              </button>
+              <dialog id="reset_modal" class="modal">
+                <div class="modal-box flex flex-col">
+                  <h3 class="text-lg font-bold">Reset all settings</h3>
+                  <span>
+                    By resetting all settings, the following will be removed:
+                  </span>
+                  <ul class="list-disc pl-8">
+                    <li>Calendar data</li>
+                    <li>Profile data</li>
+                    <li>All settings</li>
+                    <li>Appearance settings</li>
+                  </ul>
+                  <span class="text-warning">
+                    This action cannot be reversed.
+                  </span>
+                  <div class="flex flex-row gap-2 justify-end w-full">
+                    <button
+                      class="btn btn-md btn-error"
+                      onclick="reset_modal.close()"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="btn btn-md btn-primary"
+                      @click="resetAllSettings"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
             </div>
           </div>
           <!-- Calendar -->
@@ -450,5 +505,14 @@ function createCalendar() {
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
+}
+
+function resetAllSettings() {
+  // Reset all settings
+  backendSettings.value.resetAllSettings();
+
+  console.log("shd be clear")
+  // Refresh the page
+  location.reload();
 }
 </script>
