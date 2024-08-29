@@ -1,5 +1,4 @@
 <template>
-  <!-- cursor-pointer hover:bg-base-100 -->
   <div class="flex flex-col btn btn-ghost h-fit items-start p-1 gap-1">
     <span class="line-clamp-1 text-start">{{ name }}</span>
     <span

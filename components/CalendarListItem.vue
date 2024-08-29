@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-center gap-2">
-    <!-- <input type="checkbox" v-model="checked" :class="classValue" /> -->
     <input
       v-model="displayCheck"
       type="checkbox"
