@@ -82,7 +82,6 @@
         :style="`grid-area: ${Math.ceil((31 - firstSatDate) / 7) + 1}
         /${date.day + 1}/span 1/span 1`"
       >
-        <h5></h5>
         {{ date.date }}
         
       </div>
