@@ -12,7 +12,10 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "bootstrap-icons": "^1.11.3",
+    "flowbite": "^2.5.1",
+    "flowbite-vue": "^0.1.5",
     "ical": "^0.8.0",
     "nuxt": "^3.12.3",
     "vue": "^3.4.31"
@@ -21,6 +24,7 @@
     "@nuxt/eslint": "^0.3.13",
     "daisyui": "^4.12.10",
     "eslint": "^8.57.0",
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.4",
+    "vite-plugin-vuetify": "^2.0.4"
   }
 }
