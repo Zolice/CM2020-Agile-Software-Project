@@ -77,7 +77,7 @@
 
               <div class="w-full flex items-center justify-around">
                 <!-- Level progress bar -->
-                <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
+                <LevelProgressBar :score-width="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
                 <span>Score: {{ score }}</span>
