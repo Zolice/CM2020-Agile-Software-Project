@@ -2,10 +2,11 @@
   <!-- TODO: Make the mobile view of this -->
   <!-- Profile Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
+    class="btn btn-md btn-accent w-full flex flex-row"
     @click="openProfileModal"
   >
-    Profile
+    <img :src="avatar" alt="Avatar" class="rounded-full w-6 h-6" />
+    <span class="grow text-center"> {{ userName }} </span>
   </button>
 
   <!-- Profile Modal -->
@@ -138,6 +139,14 @@ const editing = ref(false);
 const badges = ref([]);
 const nametags = ref([]);
 const borders = ref([]);
+
+onMounted(() => {
+  // Get profile name and user name)
+  userName.value = backendProfile.value.getUserName();
+
+  const profile = backendProfile.value.getProfileData();
+  avatar.value = profile.avatar;
+});
 
 function openProfileModal() {
   // Get username from backend

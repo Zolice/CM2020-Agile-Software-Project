@@ -154,7 +154,7 @@ function createCalendar(name, calendar, colour) {
   }
 
   // Add the new calendar
-  calendars[name] = { colour: colour, calendar: calendar };
+  calendars[name] = { colour: colour, display: true, calendar: calendar };
 
   // Save the updated calendars
   localStorage.setItem("calendars", JSON.stringify(calendars));
@@ -178,6 +178,14 @@ function addEvent(calendar, event) {
   localStorage.setItem("calendars", JSON.stringify(calendars));
 }
 
+function resetAllSettings() {
+  localStorage.removeItem("settings");
+  localStorage.removeItem("theme");
+  localStorage.removeItem("calendars");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("profileData");
+}
+
 defineExpose({
   getSettings,
   getTheme,
@@ -190,5 +198,6 @@ defineExpose({
   createCalendar,
   getCalendars,
   addEvent,
+  resetAllSettings,
 });
 </script>

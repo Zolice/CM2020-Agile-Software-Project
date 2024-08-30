@@ -37,7 +37,6 @@ const item = {
 };
 
 function clickHandler() {
-  // console.log(click)
   props.click(item, "nameTag");
 }
 </script>

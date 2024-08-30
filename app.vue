@@ -73,6 +73,9 @@ const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
 
+// Refresh callbacks
+const refreshCallbacks = ref([]);
+
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
   useFlowbite(() => {
@@ -111,9 +114,18 @@ watch(theme, (newTheme) => {
   localStorage.setItem("theme", newTheme);
 });
 
+function watchRefresh(callback) {
+  refreshCallbacks.value.push(callback);
+}
+
+function startRefresh() {
+  refreshCallbacks.value.forEach((callback) => callback());
+}
 // Provide functions for NuxtPage
 provide("setTheme", setTheme);
 provide("toggleLeftSidebar", toggleLeftSidebar);
 provide("isLeftSidebarOpen", isLeftSidebarOpen);
 provide("postNotification", postNotification);
+provide("watchRefresh", watchRefresh);
+provide("startRefresh", startRefresh);
 </script>
