@@ -1,10 +1,11 @@
 <template>
   <!-- Settings Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
-    :onclick="openSettingsModal"
+    class="btn btn-sm btn-secondary w-full flex flex-row"
+    @click="openSettingsModal"
   >
-    Settings
+    <i class="bi bi-gear-fill"></i>
+    <span class="text-center">Settings</span>
   </button>
 
   <!-- Settings Modal -->
@@ -105,19 +106,78 @@
             </div>
             <div class="flex flex-col gap-1">
               <h4 class="text-2xl">Appearance</h4>
-              <span class="text-sm">Theme input is temporary.</span>
-              <label
-                class="input input-bordered input-sm flex items-center gap-2 w-48"
+              <span class="text-sm"
+                >Choose a theme to use. You can buy more themes from the
+                store.</span
               >
-                Theme
-                <input
-                  v-model="theme"
-                  type="text"
-                  class="grow"
-                  placeholder="Theme"
-                  @change="themeChanged"
-                />
-              </label>
+            </div>
+            <div class="flex flex-row gap-2 flex-wrap">
+              <ThemeDisplayComponent
+                v-for="theme in themeList"
+                :key="theme"
+                :name="theme.name"
+                :theme="theme.theme"
+                :points="theme.points"
+                :badge="theme.applied"
+                badge-content="Applied"
+                display-type="settings"
+                message="Owned"
+                :click="themeChanged"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <h4 class="text-2xl">Reset all settings</h4>
+              <span>
+                By resetting all settings, the following will be removed:
+              </span>
+              <ul class="list-disc pl-8">
+                <li>Calendar data</li>
+                <li>Profile data</li>
+                <li>All settings</li>
+                <li>Appearance settings</li>
+              </ul>
+              <span class="text-warning">This action cannot be reversed. </span>
+              <!-- Open the modal using ID.showModal() method -->
+              <button
+                class="btn btn-error w-48"
+                onclick="reset_modal.showModal()"
+              >
+                Reset
+              </button>
+              <dialog id="reset_modal" class="modal">
+                <div class="modal-box flex flex-col">
+                  <h3 class="text-lg font-bold">Reset all settings</h3>
+                  <span>
+                    By resetting all settings, the following will be removed:
+                  </span>
+                  <ul class="list-disc pl-8">
+                    <li>Calendar data</li>
+                    <li>Profile data</li>
+                    <li>All settings</li>
+                    <li>Appearance settings</li>
+                  </ul>
+                  <span class="text-warning">
+                    This action cannot be reversed.
+                  </span>
+                  <div class="flex flex-row gap-2 justify-end w-full">
+                    <button
+                      class="btn btn-md btn-error"
+                      onclick="reset_modal.close()"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="btn btn-md btn-primary"
+                      @click="resetAllSettings"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
             </div>
           </div>
           <!-- Calendar -->
@@ -294,6 +354,9 @@
 <script setup lang="jsx">
 import { ref } from "vue";
 
+const postNotification = inject("postNotification");
+const startRefresh = inject("startRefresh");
+
 // Backend Settings Component
 const backendSettings = ref(null);
 const setTheme = inject("setTheme");
@@ -306,7 +369,8 @@ const showWeekend = ref(true);
 const startWeekOn = ref("Monday");
 const dateFormat = ref("DD-MM-YY");
 const timeFormat = ref("12-Hour-Time");
-const theme = ref("dark");
+// const currentTheme = ref("dark");
+const themeList = ref([]);
 
 // Calendar Settings
 const calendarName = ref("");
@@ -319,11 +383,6 @@ const calendarFile = ref("");
 const calendarFileError = ref("");
 const calendarFileSuccess = ref("");
 const calendarFileUpload = ref(null);
-
-onMounted(() => {
-  // Get current theme
-  theme.value = backendSettings.value.getTheme();
-});
 
 function openSettingsModal() {
   // Change page to general settings
@@ -350,6 +409,9 @@ function openSettingsModal() {
   if (importFile) {
     importFile.value = "";
   }
+
+  // Get available themes
+  themeList.value = backendSettings.value.getAvailableThemes();
 
   // Open settings modal
   settings_modal.showModal();
@@ -380,8 +442,18 @@ function timeFormatChanged(event) {
   backendSettings.value.setTimeFormat(event.target.value);
 }
 
-function themeChanged(event) {
-  setTheme(event.target.value);
+function themeChanged(item, type) {
+  // Make sure this is for changing theme
+  if (type != "theme") return;
+
+  // Set the theme
+  setTheme(item.theme);
+
+  // add a 50ms delay for the theme value to be updated to backend
+  setTimeout(() => {
+    // Reload themes
+    themeList.value = backendSettings.value.getAvailableThemes();
+  }, 50);
 }
 
 function setColour(event) {
@@ -432,9 +504,27 @@ function createCalendar() {
   if (result.error) {
     calendarError.value = result.error;
     calendarSuccess.value = "";
+    return;
   } else if (result.success) {
     calendarError.value = "";
     calendarSuccess.value = "Calendar created successfully!";
   }
+
+  // Refresh all components
+  startRefresh();
+
+  // Close the modal
+  settings_modal.close();
+
+  // Display a notification
+  postNotification("success", `${calendarName.value} created!`, 5000);
+}
+
+function resetAllSettings() {
+  // Reset all settings
+  backendSettings.value.resetAllSettings();
+
+  // Refresh the page
+  location.reload();
 }
 </script>

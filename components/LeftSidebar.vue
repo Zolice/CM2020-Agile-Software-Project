@@ -13,35 +13,107 @@
           class="w-fit text-center text-2xl focus:outline-none h-fit"
           @click="toggleSidebar"
         >
-          <span v-if="isSidebarOpen">-</span>
+          <span v-if="isSidebarOpen"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              /></svg
+          ></span>
         </button>
+      </div>
+      <div class="flex flex-col px-4 pb-3 h-min">
+        <span>Calendar</span>
+        <span>Calendars</span>
       </div>
       <nav
         v-if="isSidebarOpen"
-        class="flex-1 p-4 flex flex-col justify-between h-full overflow-auto"
+        class="flex-1 px-4 flex flex-col justify-between h-full overflow-auto"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-4">
-          <span>Calendar</span>
-          <span>Calendars</span>
-          <span>Settings</span>
-          <span>Other stuff</span>
+        <div class="flex flex-col gap-1">
+          <CalendarListItem
+            v-for="calendar in calendarList"
+            :key="calendar.name"
+            :calendar-name="calendar.name"
+            :colour="calendar.colour"
+            :display="calendar.display"
+            :toggle-display-calendar="toggleDisplayCalendar"
+          />
         </div>
       </nav>
-      <div v-if="isSidebarOpen" class="p-2">
-        <ShopModal />
-        <SettingsModal />
-        <ProfileModal />
+      <!-- Bottom part of the sidebar -->
+      <div v-if="isSidebarOpen" class="flex flex-col p-2">
+        <div class="divider"></div>
+        <div class="flex flex-col gap-1">
+          <ShopModal />
+          <SettingsModal />
+          <ProfileModal />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="jsx">
+const startRefresh = inject("startRefresh");
+const watchRefresh = inject("watchRefresh");
+
 defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
 });
+
+const calendarList = ref([]);
+
+onMounted(() => {
+  // Load the calendar list
+  refresh();
+
+  // Register refresh callback
+  watchRefresh(refresh);
+});
+
+function refresh() {
+  calendarList.value = [];
+
+  // Fetch calendar list
+  const calendars = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // Get all keys
+  const keys = Object.keys(calendars);
+
+  // For each key, add it to the calendar list
+  keys.forEach((key) => {
+    calendarList.value.push({
+      name: key,
+      colour: calendars[key].colour,
+      display: calendars[key].display,
+    });
+  });
+}
+
+function toggleDisplayCalendar(calendar, value) {
+  // get updated list of calendars
+  const calendars = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // update the display value
+  calendars[calendar].display = value;
+
+  // save the updated list of calendars
+  localStorage.setItem("calendars", JSON.stringify(calendars));
+
+  // call refresh function
+  startRefresh();
+}
 </script>
 
 <style scoped>

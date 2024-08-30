@@ -1,10 +1,11 @@
 <template>
   <!-- Button -->
   <button
-    class="btn btn-sm btn-accent w-full justify-start"
+    class="btn btn-sm btn-secondary w-full flex flex-row"
     @click="openShopModal"
   >
-    Shop
+    <i class="bi bi-shop-window"></i>
+    <span class="text-center">Shop</span>
   </button>
 
   <dialog id="shop_modal" class="modal h-screen">
@@ -47,7 +48,8 @@
                 :name="theme.name"
                 :theme="theme.theme"
                 :points="theme.points"
-                :owned="theme.owned"
+                :badge="theme.owned"
+                badge-content="Owned"
                 :click="purchase"
                 message="Owned"
               />
@@ -126,15 +128,13 @@
             Purchase {{ purchaseItemName }} {{ purchaseItemType }}
           </h3>
 
-          <p class="py-4">
-            Confirm your purchase of the following item:
-          </p>
+          <p class="py-4">Confirm your purchase of the following item:</p>
           <ThemeDisplayComponent
             v-if="purchaseItemType == 'theme'"
             :name="purchaseItem.name"
             :theme="purchaseItem.theme"
             :points="purchaseItem.points"
-            :owned="false"
+            :badge="false"
           />
           <BorderComponent
             v-if="purchaseItemType == 'border'"

@@ -7,8 +7,8 @@
     <div class="grid grid-rows-2 grid-cols-2 w-32 h-32">
       <div class="bg-primary"></div>
       <div class="bg-secondary flex justify-end p-1">
-        <div class="badge badge-ghost" :class="[owned ? '' : 'hidden']">
-          Owned
+        <div class="badge badge-ghost" :class="[badge ? '' : 'hidden']">
+          {{ badgeContent }} 
         </div>
       </div>
       <div class="bg-accent"></div>
@@ -27,9 +27,11 @@ const props = defineProps({
   name: String,
   theme: String,
   points: Number,
-  owned: Boolean,
+  badge: Boolean,
+  badgeContent: String,
   message: String,
   click: Function,
+  displayType: String,
 });
 
 const item = {
@@ -40,7 +42,6 @@ const item = {
 };
 
 function clickHandler() {
-  // console.log(click)
   props.click(item, "theme");
 }
 </script>
