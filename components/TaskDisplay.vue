@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col btn btn-ghost h-fit items-start p-1 gap-1">
+  <div class="flex flex-col btn btn-ghost h-fit items-start p-1 gap-1" @click="clickHandler">
     <span class="line-clamp-1 text-start">{{ name }}</span>
     <span
       class="badge badge-ghost badge-sm font-normal border-none"
@@ -18,11 +18,20 @@
 </template>
 
 <script setup lang="jsx">
-defineProps({
+const viewTask = inject("viewTask");
+
+const props = defineProps({
   name: String,
   colour: String,
   dueDate: String,
   description: String,
   uid: String,
+  task: Object,
 });
+
+function clickHandler() {
+  console.log("click")
+  console.log(props.task)
+  viewTask(props.task);
+}
 </script>

@@ -9,8 +9,9 @@
         :due-date="new Date(task.end).toLocaleString()"
         colour="red"
         :description="task.description"
+        :task="task"
       />
-      <span v-if="overdueTasks.length == 0" class="text-xs">No tasks</span>
+      <span v-if="overdueTasks.length == 0" class="text-xs pl-1">No overdue tasks!</span>
     </div>
     <div class="flex flex-col gap-1">
       <span class="text-lg">Today's Tasks</span>
@@ -21,8 +22,9 @@
         :due-date="new Date(task.end).toLocaleString()"
         colour="red"
         :description="task.description"
+        :task="task"
       />
-      <span v-if="todayTasks.length == 0" class="text-xs">No tasks</span>
+      <span v-if="todayTasks.length == 0" class="text-xs pl-1">No tasks for today.</span>
     </div>
     <div class="flex flex-col gap-1">
       <span class="text-lg">Upcoming</span>
@@ -33,8 +35,9 @@
         :due-date="new Date(task.end).toLocaleString()"
         colour="green"
         :description="task.description"
+        :task="task"
       />
-      <span v-if="upcomingTasks.length == 0" class="text-xs">No tasks</span>
+      <span v-if="upcomingTasks.length == 0" class="text-xs pl-1">No upcoming tasks.</span>
     </div>
   </div>
 </template>

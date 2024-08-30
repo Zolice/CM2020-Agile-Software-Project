@@ -9,8 +9,9 @@
         :due-date="new Date(task.end).toLocaleString()"
         colour="red"
         :description="task.description"
+        :task="task"
       />
-      <span v-if="days.tasks.length == 0" class="text-xs">No tasks</span>
+      <span v-if="days.tasks.length == 0" class="text-xs pl-1">No tasks.</span>
     </div>
   </div>
 </template>

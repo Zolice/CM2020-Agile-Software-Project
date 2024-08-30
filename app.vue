@@ -34,15 +34,65 @@
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
+    <!-- Add Task Modal -->
+    <dialog id="view_task_modal" class="modal h-screen">
+      <div class="modal-box w-full max-w-screen-lg md:h-5/6 h-screen">
+        <form method="dialog">
+          <button
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        <div class="flex flex-col h-full gap-4">
+          <!-- <h3 class="text-3xl font-bold w-fit">{{ currentTask.summary }}</h3> -->
+          <input
+            v-model="currentTask.summary"
+            type="text"
+            placeholder="Title"
+            class="input text-3xl font-bold w-full p-2"
+          />
+          <!-- Tags -->
+          <div class="flex flex-row gap-2">
+            <span
+              class="badge"
+              :class="[
+                new Date(currentTask.end) < new Date()
+                  ? 'bg-[#BDD9CD] text-black'
+                  : 'bg-[#BDD9CD] text-black',
+              ]"
+            >
+              Due Date: {{ new Date(currentTask.end).toLocaleString() }}
+            </span>
+          </div>
+          <textarea
+            class="textarea textarea-ghost p-2 h-full"
+            placeholder="Description"
+            v-model="currentTask.description"
+          ></textarea>
+          <div class="flex justify-between">
+            <button class="btn btn-sm btn-error">Delete</button>
+            <div class="flex gap-2">
+              <button class="btn btn-sm btn-secondary">Save Changes</button>
+              <button class="btn btn-sm btn-primary">Mark as Completed</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </div>
 </template>
 
 <script setup lang="jsx">
 import { ref } from "vue";
 
+// Main Application Variables
 const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
+
+// View Task Modal Variables
+const currentTask = ref({});
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
@@ -89,6 +139,15 @@ function watchRefresh(callback) {
 function startRefresh() {
   refreshCallbacks.value.forEach((callback) => callback());
 }
+
+function viewTask(event) {
+  // Set the current task
+  currentTask.value = event;
+
+  // Display the modal
+  view_task_modal.showModal();
+}
+
 // Provide functions for NuxtPage
 provide("setTheme", setTheme);
 provide("toggleLeftSidebar", toggleLeftSidebar);
@@ -96,4 +155,5 @@ provide("isLeftSidebarOpen", isLeftSidebarOpen);
 provide("postNotification", postNotification);
 provide("watchRefresh", watchRefresh);
 provide("startRefresh", startRefresh);
+provide("viewTask", viewTask);
 </script>
