@@ -3,19 +3,11 @@
     class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 px-3 w-full"
   >
     <table class="table-auto w-full border-b border-black">
-      <thead>
-        <tr>
-          <th class="border border-gray-300 px-4 py-2 bg"></th>
-          <th
-            class="border border-gray-300 px-4 py-2 bg-accent text-s leading-6 text-black"
-          ></th>
-        </tr>
-      </thead>
       <tbody>
         <tr v-for="(hour, index) in hours" :key="index">
           <!-- Hours Column -->
           <td
-            class="px-4 py-2 w-[10%] border-black bg-accent text-s leading-6 text-black"
+            class="px-4 py-2 w-[10%] border-black bg-gray-200 text-s leading-6 text-black"
           >
             <h6>{{ hour }}</h6>
           </td>
