@@ -1,7 +1,7 @@
 <template>
   <!-- Add Task Button -->
   <button
-    class="btn btn-primary px-4 py-0.5 btn-sm text-center items-center"
+    class="btn btn-primary btn-sm text-center items-center"
     type="button"
     @click="openAddTaskModal"
   >
