@@ -298,7 +298,8 @@ function purchaseConfirm() {
 
   // Display success message
   postNotification(
-    "success",
+    "info",
+    "", 
     "Purchased " + purchaseItem.value.name + " successfully!"
   );
 

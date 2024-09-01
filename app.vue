@@ -63,6 +63,19 @@
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
+
+    <!-- Notifications -->
+    <div class="toast z-50">
+      <NotificationDisplay
+        v-for="notification in notifications"
+        :key="notification.title"
+        :type="notification.type"
+        :title="notification.title"
+        :message="notification.message"
+        :duration="notification.duration"
+        :img="notification.img"
+      />
+    </div>
   </div>
 </template>
 
@@ -75,6 +88,8 @@ const isRightSidebarOpen = ref(false);
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
+
+const notifications = ref([]);
 
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
@@ -104,10 +119,36 @@ function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
 }
 
-function postNotification(type, message, duration = 5000) {
-  // TODO: Implement a proper notification system
+function postNotification(
+  type = "info",
+  title,
+  message,
+  duration = 10000,
+  img = ""
+) {
 
-  alert(message);
+  // create notification object
+  const notification = {
+    type,
+    title,
+    message,
+    duration,
+    img,
+  };
+
+    // Add notification to the list
+  notifications.value.push(notification);
+
+  // Remove notification after duration
+  setTimeout(() => {
+    // Delete the notification
+    notifications.value.splice(
+      notifications.value.findIndex((n) => {
+        n != notification;
+      }),
+      1
+    );
+  }, duration);
 }
 
 watch(theme, (newTheme) => {
