@@ -219,8 +219,7 @@ function navigateCalendar(view, direction) {
   />
 
   <!-- Render Weekly view -->
-  <!-- TODO: Replace with weekly view component -->
-  <WeeklyView v-else-if="calendarViewType === 'Weekly'" />
+  <WeeklyView v-else-if="calendarViewType === 'Weekly'" :hours="hours" />
 
   <!-- Render Daily view -->
   <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />

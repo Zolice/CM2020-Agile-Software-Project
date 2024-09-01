@@ -49,16 +49,8 @@ const days = [
   "Fri 14",
   "Sat 15",
 ];
-const hours = [
-  "1PM",
-  "2PM",
-  "3PM",
-  "4PM",
-  "5PM",
-  "6PM",
-  "7PM",
-  "8PM",
-  "9PM",
-  "10PM",
-];
+
+defineProps({
+  hours: Array,
+});
 </script>
