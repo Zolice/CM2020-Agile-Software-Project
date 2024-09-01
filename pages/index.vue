@@ -1,4 +1,5 @@
 <script setup>
+const backendSettings = ref(null);
 const calendarViewType = ref("Monthly");
 const displayText = ref("");
 const months = [
@@ -85,7 +86,7 @@ function updateDates() {
   // Check which day the first day of the month falls on
   // If not the start of the week, add the previous month's dates
   // Get the start day from settings
-  const settings = JSON.parse(localStorage.getItem("settings")) || {};
+  const settings = backendSettings.value.getSettings();
   const startDay = settings.startWeekOn.substring(0, 3).toUpperCase() || "SUN";
 
   d = new Date(year, month);
@@ -273,6 +274,7 @@ function navigateCalendar(view, direction) {
       </div>
     </div>
   </div>
+  <BackendSettings ref="backendSettings" />
 </template>
 
 <style scoped>
