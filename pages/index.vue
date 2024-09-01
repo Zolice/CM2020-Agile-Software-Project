@@ -202,12 +202,7 @@ function navigateCalendar(view, direction) {
     />
 
     <!-- Add Task Button -->
-    <button
-      class="btn btn-primary px-4 py-0.5 text-center items-center"
-      type="button"
-    >
-      Add Task
-    </button>
+    <AddTaskModal />
   </div>
 
   <!-- Render monthly view -->

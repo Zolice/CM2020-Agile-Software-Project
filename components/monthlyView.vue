@@ -48,28 +48,37 @@
         {{ date.date }}
         <!-- Task view on calendar  -->
         <!-- starting for grid area  -->
-         <!-- grid-area:row-start/col-start/col-span/row-span -->
-         <!-- row-start should increase by one for each task of the day  -->
-        <a href="#" style="grid-area: 2/1/span 1/span 7;" class="flex flex-row bg-white rounded-md hover:text-secondary my-0.5">
+        <!-- grid-area:row-start/col-start/col-span/row-span -->
+        <!-- row-start should increase by one for each task of the day  -->
+        <a
+          href="#"
+          style="grid-area: 2/1 / span 1 / span 7"
+          class="flex flex-row bg-white rounded-md hover:text-secondary my-0.5"
+        >
           <!-- Left side Priority Border -->
-           <!-- Colour will change based on the priority of the task -->
-           <div class="bg-red-400 h-full rounded-l-md" style="width: 4%;"></div>
-           <!-- content and bottom priority border -->
-            <div class="h-full flex-col" style="width:96%;">
-              <!-- content -->
-               <div class="w-full flex flex-row px-1 justify-between" style="height:80%;">
-                <!-- name -->
-                 <p class="flex-auto truncate align-middle"> testing task 2 alskdalskdjalskdjas  </p>
-                 <!-- time -->
-                  <time datetime=""class="flex-none ">1PM</time>
-               </div>
-              <!-- Bottom border -->
-               <div class=" w-full bg-red-400 rounded-br-md" style="height:20%;"></div>
+          <!-- Colour will change based on the priority of the task -->
+          <div class="bg-red-400 h-full rounded-l-md" style="width: 4%"></div>
+          <!-- content and bottom priority border -->
+          <div class="h-full flex-col" style="width: 96%">
+            <!-- content -->
+            <div
+              class="w-full flex flex-row px-1 justify-between"
+              style="height: 80%"
+            >
+              <!-- name -->
+              <p class="flex-auto truncate align-middle">
+                testing task 2 alskdalskdjalskdjas
+              </p>
+              <!-- time -->
+              <time datetime="" class="flex-none">1PM</time>
             </div>
+            <!-- Bottom border -->
+            <div
+              class="w-full bg-red-400 rounded-br-md"
+              style="height: 20%"
+            ></div>
+          </div>
         </a>
-        
-        
-        
       </div>
       <div
         v-for="date in nextDates"
@@ -83,7 +92,6 @@
         /${date.day + 1}/span 1/span 1`"
       >
         {{ date.date }}
-        
       </div>
     </div>
   </div>
