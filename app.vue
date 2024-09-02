@@ -85,34 +85,28 @@
           <!-- Tags -->
           <div class="flex flex-row gap-2">
             <span
-              class="badge"
+              class="badge cursor-pointer"
               :class="[
                 new Date(currentTask.end) < new Date()
                   ? 'bg-[#BDD9CD] text-black'
                   : 'bg-[#BDD9CD] text-black',
               ]"
+              @click="changeData('date')"
             >
               Due Date: {{ new Date(currentTask.end).toLocaleString() }}
-              <i
-                class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
-                @click="changeData('date')"
-              >
-              </i>
+              <i class="bi bi-pencil-square pl-2 fs-5"></i>
             </span>
             <span
-              class="badge"
+              class="badge cursor-pointer"
               :class="[
                 currentTask.priority == 'High' ? 'badge-error' : '',
                 currentTask.priority == 'Medium' ? 'badge-primary' : '',
                 currentTask.priority == 'Low' ? 'badge-success' : '',
               ]"
+              @click="changeData('priority')"
             >
               Priority: {{ currentTask.priority || "Medium" }}
-              <i
-                class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
-                @click="changeData('priority')"
-              >
-              </i>
+              <i class="bi bi-pencil-square pl-2 fs-5"></i>
             </span>
             <span
               class="badge"
@@ -125,17 +119,17 @@
             </span>
           </div>
           <textarea
+            v-model="currentTask.description"
             class="textarea textarea-ghost p-2 h-full"
             placeholder="Description"
-            v-model="currentTask.description"
           >
           </textarea>
           <div class="flex justify-between">
-            <button @click="deleteTask" class="btn btn-sm btn-error">
+            <button class="btn btn-sm btn-error" @click="deleteTask">
               Delete
             </button>
             <div class="flex gap-2">
-              <button @click="saveTask" class="btn btn-sm btn-secondary">
+              <button class="btn btn-sm btn-secondary" @click="saveTask">
                 Save Changes
               </button>
               <button
@@ -148,8 +142,6 @@
             </div>
           </div>
         </div>
-        <!-- Open the modal using ID.showModal() method -->
-        <!-- <button class="btn" onclick="confirmDeletionModal.showModal()">open modal</button> -->
         <dialog id="confirmDeletionModal" class="modal">
           <div class="modal-box">
             <h3 class="text-lg font-bold">Delete {{ currentTask.summary }}</h3>
@@ -161,7 +153,7 @@
               >
                 Cancel
               </button>
-              <button @click="deleteTaskConfirm" class="btn btn-sm btn-error">
+              <button class="btn btn-sm btn-error" @click="deleteTaskConfirm">
                 Confirm Deletion
               </button>
             </div>
@@ -170,10 +162,6 @@
             <button>close</button>
           </form>
         </dialog>
-        <!-- Open the modal using ID.showModal() method -->
-        <!-- <button class="btn" onclick="changeDataModal.showModal()">
-          open modal
-        </button> -->
         <dialog id="changeDataModal" class="modal">
           <div class="modal-box flex flex-col gap-4">
             <h3 class="text-lg font-bold">Change {{ taskChangeType }}</h3>
@@ -204,8 +192,8 @@
             </div>
 
             <div
-              class="flex flex-col gap-1 items-start"
               v-if="taskChangeType == 'priority'"
+              class="flex flex-col gap-1 items-start"
             >
               <span class="text-sm pl-2">Priority Level</span>
               <select
@@ -225,7 +213,7 @@
               >
                 Cancel
               </button>
-              <button @click="changeDataConfirm" class="btn btn-sm btn-primary">
+              <button class="btn btn-sm btn-primary" @click="changeDataConfirm">
                 Confirm
               </button>
             </div>

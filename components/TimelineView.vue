@@ -68,7 +68,7 @@ function refresh() {
 
         const taskDate = new Date(task.end);
         if (taskDate >= today && taskDate < lastDay) {
-          let pushTask = {
+          const pushTask = {
             calendar: key,
             task: task,
           };

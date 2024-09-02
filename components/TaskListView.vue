@@ -86,7 +86,7 @@ function refresh() {
 
         const taskDate = new Date(task.end);
         if (taskDate < today) {
-          let pushTask = {
+          const pushTask = {
             calendar: key,
             task: task,
           }
@@ -94,7 +94,7 @@ function refresh() {
         }
         // if the task is due today, add it to the todayTasks list
         else if (taskDate == today) {
-          let pushTask = {
+          const pushTask = {
             calendar: key,
             task: task,
           }
@@ -102,7 +102,7 @@ function refresh() {
         }
         // if the task is upcoming, add it to the upcomingTasks list
         else {
-          let pushTask = {
+          const pushTask = {
             calendar: key,
             task: task,
           }
