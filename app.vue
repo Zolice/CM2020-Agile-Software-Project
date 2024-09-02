@@ -75,7 +75,6 @@
           </button>
         </form>
         <div class="flex flex-col h-full gap-4">
-          <!-- <h3 class="text-3xl font-bold w-fit">{{ currentTask.summary }}</h3> -->
           <input
             v-model="currentTask.summary"
             type="text"
@@ -417,7 +416,6 @@ function deleteTaskConfirm() {
 }
 
 function changeData(type) {
-  console.log(type);
   taskChangeType.value = type;
 
   switch (type) {

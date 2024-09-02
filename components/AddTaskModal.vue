@@ -231,8 +231,6 @@ function createTask() {
     uid = Math.random().toString(36).substring(2, 15);
   }
 
-  console.log(startTime.value)
-
   // Generate an event
   const event = {
     type: "VEVENT",
