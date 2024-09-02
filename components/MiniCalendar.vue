@@ -24,13 +24,13 @@
       <div
         v-for="(date, index) in dates"
         :key="index"
-        @click="clickDate(date.date)"
         class="text-center py-[0.25rem] cursor-pointer"
         :style="`grid-area: ${
           date.date > firstSatDate
             ? Math.ceil((date.date - firstSatDate) / 7) + 1
             : 1
         }/${date.day + 1}/span 1/span 1`"
+        @click="clickDate(date.date)"
       >
         {{ date.date }}
       </div>
