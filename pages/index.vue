@@ -1,6 +1,10 @@
 <script setup>
 const backendSettings = ref(null);
 const calendarViewType = ref("Monthly");
+
+const watchDate = inject("watchDate");
+const startDate = inject("startDate");
+
 const displayText = ref("");
 const months = [
   "JANUARY",
@@ -60,6 +64,15 @@ onMounted(() => {
     localStorage.getItem("calendarViewType") || "Monthly";
   updateDates();
   updateDisplayText(calendarViewType.value);
+
+  // Register callbacks
+  watchDate((date) => {
+    year = date.getFullYear();
+    month = date.getMonth();
+    day = date.getDate();
+    updateDates();
+    updateDisplayText(calendarViewType.value);
+  });
 });
 
 watch(calendarViewType, (value) => {
@@ -221,8 +234,8 @@ function navigateCalendar(view, direction) {
     default:
       break;
   }
-  updateDates();
-  updateDisplayText(view);
+
+  startDate(new Date(year, month, day));
 }
 </script>
 

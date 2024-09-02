@@ -13,8 +13,8 @@
           class="w-fit text-center text-2xl focus:outline-none h-fit"
           @click="toggleSidebar"
         >
-          <span v-if="isSidebarOpen"
-            ><svg
+          <span v-if="isSidebarOpen">
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -26,20 +26,21 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M15.75 19.5 8.25 12l7.5-7.5"
-              /></svg
-          ></span>
+              />
+            </svg>
+          </span>
         </button>
       </div>
       <div class="flex flex-col px-4 pb-3 h-min">
-        <span>Calendar</span>
-        <span>Calendars</span>
+        <MiniCalendar v-if="windowWidth >= 640" />
       </div>
       <nav
         v-if="isSidebarOpen"
         class="flex-1 px-4 flex flex-col justify-between h-full overflow-auto"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col">
+          <span class="font-bold">Calendars</span>
           <CalendarListItem
             v-for="calendar in calendarList"
             :key="calendar.name"
@@ -67,6 +68,8 @@
 const startRefresh = inject("startRefresh");
 const watchRefresh = inject("watchRefresh");
 
+const windowWidth = ref(0);
+
 defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
@@ -80,6 +83,9 @@ onMounted(() => {
 
   // Register refresh callback
   watchRefresh(refresh);
+
+  // Window width
+  windowWidth.value = window.innerWidth;
 });
 
 function refresh() {

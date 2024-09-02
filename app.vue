@@ -60,6 +60,7 @@
     </div>
 
     <RightSidebar
+      v-if="windowWidth >= 640"
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
@@ -246,7 +247,9 @@ import { useFlowbite } from "~/composables/useFlowbite";
 const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
+const windowWidth = ref(0);
 
+// All callbacks
 // View Task Modal Variables
 const currentTask = ref({});
 const currentTaskCalendar = ref("");
@@ -259,6 +262,7 @@ const taskEndDate = ref("");
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
+const dateCallbacks = ref([]);
 
 const notifications = ref([]);
 
@@ -267,6 +271,9 @@ onMounted(() => {
   useFlowbite(() => {
     initFlowbite();
   });
+
+  // Get viewport width
+  windowWidth.value = window.innerWidth;
 
   // If viewport smaller than tablet (640px), close sidebars
   if (window.innerWidth < 640) {
@@ -464,6 +471,14 @@ function changeDataConfirm() {
   changeDataModal.close();
 }
 
+function watchDate(callback) {
+  dateCallbacks.value.push(callback);
+}
+
+function startDate(date) {
+  dateCallbacks.value.forEach((callback) => callback(date));
+}
+
 // Provide functions for NuxtPage
 provide("setTheme", setTheme);
 provide("toggleLeftSidebar", toggleLeftSidebar);
@@ -471,5 +486,7 @@ provide("isLeftSidebarOpen", isLeftSidebarOpen);
 provide("postNotification", postNotification);
 provide("watchRefresh", watchRefresh);
 provide("startRefresh", startRefresh);
+provide("watchDate", watchDate);
+provide("startDate", startDate);
 provide("viewTask", viewTask);
 </script>
