@@ -27,11 +27,10 @@ const props = defineProps({
   description: String,
   uid: String,
   task: Object,
+  calendar: String,
 });
 
 function clickHandler() {
-  console.log("click")
-  console.log(props.task)
-  viewTask(props.task);
+  viewTask(props.task, props.calendar);
 }
 </script>

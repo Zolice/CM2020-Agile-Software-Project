@@ -93,24 +93,86 @@
               ]"
             >
               Due Date: {{ new Date(currentTask.end).toLocaleString() }}
+              <i
+                class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
+                @click="changeDueDate"
+              >
+              </i>
+            </span>
+            <span
+              class="badge"
+              :class="[
+                currentTask.priority == 'High' ? 'badge-error' : '',
+                currentTask.priority == 'Medium' ? 'badge-primary' : '',
+                currentTask.priority == 'Low' ? 'badge-success' : '',
+              ]"
+            >
+              Priority: {{ currentTask.priority || "Medium" }}
+              <i
+                class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
+                @click="changePriority"
+              >
+              </i>
+            </span>
+            <span
+              class="badge"
+              :class="[currentTask.completed ? 'badge-success' : 'badge-error']"
+            >
+              {{ currentTask.completed ? "Completed" : "Incomplete" }}
+            </span>
+            <span class="badge badge-primary">
+              Calendar: {{ currentTaskCalendar }}
             </span>
           </div>
           <textarea
             class="textarea textarea-ghost p-2 h-full"
             placeholder="Description"
             v-model="currentTask.description"
-          ></textarea>
+          >
+          </textarea>
           <div class="flex justify-between">
-            <button class="btn btn-sm btn-error">Delete</button>
+            <button @click="deleteTask" class="btn btn-sm btn-error">
+              Delete
+            </button>
             <div class="flex gap-2">
-              <button class="btn btn-sm btn-secondary">Save Changes</button>
-              <button class="btn btn-sm btn-primary">Mark as Completed</button>
+              <button @click="saveTask" class="btn btn-sm btn-secondary">
+                Save Changes
+              </button>
+              <button
+                class="btn btn-sm"
+                :class="[currentTask.completed ? 'btn-error' : 'btn-primary']"
+                @click="toggleCompleted"
+              >
+                Mark as {{ currentTask.completed ? "Incomplete" : "Completed" }}
+              </button>
             </div>
           </div>
         </div>
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="changeDataModal.showModal()">open modal</button> -->
+        <dialog id="changeDataModal" class="modal">
+          <div class="modal-box">
+            <h3 class="text-lg font-bold">Delete {{ currentTask.summary }}</h3>
+            <p class="py-4">This action is irreversible!</p>
+            <div class="flex w-full justify-end gap-2">
+              <button
+                onclick="changeDataModal.close()"
+                class="btn btn-sm btn-primary"
+              >
+                Cancel
+              </button>
+              <button @click="deleteTaskConfirm" class="btn btn-sm btn-error">
+                Confirm Deletion
+              </button>
+            </div>
+          </div>
+          <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
       </div>
     </dialog>
-    
+
     <!-- Notifications -->
     <div class="toast z-50">
       <NotificationDisplay
@@ -136,6 +198,7 @@ const isRightSidebarOpen = ref(false);
 
 // View Task Modal Variables
 const currentTask = ref({});
+const currentTaskCalendar = ref("");
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
@@ -177,7 +240,6 @@ function postNotification(
   duration = 10000,
   img = ""
 ) {
-
   // create notification object
   const notification = {
     type,
@@ -187,7 +249,7 @@ function postNotification(
     img,
   };
 
-    // Add notification to the list
+  // Add notification to the list
   notifications.value.push(notification);
 
   // Remove notification after duration
@@ -214,12 +276,79 @@ function startRefresh() {
   refreshCallbacks.value.forEach((callback) => callback());
 }
 
-function viewTask(event) {
+function viewTask(event, calendar) {
   // Set the current task
   currentTask.value = event;
 
+  // If there's no assigned priority, set it to Medium
+  if (!currentTask.value.priority) {
+    currentTask.value.priority = "Medium";
+  }
+
+  // Set the current calendar
+  currentTaskCalendar.value = calendar;
+
   // Display the modal
   view_task_modal.showModal();
+}
+
+function saveTask() {
+  // Get the calendar
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // find the task and override
+  calendar[currentTaskCalendar.value].calendar[currentTask.value.uid] =
+    currentTask.value;
+
+  // Save the calendar
+  localStorage.setItem("calendars", JSON.stringify(calendar));
+
+  // Call refresh
+  startRefresh();
+
+  // Close the modal
+  view_task_modal.close();
+}
+
+function toggleCompleted() {
+  // Set the completed
+  currentTask.value.completed = currentTask.value.completed ? false : true;
+
+  // Get the calendar
+  // Get the calendar
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // find the task and override
+  calendar[currentTaskCalendar.value].calendar[currentTask.value.uid] =
+    currentTask.value;
+
+  // Save the calendar
+  localStorage.setItem("calendars", JSON.stringify(calendar));
+
+  // Call refresh
+  startRefresh();
+}
+
+function deleteTask() {
+  changeDataModal.showModal();
+}
+
+function deleteTaskConfirm() {
+  // Get the calendar
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+  
+  // find the task and delete
+  delete calendar[currentTaskCalendar.value].calendar[currentTask.value.uid];
+  
+  // Save the calendar
+  localStorage.setItem("calendars", JSON.stringify(calendar));
+  
+  // Call refresh
+  startRefresh();
+
+  // Close the modals
+  changeDataModal.close();
+  view_task_modal.close();
 }
 
 // Provide functions for NuxtPage
