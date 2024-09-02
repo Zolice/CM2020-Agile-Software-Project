@@ -2,7 +2,7 @@
 <template>
   <!-- Modal Trigger -->
   <div class="flex justify-end">
-    <button @click="openShareModal" class="btn btn-sm btn-primary">
+    <button class="btn btn-sm btn-primary" @click="openShareModal">
       <i class="bi bi-share"></i> Share Achievements
     </button>
   </div>
@@ -32,7 +32,7 @@
 
         <div class="w-full flex items-center justify-center pb-3">
           <!-- Level progress bar -->
-          <LevelProgressBar :scoreWidth="scoreWidth" :level="level" />
+          <LevelProgressBar :score-width="scoreWidth" :level="level" />
         </div>
 
         <p class="mb-2">Score: {{ score }}</p>

@@ -11,8 +11,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="jsx">
 import { ref } from "vue";
+
+const postNotification = inject("postNotification");
 
 // Define props
 const props = defineProps({
@@ -30,5 +32,10 @@ const click = function () {
 
   // Change the message
   msg.value = "Button was clicked!";
+
+  // Post some notifications
+  postNotification("info", "", "Button was clicked! This should stay for 10 seconds!", 10000, "/borders/border1.jpg");
+  postNotification("warning", "This is a warning!", "Button was clicked! This should stay for 5 seconds!", 5000);
+  postNotification("error", "This is an error!", "Button was clicked! This should stay for 2 seconds!", 2000);
 };
 </script>

@@ -65,6 +65,7 @@
 
 <script setup lang="jsx">
 const startRefresh = inject("startRefresh");
+const watchRefresh = inject("watchRefresh");
 
 defineProps({
   toggleSidebar: Function,
@@ -74,6 +75,16 @@ defineProps({
 const calendarList = ref([]);
 
 onMounted(() => {
+  // Load the calendar list
+  refresh();
+
+  // Register refresh callback
+  watchRefresh(refresh);
+});
+
+function refresh() {
+  calendarList.value = [];
+
   // Fetch calendar list
   const calendars = JSON.parse(localStorage.getItem("calendars")) || {};
 
@@ -88,7 +99,7 @@ onMounted(() => {
       display: calendars[key].display,
     });
   });
-});
+}
 
 function toggleDisplayCalendar(calendar, value) {
   // get updated list of calendars
