@@ -5,12 +5,14 @@
       <TaskDisplay
         v-for="task in days.tasks"
         :key="task"
-        :name="task.summary"
-        :due-date="new Date(task.end).toLocaleString()"
+        :name="task.task.summary"
+        :due-date="new Date(task.task.end).toLocaleString()"
         colour="red"
-        :description="task.description"
+        :description="task.task.description"
+        :task="task.task"
+        :calendar="task.calendar"
       />
-      <span v-if="days.tasks.length == 0" class="text-xs">No tasks</span>
+      <span v-if="days.tasks.length == 0" class="text-xs pl-1">No tasks.</span>
     </div>
   </div>
 </template>
@@ -66,21 +68,25 @@ function refresh() {
 
         const taskDate = new Date(task.end);
         if (taskDate >= today && taskDate < lastDay) {
-          allTasks.push(task);
+          const pushTask = {
+            calendar: key,
+            task: task,
+          };
+          allTasks.push(pushTask);
         }
       });
     }
   });
 
   // sort task base don date
-  allTasks.sort((a, b) => new Date(a.end) - new Date(b.end));
+  allTasks.sort((a, b) => new Date(a.task.end) - new Date(b.task.end));
 
   // for each day, add tasks to the taskList
   taskList.value.forEach((day) => {
     const lastDay = new Date(day.day);
     lastDay.setDate(lastDay.getDate() + 1);
     allTasks.forEach((task) => {
-      const taskDate = new Date(task.end);
+      const taskDate = new Date(task.task.end);
       if (taskDate >= day.day && taskDate < lastDay) {
         day.tasks.push(task);
       }
