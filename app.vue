@@ -95,7 +95,7 @@
               Due Date: {{ new Date(currentTask.end).toLocaleString() }}
               <i
                 class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
-                @click="changeDueDate"
+                @click="changeData('date')"
               >
               </i>
             </span>
@@ -110,7 +110,7 @@
               Priority: {{ currentTask.priority || "Medium" }}
               <i
                 class="bi bi-pencil-square pl-2 fs-5 cursor-pointer"
-                @click="changePriority"
+                @click="changeData('priority')"
               >
               </i>
             </span>
@@ -149,20 +149,84 @@
           </div>
         </div>
         <!-- Open the modal using ID.showModal() method -->
-        <!-- <button class="btn" onclick="changeDataModal.showModal()">open modal</button> -->
-        <dialog id="changeDataModal" class="modal">
+        <!-- <button class="btn" onclick="confirmDeletionModal.showModal()">open modal</button> -->
+        <dialog id="confirmDeletionModal" class="modal">
           <div class="modal-box">
             <h3 class="text-lg font-bold">Delete {{ currentTask.summary }}</h3>
             <p class="py-4">This action is irreversible!</p>
             <div class="flex w-full justify-end gap-2">
               <button
-                onclick="changeDataModal.close()"
+                onclick="confirmDeletionModal.close()"
                 class="btn btn-sm btn-primary"
               >
                 Cancel
               </button>
               <button @click="deleteTaskConfirm" class="btn btn-sm btn-error">
                 Confirm Deletion
+              </button>
+            </div>
+          </div>
+          <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="changeDataModal.showModal()">
+          open modal
+        </button> -->
+        <dialog id="changeDataModal" class="modal">
+          <div class="modal-box flex flex-col gap-4">
+            <h3 class="text-lg font-bold">Change {{ taskChangeType }}</h3>
+            <div
+              v-if="taskChangeType == 'date'"
+              class="flex md:flex-row gap-4 flex-wrap"
+            >
+              <div class="flex flex-col gap-1 items-start">
+                <span class="text-sm pl-2">Start Time</span>
+                <input
+                  id="startTime"
+                  v-model="taskStartDate"
+                  type="datetime-local"
+                  name="startTime"
+                  class="input input-bordered input-sm"
+                />
+              </div>
+              <div class="flex flex-col gap-1 items-start">
+                <span class="text-sm pl-2">End Time</span>
+                <input
+                  id="endTime"
+                  v-model="taskEndDate"
+                  type="datetime-local"
+                  name="endTime"
+                  class="input input-bordered input-sm"
+                />
+              </div>
+            </div>
+
+            <div
+              class="flex flex-col gap-1 items-start"
+              v-if="taskChangeType == 'priority'"
+            >
+              <span class="text-sm pl-2">Priority Level</span>
+              <select
+                v-model="taskPriority"
+                class="select select-bordered select-sm"
+              >
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
+
+            <div class="flex w-full justify-end gap-2">
+              <button
+                onclick="changeDataModal.close()"
+                class="btn btn-sm btn-error"
+              >
+                Cancel
+              </button>
+              <button @click="changeDataConfirm" class="btn btn-sm btn-primary">
+                Confirm
               </button>
             </div>
           </div>
@@ -199,6 +263,12 @@ const isRightSidebarOpen = ref(false);
 // View Task Modal Variables
 const currentTask = ref({});
 const currentTaskCalendar = ref("");
+
+// Edit Task Modal Variables
+const taskChangeType = ref("");
+const taskPriority = ref("");
+const taskStartDate = ref("");
+const taskEndDate = ref("");
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
@@ -330,25 +400,75 @@ function toggleCompleted() {
 }
 
 function deleteTask() {
-  changeDataModal.showModal();
+  confirmDeletionModal.showModal();
 }
 
 function deleteTaskConfirm() {
   // Get the calendar
   const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
-  
+
   // find the task and delete
   delete calendar[currentTaskCalendar.value].calendar[currentTask.value.uid];
-  
+
   // Save the calendar
   localStorage.setItem("calendars", JSON.stringify(calendar));
-  
+
   // Call refresh
   startRefresh();
 
   // Close the modals
-  changeDataModal.close();
+  confirmDeletionModal.close();
   view_task_modal.close();
+}
+
+function changeData(type) {
+  console.log(type);
+  taskChangeType.value = type;
+
+  switch (type) {
+    case "date":
+      // Convert to local time string in the format expected by datetime-local input
+      taskStartDate.value = new Date(currentTask.value.start)
+        .toISOString()
+        .slice(0, 16);
+      taskEndDate.value = new Date(currentTask.value.end)
+        .toISOString()
+        .slice(0, 16);
+      break;
+    case "priority":
+      taskPriority.value = currentTask.value.priority;
+      break;
+  }
+
+  changeDataModal.showModal();
+}
+
+function changeDataConfirm() {
+  switch (taskChangeType.value) {
+    case "date":
+      currentTask.value.start = new Date(taskStartDate.value).toISOString();
+      currentTask.value.end = new Date(taskEndDate.value).toISOString();
+      break;
+    case "priority":
+      currentTask.value.priority = taskPriority.value;
+      break;
+  }
+
+  // Get the calendar
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // find the task and override
+  calendar[currentTaskCalendar.value].calendar[currentTask.value.uid] =
+    currentTask.value;
+
+  // Save the calendar
+  localStorage.setItem("calendars", JSON.stringify(calendar));
+
+  // Call refresh
+  startRefresh();
+
+  // Close the modal
+  changeDataModal.close();
 }
 
 // Provide functions for NuxtPage
