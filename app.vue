@@ -63,6 +63,7 @@
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
+
     <!-- Add Task Modal -->
     <dialog id="view_task_modal" class="modal h-screen">
       <div class="modal-box w-full max-w-screen-lg md:h-5/6 h-screen">
@@ -109,6 +110,19 @@
         </div>
       </div>
     </dialog>
+    
+    <!-- Notifications -->
+    <div class="toast z-50">
+      <NotificationDisplay
+        v-for="notification in notifications"
+        :key="notification.title"
+        :type="notification.type"
+        :title="notification.title"
+        :message="notification.message"
+        :duration="notification.duration"
+        :img="notification.img"
+      />
+    </div>
   </div>
 </template>
 
@@ -125,6 +139,8 @@ const currentTask = ref({});
 
 // Refresh callbacks
 const refreshCallbacks = ref([]);
+
+const notifications = ref([]);
 
 onMounted(() => {
   theme.value = localStorage.getItem("theme") || "dark";
@@ -154,10 +170,36 @@ function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
 }
 
-function postNotification(type, message, duration = 5000) {
-  // TODO: Implement a proper notification system
+function postNotification(
+  type = "info",
+  title,
+  message,
+  duration = 10000,
+  img = ""
+) {
 
-  alert(message);
+  // create notification object
+  const notification = {
+    type,
+    title,
+    message,
+    duration,
+    img,
+  };
+
+    // Add notification to the list
+  notifications.value.push(notification);
+
+  // Remove notification after duration
+  setTimeout(() => {
+    // Delete the notification
+    notifications.value.splice(
+      notifications.value.findIndex((n) => {
+        n != notification;
+      }),
+      1
+    );
+  }, duration);
 }
 
 watch(theme, (newTheme) => {

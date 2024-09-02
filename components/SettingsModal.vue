@@ -517,7 +517,7 @@ function createCalendar() {
   settings_modal.close();
 
   // Display a notification
-  postNotification("success", `${calendarName.value} created!`, 5000);
+  postNotification("info", "New calendar added", `${calendarName.value} was added.`);
 }
 
 function resetAllSettings() {
