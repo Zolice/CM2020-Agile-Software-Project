@@ -44,10 +44,11 @@ const hours = [
   "11:00 PM",
 ];
 const dates = ref([]);
+const weeklyDates = ref([]);
 
 const previousDates = ref([]);
 const nextDates = ref([]);
-let firstSatDate = "";
+let firstSatDate = 0;
 
 // set the default values to be the current date
 let year = new Date().getFullYear();
@@ -63,6 +64,7 @@ onMounted(() => {
 
 watch(calendarViewType, (value) => {
   localStorage.setItem("calendarViewType", value);
+  updateDates();
   updateDisplayText(value);
 });
 
@@ -70,6 +72,7 @@ function updateDates() {
   // Assume the value months and year are set
   // Clear the dates array
   dates.value = [];
+  weeklyDates.value = [];
 
   let d = new Date(year, month);
   if (!!d.getTime() && month <= 11 && month >= 0) {
@@ -115,15 +118,32 @@ function updateDates() {
       d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
     }
   }
+
+  // Calculate dates for weekly view
+  if (calendarViewType.value === "Weekly") {
+    const startOfWeek = new Date(year, month, day);
+    while (dayNames[startOfWeek.getDay()] !== startDay) {
+      startOfWeek.setDate(startOfWeek.getDate() - 1);
+    }
+    for (let i = 0; i < 7; i++) {
+      weeklyDates.value.push({
+        date: startOfWeek.getDate(),
+        day: startOfWeek.getDay(),
+      });
+      startOfWeek.setDate(startOfWeek.getDate() + 1);
+    }
+  }
 }
 
 // Changes the display text based on the view
 function updateDisplayText(view) {
   if (view === "Monthly") {
     displayText.value = `${months[month]} ${year}`;
-  }
-  // TODO: Add for weekly view
-  if (view === "Daily") {
+  } else if (view === "Weekly") {
+    const startOfWeek = weeklyDates.value[0];
+    const endOfWeek = weeklyDates.value[6];
+    displayText.value = `${months[month]} ${startOfWeek.date} - ${months[month]} ${endOfWeek.date}, ${year}`;
+  } else if (view === "Daily") {
     displayText.value = `${day} ${months[month]} ${year}, ${
       dayNames[new Date(year, month, day).getDay()]
     }`;
@@ -150,7 +170,31 @@ function navigateCalendar(view, direction) {
         }
       }
       break;
-    // TODO: Add for weekly view
+    case "Weekly":
+      if (direction === "previous") {
+        day -= 7;
+        if (day < 1) {
+          month -= 1;
+          if (month < 0) {
+            month = 11;
+            year -= 1;
+          }
+          const lastDayOfPrevMonth = new Date(year, month + 1, 0).getDate();
+          day += lastDayOfPrevMonth;
+        }
+      } else {
+        day += 7;
+        const lastDayOfCurrentMonth = new Date(year, month + 1, 0).getDate();
+        if (day > lastDayOfCurrentMonth) {
+          day -= lastDayOfCurrentMonth;
+          month += 1;
+          if (month > 11) {
+            month = 0;
+            year += 1;
+          }
+        }
+      }
+      break;
     case "Daily":
       if (direction === "previous") {
         day -= 1;
@@ -173,9 +217,6 @@ function navigateCalendar(view, direction) {
           }
         }
       }
-      break;
-    case "Weekly":
-      //TODO: Implement weekly navigation
       break;
     default:
       break;
@@ -219,8 +260,12 @@ function navigateCalendar(view, direction) {
   />
 
   <!-- Render Weekly view -->
-  <!-- TODO: Replace with weekly view component -->
-  <div v-else-if="calendarViewType === 'Weekly'">Supposed to be Weekly</div>
+  <WeeklyView
+    v-else-if="calendarViewType === 'Weekly'"
+    :hours="hours"
+    :day-names="dayNames"
+    :dates="weeklyDates"
+  />
 
   <!-- Render Daily view -->
   <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />
