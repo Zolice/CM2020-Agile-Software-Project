@@ -60,6 +60,7 @@
     </div>
 
     <RightSidebar
+      v-if="windowWidth >= 640"
       :toggle-sidebar="toggleRightSidebar"
       :is-sidebar-open="isRightSidebarOpen"
     />
@@ -246,6 +247,7 @@ import { useFlowbite } from "~/composables/useFlowbite";
 const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
+const windowWidth = ref(0);
 
 // All callbacks
 // View Task Modal Variables
@@ -269,6 +271,9 @@ onMounted(() => {
   useFlowbite(() => {
     initFlowbite();
   });
+
+  // Get viewport width
+  windowWidth.value = window.innerWidth;
 
   // If viewport smaller than tablet (640px), close sidebars
   if (window.innerWidth < 640) {
@@ -465,7 +470,6 @@ function changeDataConfirm() {
   // Close the modal
   changeDataModal.close();
 }
-
 
 function watchDate(callback) {
   dateCallbacks.value.push(callback);

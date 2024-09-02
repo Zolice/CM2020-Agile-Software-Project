@@ -65,11 +65,8 @@ onMounted(() => {
   updateDates();
   updateDisplayText(calendarViewType.value);
 
-  console.log(month)
-
   // Register callbacks
   watchDate((date) => {
-    console.log("confirm callback")
     year = date.getFullYear();
     month = date.getMonth();
     day = date.getDate();
@@ -91,11 +88,9 @@ function updateDates() {
   weeklyDates.value = [];
 
   let d = new Date(year, month);
-  console.log(d)
   if (!!d.getTime() && month <= 11 && month >= 0) {
     //to handle errors if arguments are not valid.
     while (d.getMonth() == month) {
-      console.log(d)
       dates.value.push({ date: d.getDate(), day: d.getDay() });
       d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
     }
@@ -125,7 +120,6 @@ function updateDates() {
 
   // If the last day of the month is not the end of the week, add the next month's dates
   d = new Date(year, month + 1, 0);
-  console.log(d)
   nextDates.value = [];
   if (dayNames[d.getDay()] !== startDay) {
     d = new Date(year, month + 1);
@@ -173,7 +167,6 @@ function updateDisplayText(view) {
 // view: Monthly, Weekly, Daily
 // direction: previous, next
 function navigateCalendar(view, direction) {
-  console.log(dates.value);
   switch (view) {
     case "Monthly":
       if (direction === "previous") {
@@ -242,13 +235,7 @@ function navigateCalendar(view, direction) {
       break;
   }
 
-  console.log(year, month, day);
-
   startDate(new Date(year, month, day));
-
-  console.log("started")
-  // updateDates();
-  // updateDisplayText(view);
 }
 </script>
 

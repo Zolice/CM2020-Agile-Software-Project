@@ -32,14 +32,15 @@
         </button>
       </div>
       <div class="flex flex-col px-4 pb-3 h-min">
-        <MiniCalendar />
+        <MiniCalendar v-if="windowWidth >= 640" />
       </div>
       <nav
         v-if="isSidebarOpen"
         class="flex-1 px-4 flex flex-col justify-between h-full overflow-auto"
       >
         <!-- Sidebar content here -->
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col">
+          <span class="font-bold">Calendars</span>
           <CalendarListItem
             v-for="calendar in calendarList"
             :key="calendar.name"
@@ -67,6 +68,8 @@
 const startRefresh = inject("startRefresh");
 const watchRefresh = inject("watchRefresh");
 
+const windowWidth = ref(0);
+
 defineProps({
   toggleSidebar: Function,
   isSidebarOpen: Boolean,
@@ -80,6 +83,9 @@ onMounted(() => {
 
   // Register refresh callback
   watchRefresh(refresh);
+
+  // Window width
+  windowWidth.value = window.innerWidth;
 });
 
 function refresh() {
