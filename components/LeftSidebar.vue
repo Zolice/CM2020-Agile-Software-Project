@@ -13,8 +13,8 @@
           class="w-fit text-center text-2xl focus:outline-none h-fit"
           @click="toggleSidebar"
         >
-          <span v-if="isSidebarOpen"
-            ><svg
+          <span v-if="isSidebarOpen">
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -26,13 +26,13 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M15.75 19.5 8.25 12l7.5-7.5"
-              /></svg
-          ></span>
+              />
+            </svg>
+          </span>
         </button>
       </div>
       <div class="flex flex-col px-4 pb-3 h-min">
-        <span>Calendar</span>
-        <span>Calendars</span>
+        <MiniCalendar />
       </div>
       <nav
         v-if="isSidebarOpen"

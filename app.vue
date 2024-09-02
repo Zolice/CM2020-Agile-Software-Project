@@ -86,8 +86,9 @@ const theme = ref("dark");
 const isLeftSidebarOpen = ref(false);
 const isRightSidebarOpen = ref(false);
 
-// Refresh callbacks
+// All callbacks
 const refreshCallbacks = ref([]);
+const dateCallbacks = ref([]);
 
 const notifications = ref([]);
 
@@ -162,6 +163,15 @@ function watchRefresh(callback) {
 function startRefresh() {
   refreshCallbacks.value.forEach((callback) => callback());
 }
+
+function watchDate(callback) {
+  dateCallbacks.value.push(callback);
+}
+
+function startDate(date) {
+  dateCallbacks.value.forEach((callback) => callback(date));
+}
+
 // Provide functions for NuxtPage
 provide("setTheme", setTheme);
 provide("toggleLeftSidebar", toggleLeftSidebar);
@@ -169,4 +179,6 @@ provide("isLeftSidebarOpen", isLeftSidebarOpen);
 provide("postNotification", postNotification);
 provide("watchRefresh", watchRefresh);
 provide("startRefresh", startRefresh);
+provide("watchDate", watchDate);
+provide("startDate", startDate);
 </script>
