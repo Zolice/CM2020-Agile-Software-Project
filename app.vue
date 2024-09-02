@@ -407,6 +407,13 @@ function deleteTaskConfirm() {
   // Close the modals
   confirmDeletionModal.close();
   view_task_modal.close();
+
+  // Create a notification
+  postNotification(
+    "error",
+    "Task Deleted",
+    `${currentTask.value.summary} has been deleted!`
+  );
 }
 
 function changeData(type) {
