@@ -2,7 +2,7 @@
   <div class="flex flex-row items-center space-x-2 justify-center mx-2">
     <!-- Calendar Previous Button -->
     <button
-      class="btn btn-ghost font-medium rounded-lg text-sm px-3 py-0.5 h-10 text-center inline-flex items-center"
+      class="btn btn-ghost font-medium rounded-lg text-sm px-0 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
       @click="navigateCalendar(view, 'previous')"
     >
@@ -29,7 +29,7 @@
 
     <!-- Calendar Next Button -->
     <button
-      class="btn btn-ghost font-medium rounded-lg text-md px-3 py-0.5 h-10 text-center inline-flex items-center"
+      class="btn btn-ghost font-medium rounded-lg text-md px-0 py-0.5 h-10 text-center inline-flex items-center"
       type="button"
       @click="navigateCalendar(view, 'next')"
     >
