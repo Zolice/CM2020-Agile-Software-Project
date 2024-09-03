@@ -221,7 +221,9 @@ const dateCallbacks = ref([]);
 const notifications = ref([]);
 
 onMounted(() => {
+  // Theme
   theme.value = localStorage.getItem("theme") || "dark";
+
   useFlowbite(() => {
     initFlowbite();
   });
@@ -234,8 +236,23 @@ onMounted(() => {
     isLeftSidebarOpen.value = false;
     isRightSidebarOpen.value = false;
   } else {
-    isLeftSidebarOpen.value = true;
-    isRightSidebarOpen.value = true;
+    // isLeftSidebarOpen.value = true;
+    // isRightSidebarOpen.value = true;
+    // Get from localstorage
+    const left = localStorage.getItem("isLeftSidebarOpen");
+    const right = localStorage.getItem("isRightSidebarOpen");
+
+    if (left == "true" || left == null) {
+      isLeftSidebarOpen.value = true;
+    } else {
+      isLeftSidebarOpen.value = false;
+    }
+
+    if (right == "true" || right == null) {
+      isRightSidebarOpen.value = true;
+    } else {
+      isRightSidebarOpen.value = false;
+    }
   }
 });
 
@@ -245,10 +262,12 @@ function setTheme(value) {
 
 function toggleLeftSidebar() {
   isLeftSidebarOpen.value = !isLeftSidebarOpen.value;
+  localStorage.setItem("isLeftSidebarOpen", isLeftSidebarOpen.value);
 }
 
 function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
+  localStorage.setItem("isRightSidebarOpen", isRightSidebarOpen.value);
 }
 
 function postNotification(

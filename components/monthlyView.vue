@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:flex lg:flex-auto lg:flex-col py-2 w-full h-full">
+  <div class="lg:flex lg:flex-auto lg:flex-col py-2 w-full h-full px-4">
     <!-- Day Names -->
     <div class="grid grid-cols-7 leading-6 text-accent-content">
       <div
