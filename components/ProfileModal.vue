@@ -80,23 +80,20 @@
                 <LevelProgressBar :score-width="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
-                <span v-if="windowWidth >= 640">Score: {{ score }}</span>
-                <span v-if="windowWidth >= 640"
-                  >Reward Points: {{ rewardPoints }}</span
-                >
+                <span class="hidden sm:block">Score: {{ score }}</span>
+                <span class="hidden sm:block">
+                  Reward Points: {{ rewardPoints }}
+                </span>
               </div>
 
               <!-- Streaks -->
-              <div
-                v-if="windowWidth >= 640"
-                class="w-full flex items-center justify-around"
-              >
+              <div class="w-full items-center justify-around hidden sm:flex">
                 <p>Current Streak: {{ currentStreak }} Days</p>
                 <p>Highest Streak: {{ highestStreak }} Days</p>
               </div>
             </div>
           </div>
-          <div v-if="windowWidth < 640" class="grid grid-cols-3">
+          <div class="grid-cols-3 grid sm:hidden">
             <div class="flex flex-col">
               <span class="font-bold text-xl text-center">Player Score</span>
               <span class="text-center">{{ score }}</span>
@@ -143,8 +140,6 @@ import { ref } from "vue";
 // Backend Profile Component
 const backendProfile = ref(null);
 
-const windowWidth = ref(0);
-
 // Profile Data
 const avatar = ref("");
 const userName = ref("");
@@ -162,9 +157,6 @@ const nametags = ref([]);
 const borders = ref([]);
 
 onMounted(() => {
-  // Get window width
-  windowWidth.value = window.innerWidth;
-
   // Get profile name and user name)
   userName.value = backendProfile.value.getUserName();
 

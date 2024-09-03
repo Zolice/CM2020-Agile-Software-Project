@@ -36,6 +36,7 @@
         v-for="(date, index) in dates"
         :key="index"
         class="text-center py-[0.25rem] cursor-pointer"
+        :class="[(date.date == currentDate) ? 'rounded-xl bg-primary text-primary-content' : '']"
         :style="`grid-area: ${
           date.date > firstSatDate
             ? Math.ceil((date.date - firstSatDate) / 7) + 1
@@ -77,6 +78,7 @@ const dates = ref([]);
 const firstSatDate = ref(0);
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth());
+const currentDate = ref(new Date().getDate());
 
 const expanded = ref(false);
 
@@ -85,6 +87,7 @@ onMounted(() => {
   watchDate((date) => {
     year.value = date.getFullYear();
     month.value = date.getMonth();
+    currentDate.value = date.getDate();
     updateDates();
   });
 
@@ -98,6 +101,9 @@ onMounted(() => {
   }
 
   updateDates();
+  console.log(dates.value)
+  console.log(currentDate.value)
+  console.log(dates.value[1].date == currentDate.value)
 });
 
 function clickDate(date) {
