@@ -97,7 +97,7 @@ let month = new Date().getMonth();
 let day = new Date().getDate();
 
 onMounted(() => {
-  // check if device is mobile
+  // check if device is not mobile
   if (!/Mobi|Android/i.test(window.navigator.userAgent)) {
     // redirect to m-index
     window.location.href = "/";

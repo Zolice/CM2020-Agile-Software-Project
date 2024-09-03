@@ -11,10 +11,10 @@
         <span class="font-bold">{{ months[month] }} {{ year }}</span>
       </div>
       <div v-if="expanded" class="flex flex-row gap-2">
-        <button class="btn btn-ghost btn-sm px-1" @click="previous">
+        <button class="btn btn-ghost btn-sm px-1" @click="navigateCalendar('previous')">
           <i class="bi bi-caret-left-fill"></i>
         </button>
-        <button class="btn btn-ghost btn-sm px-1" @click="next">
+        <button class="btn btn-ghost btn-sm px-1" @click="navigateCalendar('next')">
           <i class="bi bi-caret-right-fill"></i>
         </button>
       </div>

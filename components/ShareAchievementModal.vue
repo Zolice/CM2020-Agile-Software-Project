@@ -8,11 +8,6 @@
   </div>
 
   <!-- Background Overlay to dim the background -->
-  <!-- <div
-    v-if="isModalOpen"
-    class="fixed inset-0 bg-black opacity-50 z-40"
-    @click="closeShareModal"
-  ></div> -->
 
   <!-- Share Achievement Modal -->
   <dialog id="share_achievement_modal" class="modal bg-black bg-opacity-70">

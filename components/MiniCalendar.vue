@@ -3,10 +3,10 @@
     <div class="flex flex-row justify-between items-center text-neutral-content px-1">
       <span class="font-bold">{{ months[month] }} {{ year }}</span>
       <div class="flex flex-row gap-1">
-        <button class="btn btn-ghost btn-xs px-1" @click="previous">
+        <button class="btn btn-ghost btn-xs px-1" @click="navigateCalendar('previous')">
           <i class="bi bi-caret-left-fill"></i>
         </button>
-        <button class="btn btn-ghost btn-xs px-1" @click="next">
+        <button class="btn btn-ghost btn-xs px-1" @click="navigateCalendar('next')">
           <i class="bi bi-caret-right-fill"></i>
         </button>
       </div>
@@ -80,14 +80,6 @@ onMounted(() => {
 
 function clickDate(date) {
   startDate(new Date(year.value, month.value, date));
-}
-
-function previous() {
-  navigateCalendar("previous");
-}
-
-function next() {
-  navigateCalendar("next");
 }
 
 function navigateCalendar(direction) {

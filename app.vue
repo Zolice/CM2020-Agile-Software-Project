@@ -237,8 +237,6 @@ onMounted(() => {
     isLeftSidebarOpen.value = false;
     isRightSidebarOpen.value = false;
   } else {
-    // isLeftSidebarOpen.value = true;
-    // isRightSidebarOpen.value = true;
     // Get from localstorage
     const left = localStorage.getItem("isLeftSidebarOpen");
     const right = localStorage.getItem("isRightSidebarOpen");
