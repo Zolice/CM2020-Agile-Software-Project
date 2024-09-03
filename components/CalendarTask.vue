@@ -5,7 +5,7 @@
   <!-- row-start should increase by one for each task of the day  -->
   <div
     style="grid-area: 2/1 / span 1 / span 7"
-    class="flex flex-row bg-white rounded-md hover:text-secondary my-0.5"
+    class="flex flex-row bg-neutral text-neutral-content rounded-md hover:text-primary my-0.5 cursor-pointer"
     @click="clickHandler"
   >
     <!-- Left side Priority Border -->
