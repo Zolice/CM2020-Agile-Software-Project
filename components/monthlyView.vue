@@ -1,32 +1,22 @@
 <template>
-  <div
-    class="body-container shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col my-2 w-full"
-  >
+  <div class="lg:flex lg:flex-auto lg:flex-col py-2 w-full h-full">
     <!-- Day Names -->
-    <div
-      class="dayNames-container grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-s leading-6 text-black"
-    >
+    <div class="grid grid-cols-7 leading-6 text-accent-content">
       <div
         v-for="dayName in dayNames"
         :key="year + '-' + months[month] + '-' + dayName"
-        :class="[
-          'dayName text-center font-semibold bg-accent bg-opacity-50 py-2 lg:flex-none',
-          dayName,
-        ]"
+        class="text-center font-semibold bg-accent py-2 lg:flex-none"
       >
         <h5>{{ dayName }}</h5>
       </div>
     </div>
     <!-- Dates -->
-    <div class="dates-container grid grid-cols-7 gap-px">
+    <div class="grid grid-cols-7 h-full">
       <div
         v-for="date in previousDates"
         :id="year + '-' + month + '-' + date.date"
         :key="year + '-' + months[month] + '-' + date.date"
-        :class="[
-          'date relative bg-base-200 px-2 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px ',
-          dayNames[date.day],
-        ]"
+        class="relative bg-base-200 px-2 py-2 w-full flex flex-col h-full"
         :style="`grid-area: 1/${date.day + 1}/span 1/span 1`"
       >
         {{ date.date }}
@@ -35,10 +25,7 @@
         v-for="date in dates"
         :id="year + '-' + month + '-' + date.date"
         :key="year + '-' + months[month] + '-' + date.date"
-        :class="[
-          'date relative bg-base-100 px-2 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
+        class="relative bg-base-100 px-2 py-2 w-full flex flex-col h-full"
         :style="`grid-area: ${
           date.date > firstSatDate
             ? Math.ceil((date.date - firstSatDate) / 7) + 1
@@ -53,7 +40,7 @@
         <a
           href="#"
           style="grid-area: 2/1 / span 1 / span 7"
-          class="flex flex-row bg-white rounded-md hover:text-secondary my-0.5"
+          class="flex flex-row bg-neutral text-neutral-content rounded-md hover:text-primary my-0.5"
         >
           <!-- Left side Priority Border -->
           <!-- Colour will change based on the priority of the task -->
@@ -84,10 +71,7 @@
         v-for="date in nextDates"
         :id="year + '-' + month + '-' + date.date"
         :key="year + '-' + months[month] + '-' + date.date"
-        :class="[
-          'date relative bg-base-200 px-2 py-2 w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px',
-          dayNames[date.day],
-        ]"
+        class="relative bg-base-200 px-2 py-2 w-full flex flex-col h-full"
         :style="`grid-area: ${Math.ceil((31 - firstSatDate) / 7) + 1}
         /${date.day + 1}/span 1/span 1`"
       >
