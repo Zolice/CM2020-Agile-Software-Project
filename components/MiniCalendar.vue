@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full flex flex-col gap-2">
-    <div class="flex flex-row justify-between items-center">
-      <span>{{ months[month] }} {{ year }}</span>
+  <div class="w-full flex flex-col gap-2 bg-neutral p-2 rounded-btn">
+    <div class="flex flex-row justify-between items-center text-neutral-content px-1">
+      <span class="font-bold">{{ months[month] }} {{ year }}</span>
       <div class="flex flex-row gap-1">
         <button class="btn btn-ghost btn-xs px-1" @click="previous">
           <i class="bi bi-caret-left-fill"></i>
@@ -15,12 +15,12 @@
       <div
         v-for="(day, index) in dayNames"
         :key="index"
-        class="text-center font-bold text-primary py-[0.25rem]"
+        class="text-center font-bold text-primary"
       >
         {{ day.charAt(0) }}
       </div>
     </div>
-    <div class="w-full grid grid-cols-7">
+    <div class="w-full grid grid-cols-7 text-neutral-content">
       <div
         v-for="(date, index) in dates"
         :key="index"

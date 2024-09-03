@@ -1,4 +1,7 @@
 <script setup>
+const toggleLeftSidebar = inject("toggleLeftSidebar");
+const toggleRightSidebar = inject("toggleRightSidebar");
+
 const backendSettings = ref(null);
 const calendarViewType = ref("Monthly");
 
@@ -240,91 +243,138 @@ function navigateCalendar(view, direction) {
 </script>
 
 <template>
-  <div class="flex flex-row w-full p-2 px-4 justify-between">
-    <!-- Dropdown button to change views -->
-    <select v-model="calendarViewType" class="select select-sm">
-      <option>Monthly</option>
-      <option>Weekly</option>
-      <option>Daily</option>
-    </select>
-
-    <!-- Arrows to navigate back and forth different months -->
-    <NextCalendar
-      :navigate-calendar="navigateCalendar"
-      :view="calendarViewType"
-      :display-text="displayText"
-    />
-
-    <!-- Add Task Button -->
-    <AddTaskModal />
-  </div>
-
-  <!-- Render monthly view -->
-  <MonthlyView
-    v-if="calendarViewType === 'Monthly'"
-    :months="months"
-    :day-names="dayNames"
-    :dates="dates"
-    :previous-dates="previousDates"
-    :next-dates="nextDates"
-    :first-sat-date="firstSatDate"
-    :year="year"
-    :month="month"
-  />
-
-  <!-- Render Weekly view -->
-  <WeeklyView
-    v-else-if="calendarViewType === 'Weekly'"
-    :hours="hours"
-    :day-names="dayNames"
-    :dates="weeklyDates"
-  />
-
-  <!-- Render Daily view -->
-  <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />
-
-  <!-- Test for Listing tasks - to remove later -->
-  <div
-    class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
-  >
-    <div class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto">
-      <div
-        class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"
-      >
-        <div class="relative bg-gray-50 px-3 py-2 text-black">
-          <time datetime="2024-5-26">10</time>
-          <ol class="mt-2">
-            <li>
-              <a href="#" class="group flex">
-                <p
-                  class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
-                >
-                  Assignment Due -- Algorithms and Data Structures II
-                </p>
-                <time
-                  datetime="2022-01-03T10:00"
-                  class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
-                  >10AM</time
-                >
-              </a>
-            </li>
-            <li>
-              <a href="#" class="group flex">
-                <p
-                  class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
-                >
-                  Assignment Due -- Databases, Networks and the Web
-                </p>
-                <time
-                  datetime="2022-01-03T14:00"
-                  class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
-                  >2PM</time
-                >
-              </a>
-            </li>
-          </ol>
-        </div>
+  <div class="flex flex-col h-full">
+    <div class="flex flex-row w-full p-2 px-4 justify-between items-center">
+      <div class="flex gap-2">
+        <button
+          class="btn btn-sm btn-ghost"
+          @click="toggleLeftSidebar"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="size-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+        <!-- Dropdown button to change views -->
+        <select v-model="calendarViewType" class="select select-sm">
+          <option>Monthly</option>
+          <option>Weekly</option>
+          <option>Daily</option>
+        </select>
       </div>
+      <!-- Arrows to navigate back and forth different months -->
+      <NextCalendar
+        :navigate-calendar="navigateCalendar"
+        :view="calendarViewType"
+        :display-text="displayText"
+      />
+
+      <div class="flex gap-2">
+        <!-- Add Task Button -->
+        <AddTaskModal />
+        <button
+          class="btn btn-sm btn-ghost w-fit"
+          @click="toggleRightSidebar"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="size-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="h-full overflow-y-auto">
+      <!-- Render monthly view -->
+      <MonthlyView
+        v-if="calendarViewType === 'Monthly'"
+        :months="months"
+        :day-names="dayNames"
+        :dates="dates"
+        :previous-dates="previousDates"
+        :next-dates="nextDates"
+        :first-sat-date="firstSatDate"
+        :year="year"
+        :month="month"
+      />
+
+      <!-- Render Weekly view -->
+      <WeeklyView
+        v-else-if="calendarViewType === 'Weekly'"
+        :hours="hours"
+        :day-names="dayNames"
+        :dates="weeklyDates"
+      />
+
+      <!-- Render Daily view -->
+      <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />
+
+      <!-- Test for Listing tasks - to remove later -->
+      <!-- <div
+        class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
+      >
+        <div
+          class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto"
+        >
+          <div
+            class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"
+          >
+            <div class="relative bg-gray-50 px-3 py-2 text-black">
+              <time datetime="2024-5-26">10</time>
+              <ol class="mt-2">
+                <li>
+                  <a href="#" class="group flex">
+                    <p
+                      class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
+                    >
+                      Assignment Due -- Algorithms and Data Structures II
+                    </p>
+                    <time
+                      datetime="2022-01-03T10:00"
+                      class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
+                      >10AM</time
+                    >
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="group flex">
+                    <p
+                      class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
+                    >
+                      Assignment Due -- Databases, Networks and the Web
+                    </p>
+                    <time
+                      datetime="2022-01-03T14:00"
+                      class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
+                      >2PM</time
+                    >
+                  </a>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
   <BackendSettings ref="backendSettings" />
