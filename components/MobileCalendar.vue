@@ -19,7 +19,7 @@
         </button>
       </div>
     </div>
-    <div class="w-full grid grid-cols-7 py-2" v-if="expanded">
+    <div v-if="expanded" class="w-full grid grid-cols-7 py-2">
       <div
         v-for="(day, index) in dayNames"
         :key="index"
@@ -29,14 +29,18 @@
       </div>
     </div>
     <div
-      class="w-full grid grid-cols-7 text-neutral-content gap-y-4"
       v-if="expanded"
+      class="w-full grid grid-cols-7 text-neutral-content gap-y-4"
     >
       <div
         v-for="(date, index) in dates"
         :key="index"
         class="text-center py-[0.25rem] cursor-pointer"
-        :class="[(date.date == currentDate) ? 'rounded-xl bg-primary text-primary-content' : '']"
+        :class="[
+          date.date == currentDate
+            ? 'rounded-xl bg-primary text-primary-content'
+            : '',
+        ]"
         :style="`grid-area: ${
           date.date > firstSatDate
             ? Math.ceil((date.date - firstSatDate) / 7) + 1
@@ -101,13 +105,9 @@ onMounted(() => {
   }
 
   updateDates();
-  console.log(dates.value)
-  console.log(currentDate.value)
-  console.log(dates.value[1].date == currentDate.value)
 });
 
 function clickDate(date) {
-  console.log(date);
   startDate(new Date(year.value, month.value, date));
 }
 
@@ -131,7 +131,6 @@ function navigateCalendar(direction) {
       month.value = 11;
       year.value -= 1;
     }
-    console.log(month.value);
   } else {
     month.value += 1;
     if (month.value > 11) {

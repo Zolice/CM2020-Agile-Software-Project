@@ -97,7 +97,6 @@ function navigateCalendar(direction) {
       month.value = 11;
       year.value -= 1;
     }
-    console.log(month.value);
   } else {
     month.value += 1;
     if (month.value > 11) {

@@ -20,7 +20,7 @@
 <script setup lang="jsx">
 const watchRefresh = inject("watchRefresh");
 
-const watchDate = inject("watchDate");
+const watchDateFunction = inject("watchDate");
 
 const taskList = ref([]);
 
@@ -36,11 +36,8 @@ onMounted(() => {
   // register refresh callback
   watchRefresh(refresh);
 
-  console.log(props.watchDate)
   if(props.watchDate == "true") {
-    watchDate((date) => {
-      console.log("watch")
-      console.log(date)
+    watchDateFunction((date) => {
       currentDate.value = date;
       refresh();
     });
