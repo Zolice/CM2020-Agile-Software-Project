@@ -128,7 +128,6 @@ function updateDates() {
       dates.value.push({ date: d.getDate(), day: d.getDay() });
       d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
     }
-    firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
   } else {
     dates.value.push({}); //push an empty object into the 'dates' array
   }
