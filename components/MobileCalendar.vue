@@ -111,14 +111,6 @@ function clickDate(date) {
   startDate(new Date(year.value, month.value, date));
 }
 
-function previous() {
-  navigateCalendar("previous");
-}
-
-function next() {
-  navigateCalendar("next");
-}
-
 function toggleExpand() {
   expanded.value = !expanded.value;
   localStorage.setItem("mobileExpanded", expanded.value);
