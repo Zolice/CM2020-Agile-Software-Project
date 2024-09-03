@@ -40,7 +40,7 @@
                     v-if="editing"
                     v-model="userName"
                     type="text"
-                    class="input input-bordered input-lg text-center"
+                    class="input input-bordered input-lg w-full text-center"
                   />
                   <h1 v-else class="text-2xl font-bold">
                     {{ userName }}
@@ -52,7 +52,7 @@
                   ></i>
                 </div>
                 <!-- Save and cancel buttons for name change -->
-                <div class="flex gap-2 mt-2">
+                <div class="flex gap-2 py-2">
                   <button
                     v-if="editing"
                     class="btn btn-error btn-sm"
@@ -112,7 +112,7 @@
           </div>
 
           <!-- Badges, name tags, and borders -->
-          <div class="row flex h-1/2">
+          <div class="row flex">
             <div class="main-three col w-1/2">
               <!-- Badges -->
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
