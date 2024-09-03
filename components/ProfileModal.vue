@@ -26,13 +26,11 @@
         <div class="flex flex-col h-full overflow-auto gap-4">
           <div class="flex flex-row w-full px-2 gap-4">
             <!-- Avatar and Username -->
-            <div
-              class="main-one flex-shrink-0 w-2/5 flex items-center justify-center"
-            >
+            <div class="flex-shrink-0 w-2/5 flex items-center justify-center">
               <img :src="avatar" alt="Avatar" class="rounded-full w-35 h-35" />
             </div>
             <div
-              class="main-two flex-grow w-3/5 flex flex-col items-center justify-center text-center"
+              class="flex-grow w-3/5 flex flex-col items-center justify-center text-center"
             >
               <!-- Username and buttons-->
               <div class="flex flex-col items-center">
@@ -75,20 +73,41 @@
                 </div>
               </div>
 
-              <div class="w-full flex items-center justify-around">
+              <div
+                class="w-full grid grid-cols-1 sm:grid-cols-3 items-center justify-around"
+              >
                 <!-- Level progress bar -->
                 <LevelProgressBar :score-width="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
-                <span>Score: {{ score }}</span>
-                <span>Reward Points: {{ rewardPoints }}</span>
+                <span v-if="windowWidth >= 640">Score: {{ score }}</span>
+                <span v-if="windowWidth >= 640"
+                  >Reward Points: {{ rewardPoints }}</span
+                >
               </div>
 
               <!-- Streaks -->
-              <div class="w-full flex items-center justify-around">
+              <div
+                v-if="windowWidth >= 640"
+                class="w-full flex items-center justify-around"
+              >
                 <p>Current Streak: {{ currentStreak }} Days</p>
                 <p>Highest Streak: {{ highestStreak }} Days</p>
               </div>
+            </div>
+          </div>
+          <div v-if="windowWidth < 640" class="grid grid-cols-3">
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Player Score</span>
+              <span class="text-center">{{ score }}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Current Streak</span>
+              <span class="text-center">{{ currentStreak }} Days</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Highest Streak</span>
+              <span class="text-center">{{ highestStreak }}</span>
             </div>
           </div>
 
@@ -124,6 +143,8 @@ import { ref } from "vue";
 // Backend Profile Component
 const backendProfile = ref(null);
 
+const windowWidth = ref(0);
+
 // Profile Data
 const avatar = ref("");
 const userName = ref("");
@@ -141,6 +162,9 @@ const nametags = ref([]);
 const borders = ref([]);
 
 onMounted(() => {
+  // Get window width
+  windowWidth.value = window.innerWidth;
+
   // Get profile name and user name)
   userName.value = backendProfile.value.getUserName();
 

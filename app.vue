@@ -35,10 +35,10 @@
             v-model="currentTask.summary"
             type="text"
             placeholder="Title"
-            class="input text-3xl font-bold w-full p-2"
+            class="input text-3xl font-bold w-full p-2 text-wrap"
           />
           <!-- Tags -->
-          <div class="flex flex-row gap-2">
+          <div class="flex flex-row flex-wrap gap-2">
             <span
               class="badge cursor-pointer"
               :class="[
