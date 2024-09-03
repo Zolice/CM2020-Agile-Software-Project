@@ -1,4 +1,5 @@
 <template>
+  <title>Taskmaster</title>
   <div class="flex h-screen bg-base-200" :data-theme="theme">
     <LeftSidebar
       :toggle-sidebar="toggleLeftSidebar"

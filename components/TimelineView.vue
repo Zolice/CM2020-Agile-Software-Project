@@ -20,13 +20,31 @@
 <script setup lang="jsx">
 const watchRefresh = inject("watchRefresh");
 
+const watchDate = inject("watchDate");
+
 const taskList = ref([]);
+
+const props = defineProps({
+  watchDate: String,
+})
+
+const currentDate = ref(new Date());
 
 onMounted(() => {
   refresh();
 
   // register refresh callback
   watchRefresh(refresh);
+
+  console.log(props.watchDate)
+  if(props.watchDate == "true") {
+    watchDate((date) => {
+      console.log("watch")
+      console.log(date)
+      currentDate.value = date;
+      refresh();
+    });
+  }
 });
 
 function refresh() {
@@ -37,7 +55,7 @@ function refresh() {
   const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
 
   // get today's date
-  const today = new Date();
+  const today = currentDate.value;
   today.setHours(0, 0, 0, 0);
 
   // get total 7 days added to the taskList

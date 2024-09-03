@@ -4,17 +4,17 @@
       class="flex flex-row justify-between items-center text-neutral-content px-1"
     >
       <div class="flex flex-row gap-1 items-center">
-        <button class="btn btn-ghost btn-xs" @click="toggleExpand">
+        <button class="btn btn-ghost btn-sm text-lg" @click="toggleExpand">
           <i v-if="expanded" class="bi bi-caret-down-fill"></i>
           <i v-else class="bi bi-caret-right-fill"></i>
         </button>
         <span class="font-bold">{{ months[month] }} {{ year }}</span>
       </div>
-      <div class="flex flex-row gap-1">
-        <button class="btn btn-ghost btn-xs px-1" @click="previous">
+      <div v-if="expanded" class="flex flex-row gap-2">
+        <button class="btn btn-ghost btn-sm px-1" @click="previous">
           <i class="bi bi-caret-left-fill"></i>
         </button>
-        <button class="btn btn-ghost btn-xs px-1" @click="next">
+        <button class="btn btn-ghost btn-sm px-1" @click="next">
           <i class="bi bi-caret-right-fill"></i>
         </button>
       </div>
@@ -89,9 +89,9 @@ onMounted(() => {
   });
 
   // fetch expanded from localstorage
-  const expand = localStorage.getItem("mobileExpanded")
-  
-  if(expand == "true" || expand == null) {
+  const expand = localStorage.getItem("mobileExpanded");
+
+  if (expand == "true" || expand == null) {
     expanded.value = true;
   } else {
     expanded.value = false;
@@ -101,6 +101,7 @@ onMounted(() => {
 });
 
 function clickDate(date) {
+  console.log(date);
   startDate(new Date(year.value, month.value, date));
 }
 
@@ -113,8 +114,8 @@ function next() {
 }
 
 function toggleExpand() {
-    expanded.value = !expanded.value;
-    localStorage.setItem("mobileExpanded", expanded.value);
+  expanded.value = !expanded.value;
+  localStorage.setItem("mobileExpanded", expanded.value);
 }
 
 function navigateCalendar(direction) {

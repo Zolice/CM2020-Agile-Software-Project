@@ -3,7 +3,7 @@
     <div class="flex flex-row w-full p-2 px-4 justify-between items-center">
       <div class="flex gap-2">
         <button class="btn btn-sm btn-ghost" @click="toggleLeftSidebar">
-          <svg
+          <!-- <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -16,7 +16,8 @@
               stroke-linejoin="round"
               d="M15.75 19.5 8.25 12l7.5-7.5"
             />
-          </svg>
+          </svg> -->
+          <i class="bi bi-list text-2xl"></i>
         </button>
         <!-- Dropdown button to change views -->
         <!-- <select v-model="calendarViewType" class="select select-sm">
@@ -26,11 +27,12 @@
         </select> -->
       </div>
       <!-- Arrows to navigate back and forth different months -->
-      <NextCalendar
+      <!-- <NextCalendar
         :navigate-calendar="navigateCalendar"
         :view="calendarViewType"
         :display-text="displayText"
-      />
+      /> -->
+      <h1 class="title text-2xl text-center h-fit">TASKMASTER</h1>
 
       <div class="flex gap-2">
         <!-- Add Task Button -->
@@ -58,15 +60,20 @@
     </div>
     <div class="flex flex-col gap-2 px-4">
       <MobileCalendar />
-      <select class="select select-sm bg-base-300 text-base-content w-full" v-model="displayType">
+      <select
+        class="select select-sm bg-base-300 text-base-content w-full"
+        v-model="displayType"
+      >
         <option>Task List</option>
         <option>Timeline</option>
+        <option>Daily View</option>
       </select>
     </div>
 
     <div class="h-full overflow-y-auto px-6 py-4">
       <TaskListView v-if="displayType == 'Task List'" />
-      <TimelineView v-else />
+      <TimelineView v-else-if="displayType == 'Timeline'" watch-date="true" />
+      <DailyView v-else :hours="hours" />
       <!-- Render monthly view -->
       <!-- <MonthlyView
         v-if="calendarViewType === 'Monthly'"
@@ -200,7 +207,7 @@ const weeklyDates = ref([]);
 const previousDates = ref([]);
 const nextDates = ref([]);
 
-const displayType = ref("Timeline")
+const displayType = ref("Timeline");
 let firstSatDate = 0;
 
 // set the default values to be the current date
