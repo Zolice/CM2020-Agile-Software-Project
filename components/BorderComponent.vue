@@ -1,5 +1,7 @@
 <template>
+  <!-- Border shop view -->
   <div
+    v-if="mode === 'shop'"
     class="flex flex-col w-fit bg-base-100 border border-neutral cursor-pointer"
     @click="clickHandler"
   >
@@ -15,8 +17,24 @@
     </div>
     <div class="flex flex-col items-center w-full py-1">
       <span>{{ name }}</span>
-      <span :class="[owned ? 'hidden' : '']"> {{ points }} Points </span>
-      <span :class="[owned ? '' : 'hidden']"> {{ message }} </span>
+      <span> {{ owned ? "Owned" : points + " Points" }} </span>
+    </div>
+  </div>
+
+  <!-- Border profile view -->
+  <div v-else-if="mode === 'profile'" class="main-four col w-1/2">
+    <div class="mt-4">
+      <h4 class="text-xl font-bold">Borders</h4>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <!-- <div v-for="border in borders" :key="border.id"> -->
+        <img
+          v-if="owned == true"
+          :src="img"
+          :alt="name"
+          class="w-16 h-16 border"
+        />
+        <!-- </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -27,8 +45,8 @@ const props = defineProps({
   points: Number,
   img: String,
   owned: Boolean,
-  message: String,
   click: Function,
+  mode: String,
 });
 
 const item = {

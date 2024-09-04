@@ -8,7 +8,7 @@
       <div class="bg-primary"></div>
       <div class="bg-secondary flex justify-end p-1">
         <div class="badge badge-ghost" :class="[badge ? '' : 'hidden']">
-          {{ badgeContent }} 
+          {{ badgeContent }}
         </div>
       </div>
       <div class="bg-accent"></div>
@@ -16,8 +16,7 @@
     </div>
     <div class="flex flex-col items-center w-full py-1">
       <span>{{ name }}</span>
-      <span :class="[owned ? 'hidden' : '']"> {{ points }} Points </span>
-      <span :class="[owned ? '' : 'hidden']"> {{ message }} </span>
+      <span> {{ owned ? "Owned" : points + " Points" }} </span>
     </div>
   </div>
 </template>
@@ -29,9 +28,9 @@ const props = defineProps({
   points: Number,
   badge: Boolean,
   badgeContent: String,
-  message: String,
   click: Function,
   displayType: String,
+  owned: Boolean,
 });
 
 const item = {

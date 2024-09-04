@@ -51,7 +51,7 @@
                 :badge="theme.owned"
                 badge-content="Owned"
                 :click="purchase"
-                message="Owned"
+                :owned="theme.owned"
               />
             </div>
           </div>
@@ -81,9 +81,9 @@
                 :name="item.name"
                 :points="item.points"
                 :img="item.img"
-                :owned="true"
+                :owned="item.owned"
                 :click="purchase"
-                message="Owned"
+                :mode="'shop'"
               />
             </div>
           </div>
@@ -113,9 +113,9 @@
                 :name="item.name"
                 :points="item.points"
                 :img="item.img"
-                :owned="true"
+                :owned="item.owned"
                 :click="purchase"
-                message="Owned"
+                :mode="'shop'"
               />
             </div>
           </div>
@@ -135,6 +135,7 @@
             :theme="purchaseItem.theme"
             :points="purchaseItem.points"
             :badge="false"
+            :owned="false"
           />
           <BorderComponent
             v-if="purchaseItemType == 'border'"
@@ -150,7 +151,10 @@
             :img="purchaseItem.img"
             :owned="false"
           />
-          <p v-if="purchaseItem.points > rewardPoints" class="text-error">
+          <p
+            v-if="purchaseItem.points > rewardPoints && !purchaseItem.owned"
+            class="text-error"
+          >
             You do not have enough points to buy this!
           </p>
           <p v-if="purchaseItem.owned" class="text-error">
@@ -299,7 +303,7 @@ function purchaseConfirm() {
   // Display success message
   postNotification(
     "info",
-    "", 
+    "",
     "Purchased " + purchaseItem.value.name + " successfully!"
   );
 

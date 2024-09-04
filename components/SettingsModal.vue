@@ -121,8 +121,8 @@
                 :badge="theme.applied"
                 badge-content="Applied"
                 display-type="settings"
-                message="Owned"
                 :click="themeChanged"
+                :owned="theme.owned"
               />
             </div>
             <div class="flex flex-col gap-1">
@@ -517,7 +517,11 @@ function createCalendar() {
   settings_modal.close();
 
   // Display a notification
-  postNotification("info", "New calendar added", `${calendarName.value} was added.`);
+  postNotification(
+    "info",
+    "New calendar added",
+    `${calendarName.value} was added.`
+  );
 }
 
 function resetAllSettings() {

@@ -116,16 +116,36 @@
               <div class="mt-4">
                 <h4 class="text-xl font-bold">Badges</h4>
                 <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <Badges :badges="badges" />
+                  <BadgeComponent
+                    v-for="item in badges"
+                    :key="item.id"
+                    :name="item.name"
+                    :img="item.img"
+                    :owned="item.owned"
+                  />
                 </div>
               </div>
 
               <!-- Name tags -->
-              <NameTags :nametags="nametags" />
+              <NameTagComponent
+                v-for="item in nametags"
+                :key="item.id"
+                :name="item.name"
+                :img="item.img"
+                :owned="item.owned"
+                :mode="'profile'"
+              />
             </div>
 
             <!-- Borders -->
-            <Borders :borders="borders" />
+            <BorderComponent
+              v-for="item in borders"
+              :key="item.id"
+              :name="item.name"
+              :img="item.img"
+              :owned="item.owned"
+              :mode="'profile'"
+            />
           </div>
         </div>
       </div>

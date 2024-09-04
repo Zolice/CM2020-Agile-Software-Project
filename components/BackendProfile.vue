@@ -2,16 +2,6 @@
 import { getRandomName } from "../utils/randomNameGenerator.js";
 import { ref } from "vue";
 
-// Import borders
-import border1 from "~/assets/borders/border1.jpg";
-import border2 from "~/assets/borders/border2.jpg";
-import border3 from "~/assets/borders/border3.jpg";
-import border4 from "~/assets/borders/border4.jpg";
-
-// Import nametags
-import nameTag1 from "~/assets/nameTags/tag1.jpg";
-import nameTag2 from "~/assets/nameTags/tag2.jpg";
-
 const userName = ref("");
 
 onMounted(() => {
@@ -76,26 +66,54 @@ function getProfileData() {
         currentStreak: 0,
         highestStreak: 0,
         badges: [
-          { id: 1, image: "https://i.pravatar.cc/150?u=2", name: "Badge 1" },
-          { id: 2, image: "https://i.pravatar.cc/150?u=3", name: "Badge 2" },
-          { id: 3, image: "https://i.pravatar.cc/150?u=4", name: "Badge 3" },
-          { id: 4, image: "https://i.pravatar.cc/150?u=5", name: "Badge 4" },
-          { id: 5, image: "https://i.pravatar.cc/150?u=6", name: "Badge 5" },
-          { id: 6, image: "https://i.pravatar.cc/150?u=7", name: "Badge 6" },
+          {
+            id: 1,
+            img: "/badges/pot1.png",
+            name: "Nurturing Beginnings",
+            owned: true,
+          },
+          {
+            id: 2,
+            img: "/badges/pot2.png",
+            name: "Sprouting Hope",
+            owned: false,
+          },
+          {
+            id: 3,
+            img: "/badges/pot3.png",
+            name: "Budding Potential",
+            owned: false,
+          },
+          {
+            id: 4,
+            img: "/badges/pot4.png",
+            name: "Reaching for the Sun",
+            owned: false,
+          },
+          {
+            id: 5,
+            img: "/badges/pot5.png",
+            name: "Blooming Strength",
+            owned: false,
+          },
+          {
+            id: 6,
+            img: "/badges/pot6.png",
+            name: "Flourishing Growth",
+            owned: false,
+          },
+          {
+            id: 7,
+            img: "/badges/pot7.png",
+            name: "Golden Blossom",
+            owned: false,
+          },
         ],
-        borders: [
-          { id: 1, image: border1, name: "Border 1" },
-          { id: 2, image: border2, name: "Border 2" },
-          { id: 3, image: border3, name: "Border 3" },
-          { id: 4, image: border4, name: "Border 4" },
-        ],
-        nametags: [
-          { id: 1, image: nameTag1, name: "Name Tag 1" },
-          { id: 2, image: nameTag2, name: "Name Tag 2" },
-        ],
+        borders: [],
+        nametags: [],
         themes: [
-          { name: "Light", theme: "light", points: 500, owned: true },
-          { name: "Dark", theme: "dark", points: 500, owned: true },
+          { name: "Light", theme: "light", points: 0, owned: false },
+          { name: "Dark", theme: "dark", points: 0, owned: false },
         ],
       };
 
