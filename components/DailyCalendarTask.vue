@@ -4,25 +4,27 @@
   <!-- row-start should increase by one for each task of the day  -->
   <div
     style="grid-area: 2/1 / span 1 / span 7"
-    class="flex flex-row bg-neutral text-neutral-content rounded-md hover:text-primary my-0.5 cursor-pointer"
+    class="flex flex-row bg-red-400 rounded-md hover:text-primary my-0.5 cursor-pointer pl-2 pb-1 w-full self-center"
     @click="clickHandler"
   >
     <!-- Left side Priority Border -->
     <!-- Colour will change based on the priority of the task -->
-    <div class="bg-red-400 h-full rounded-l-md" style="width: 4%"></div>
     <!-- content and bottom priority border -->
-    <div class="h-full flex-col" style="width: 96%">
+    <div class="h-full w-full flex-col">
       <!-- content -->
       <div
-        class="w-full flex flex-row px-1 justify-between"
+        class="w-full flex flex-row px-1 justify-between bg-neutral text-neutral-content"
         style="height: 80%"
       >
         <!-- name -->
-        <p class="flex-auto line-clamp-1 text-sm align-middle">
+        <p
+          class="flex-auto align-middle"
+          :class="[lines == '2' ? 'line-clamp-2' : 'line-clamp-1']"
+        >
           {{ task.task.summary }}
         </p>
         <!-- time -->
-        <span class="flex-none text-sm">{{ time }}</span>
+        <span class="flex-none pl-1">{{ time }}</span>
       </div>
       <!-- Bottom border -->
       <div class="w-full bg-red-400 rounded-br-md" style="height: 20%"></div>
@@ -37,7 +39,7 @@ const time = ref("");
 
 const props = defineProps({
   task: Object,
-  calendar: String,
+  lines: String,
 });
 
 onMounted(() => {

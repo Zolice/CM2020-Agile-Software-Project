@@ -35,7 +35,7 @@
         {{ date.date }}
 
         <!-- Display the tasks -->
-        <CalendarTask :calendar="calendar" />
+        <CalendarTask v-for="task in date.tasks" :key="task.uid" :task="task" />
       </div>
       <div
         v-for="date in nextDates"
