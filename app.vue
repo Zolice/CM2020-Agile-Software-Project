@@ -1,4 +1,5 @@
 <template>
+  <title>Taskmaster</title>
   <div class="flex h-screen bg-base-200" :data-theme="theme">
     <LeftSidebar
       :toggle-sidebar="toggleLeftSidebar"
@@ -34,10 +35,10 @@
             v-model="currentTask.summary"
             type="text"
             placeholder="Title"
-            class="input text-3xl font-bold w-full p-2"
+            class="input text-3xl font-bold w-full p-2 text-wrap"
           />
           <!-- Tags -->
-          <div class="flex flex-row gap-2">
+          <div class="flex flex-row flex-wrap gap-2">
             <span
               class="badge cursor-pointer"
               :class="[
@@ -221,7 +222,9 @@ const dateCallbacks = ref([]);
 const notifications = ref([]);
 
 onMounted(() => {
+  // Theme
   theme.value = localStorage.getItem("theme") || "dark";
+
   useFlowbite(() => {
     initFlowbite();
   });
@@ -234,8 +237,21 @@ onMounted(() => {
     isLeftSidebarOpen.value = false;
     isRightSidebarOpen.value = false;
   } else {
-    isLeftSidebarOpen.value = true;
-    isRightSidebarOpen.value = true;
+    // Get from localstorage
+    const left = localStorage.getItem("isLeftSidebarOpen");
+    const right = localStorage.getItem("isRightSidebarOpen");
+
+    if (left == "true" || left == null) {
+      isLeftSidebarOpen.value = true;
+    } else {
+      isLeftSidebarOpen.value = false;
+    }
+
+    if (right == "true" || right == null) {
+      isRightSidebarOpen.value = true;
+    } else {
+      isRightSidebarOpen.value = false;
+    }
   }
 });
 
@@ -245,10 +261,12 @@ function setTheme(value) {
 
 function toggleLeftSidebar() {
   isLeftSidebarOpen.value = !isLeftSidebarOpen.value;
+  localStorage.setItem("isLeftSidebarOpen", isLeftSidebarOpen.value);
 }
 
 function toggleRightSidebar() {
   isRightSidebarOpen.value = !isRightSidebarOpen.value;
+  localStorage.setItem("isRightSidebarOpen", isRightSidebarOpen.value);
 }
 
 function postNotification(

@@ -1,17 +1,25 @@
 <template>
-  <div class="w-full flex flex-col gap-2 bg-neutral p-2 rounded-btn">
-    <div class="flex flex-row justify-between items-center text-neutral-content px-1">
-      <span class="font-bold">{{ months[month] }} {{ year }}</span>
-      <div class="flex flex-row gap-1">
-        <button class="btn btn-ghost btn-xs px-1" @click="navigateCalendar('previous')">
+  <div class="w-full flex flex-col gap-2 bg-neutral p-4 rounded-btn">
+    <div
+      class="flex flex-row justify-between items-center text-neutral-content px-1"
+    >
+      <div class="flex flex-row gap-1 items-center">
+        <button class="btn btn-ghost btn-sm text-lg" @click="toggleExpand">
+          <i v-if="expanded" class="bi bi-caret-down-fill"></i>
+          <i v-else class="bi bi-caret-right-fill"></i>
+        </button>
+        <span class="font-bold">{{ months[month] }} {{ year }}</span>
+      </div>
+      <div v-if="expanded" class="flex flex-row gap-2">
+        <button class="btn btn-ghost btn-sm px-1" @click="navigateCalendar('previous')">
           <i class="bi bi-caret-left-fill"></i>
         </button>
-        <button class="btn btn-ghost btn-xs px-1" @click="navigateCalendar('next')">
+        <button class="btn btn-ghost btn-sm px-1" @click="navigateCalendar('next')">
           <i class="bi bi-caret-right-fill"></i>
         </button>
       </div>
     </div>
-    <div class="w-full grid grid-cols-7">
+    <div v-if="expanded" class="w-full grid grid-cols-7 py-2">
       <div
         v-for="(day, index) in dayNames"
         :key="index"
@@ -20,11 +28,19 @@
         {{ day.charAt(0) }}
       </div>
     </div>
-    <div class="w-full grid grid-cols-7 text-neutral-content">
+    <div
+      v-if="expanded"
+      class="w-full grid grid-cols-7 text-neutral-content gap-y-4"
+    >
       <div
         v-for="(date, index) in dates"
         :key="index"
         class="text-center py-[0.25rem] cursor-pointer"
+        :class="[
+          date.date == currentDate
+            ? 'rounded-xl bg-primary text-primary-content'
+            : '',
+        ]"
         :style="`grid-area: ${
           date.date > firstSatDate
             ? Math.ceil((date.date - firstSatDate) / 7) + 1
@@ -66,20 +82,38 @@ const dates = ref([]);
 const firstSatDate = ref(0);
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth());
+const currentDate = ref(new Date().getDate());
+
+const expanded = ref(false);
 
 onMounted(() => {
   // register callback
   watchDate((date) => {
     year.value = date.getFullYear();
     month.value = date.getMonth();
+    currentDate.value = date.getDate();
     updateDates();
   });
+
+  // fetch expanded from localstorage
+  const expand = localStorage.getItem("mobileExpanded");
+
+  if (expand == "true" || expand == null) {
+    expanded.value = true;
+  } else {
+    expanded.value = false;
+  }
 
   updateDates();
 });
 
 function clickDate(date) {
   startDate(new Date(year.value, month.value, date));
+}
+
+function toggleExpand() {
+  expanded.value = !expanded.value;
+  localStorage.setItem("mobileExpanded", expanded.value);
 }
 
 function navigateCalendar(direction) {

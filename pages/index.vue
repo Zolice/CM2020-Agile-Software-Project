@@ -63,6 +63,12 @@ let month = new Date().getMonth();
 let day = new Date().getDate();
 
 onMounted(() => {
+  // check if device is mobile
+  if(/Mobi|Android/i.test(window.navigator.userAgent)){
+    // redirect to m-index
+    window.location.href = "/m-index";
+  }
+
   calendarViewType.value =
     localStorage.getItem("calendarViewType") || "Monthly";
   updateDates();

@@ -26,13 +26,11 @@
         <div class="flex flex-col h-full overflow-auto gap-4">
           <div class="flex flex-row w-full px-2 gap-4">
             <!-- Avatar and Username -->
-            <div
-              class="main-one flex-shrink-0 w-2/5 flex items-center justify-center"
-            >
+            <div class="flex-shrink-0 w-2/5 flex items-center justify-center">
               <img :src="avatar" alt="Avatar" class="rounded-full w-35 h-35" />
             </div>
             <div
-              class="main-two flex-grow w-3/5 flex flex-col items-center justify-center text-center"
+              class="flex-grow w-3/5 flex flex-col items-center justify-center text-center"
             >
               <!-- Username and buttons-->
               <div class="flex flex-col items-center">
@@ -42,7 +40,7 @@
                     v-if="editing"
                     v-model="userName"
                     type="text"
-                    class="input input-bordered input-lg text-center"
+                    class="input input-bordered input-lg w-full text-center"
                   />
                   <h1 v-else class="text-2xl font-bold">
                     {{ userName }}
@@ -54,7 +52,7 @@
                   ></i>
                 </div>
                 <!-- Save and cancel buttons for name change -->
-                <div class="flex gap-2 mt-2">
+                <div class="flex gap-2 py-2">
                   <button
                     v-if="editing"
                     class="btn btn-error btn-sm"
@@ -75,25 +73,43 @@
                 </div>
               </div>
 
-              <div class="w-full flex items-center justify-around">
+              <div
+                class="w-full grid grid-cols-1 sm:grid-cols-3 items-center justify-around"
+              >
                 <!-- Level progress bar -->
                 <LevelProgressBar :score-width="scoreWidth" :level="level" />
 
                 <!-- Score and reward points -->
-                <span>Score: {{ score }}</span>
-                <span>Reward Points: {{ rewardPoints }}</span>
+                <span class="hidden sm:block">Score: {{ score }}</span>
+                <span class="hidden sm:block">
+                  Reward Points: {{ rewardPoints }}
+                </span>
               </div>
 
               <!-- Streaks -->
-              <div class="w-full flex items-center justify-around">
+              <div class="w-full items-center justify-around hidden sm:flex">
                 <p>Current Streak: {{ currentStreak }} Days</p>
                 <p>Highest Streak: {{ highestStreak }} Days</p>
               </div>
             </div>
           </div>
+          <div class="grid-cols-3 grid sm:hidden">
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Player Score</span>
+              <span class="text-center">{{ score }}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Current Streak</span>
+              <span class="text-center">{{ currentStreak }} Days</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-bold text-xl text-center">Highest Streak</span>
+              <span class="text-center">{{ highestStreak }}</span>
+            </div>
+          </div>
 
           <!-- Badges, name tags, and borders -->
-          <div class="row flex h-1/2">
+          <div class="row flex">
             <div class="main-three col w-1/2">
               <!-- Badges -->
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
