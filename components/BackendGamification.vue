@@ -6,51 +6,60 @@ const points = ref(200);
 const score = ref(0);
 
 onMounted(() => {
-  // Run getPoints() to initialize points
-  getPoints();
-
-  // Run getScore() to initialize score
-  getScore();
+  initGame();
 });
+
+function initGame() {
+  if (typeof window !== "undefined") {
+    const storedPoints = localStorage.getItem("points") || points.value;
+    const storedScore = localStorage.getItem("score") || score.value;
+
+    if (!storedPoints) {
+      localStorage.setItem("points", points.value);
+    }
+
+    if (!storedScore) {
+      localStorage.setItem("score", score.value);
+    }
+  }
+}
 
 /**
  * Get the points from localStorage
- * Create a new localStorage for points if it doesn't exist
  *
  * @returns {Number}
  */
 function getPoints() {
-  // Add points to the user
+  // Get the points
   if (typeof window !== "undefined") {
-    const storedPoints = localStorage.getItem("points") || points.value;
-    if (storedPoints) {
-      points.value += storedPoints;
-    } else {
-      localStorage.setItem("points", points.value);
-    }
+    return localStorage.getItem("points") || points.value;
   }
-  return points.value;
 }
 
 /**
  * Get the score from localStorage
- * Create a new localStorage for score if it doesn't exist
  *
  * @returns {Number}
  */
 function getScore() {
   // Add points to the user
   if (typeof window !== "undefined") {
-    const storedScore = localStorage.getItem("score") || score.value;
-    if (storedScore) {
-      score.value += storedScore;
-    } else {
-      localStorage.setItem("score", score.value);
-    }
+    return localStorage.setItem("score", score.value);
   }
-  return points.value;
+}
+
+function addPoints(addedPoints) {
+  points.value = getPoints();
+
+  localStorage.setItem("points", points.value + addedPoints);
+}
+
+function addScore(addedScore) {
+  score.value = getScore();
+
+  localStorage.setItem("score", score.value + addedScore);
 }
 
 // Expose functions for use
-defineExpose({ getPoints, getScore });
+defineExpose({ getPoints, getScore, addPoints, addScore });
 </script>
