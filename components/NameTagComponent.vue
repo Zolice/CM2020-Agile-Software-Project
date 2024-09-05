@@ -21,9 +21,7 @@
 
   <!-- Profile name tag view -->
   <div v-else-if="mode === 'profile'" class="mt-4">
-    <div class="flex flex-wrap gap-2">
-      <img v-if="owned == true" :src="img" :alt="name" class="w-40 h-10" />
-    </div>
+    <img v-if="owned == true" :src="img" :alt="name" class="w-40 h-10" />
   </div>
 </template>
 
