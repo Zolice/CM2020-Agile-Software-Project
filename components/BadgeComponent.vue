@@ -1,7 +1,6 @@
 <template>
-  <div class="mt-4">
+  <div v-if="owned == true" class="mt-4">
     <img
-      v-if="owned == true"
       :src="img"
       :alt="name"
       class="w-16 h-16 rounded transition-transform transform group-hover:scale-110 border"
