@@ -112,20 +112,47 @@
           <div class="row flex">
             <div class="main-three col w-1/2">
               <!-- Badges -->
+
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
-              <div class="mt-4">
-                <h4 class="text-xl font-bold">Badges</h4>
-                <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <Badges :badges="badges" />
-                </div>
+              <h4 class="text-xl font-bold">Badges</h4>
+              <div class="flex flex-wrap gap-2">
+                <BadgeComponent
+                  v-for="item in badges"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                />
               </div>
 
               <!-- Name tags -->
-              <NameTags :nametags="nametags" />
+              <h4 class="text-xl font-bold mt-4">Name Tags</h4>
+              <div class="flex flex-wrap gap-2">
+                <NameTagComponent
+                  v-for="item in nametags"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                  :mode="'profile'"
+                />
+              </div>
             </div>
 
             <!-- Borders -->
-            <Borders :borders="borders" />
+            <div class="main-four col w-1/2">
+              <h4 class="text-xl font-bold">Borders</h4>
+              <div class="flex flex-wrap gap-2">
+                <BorderComponent
+                  v-for="item in borders"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                  :mode="'profile'"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

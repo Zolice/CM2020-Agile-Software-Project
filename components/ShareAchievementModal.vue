@@ -12,7 +12,9 @@
   <!-- Share Achievement Modal -->
   <dialog id="share_achievement_modal" class="modal bg-black bg-opacity-70">
     <!-- Modal Content -->
-    <div class="modal-box mx-auto w-fit h-fit bg-transparent flex flex-col gap-2">
+    <div
+      class="modal-box mx-auto w-fit h-fit bg-transparent flex flex-col gap-2"
+    >
       <div class="w-[24em] h-[40em] bg-base-100 rounded-box p-4">
         <div ref="modalContent" class="text-center">
           <h2 class="text-xl font-bold mb-4">TASKMASTER</h2>
@@ -31,8 +33,16 @@
           <p class="mb-2">Score: {{ score }}</p>
           <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
 
-          <div class="flex flex-wrap gap-2 mt-4 justify-center">
-            <Badges :badges="badges" />
+          <!-- Badges -->
+          <h4 class="text-xl font-bold">Badges</h4>
+          <div class="flex flex-wrap gap-2 justify-center">
+            <BadgeComponent
+              v-for="item in badges"
+              :key="item.id"
+              :name="item.name"
+              :img="item.img"
+              :owned="item.owned"
+            />
           </div>
         </div>
       </div>
