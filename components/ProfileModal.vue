@@ -113,19 +113,16 @@
             <div class="main-three col w-1/2">
               <!-- Badges -->
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
-              <div class="mt-4">
-                <h4 class="text-xl font-bold">Badges</h4>
-                <div class="flex flex-wrap gap-2 mt-4 relative">
-                  <BadgeComponent
-                    v-for="item in badges"
-                    :key="item.id"
-                    :name="item.name"
-                    :img="item.img"
-                    :owned="item.owned"
-                  />
-                </div>
-              </div>
+              <h4 class="text-xl font-bold">Badges</h4>
+              <BadgeComponent
+                v-for="item in badges"
+                :key="item.id"
+                :name="item.name"
+                :img="item.img"
+                :owned="item.owned"
+              />
 
+              <h4 class="text-xl font-bold">Name Tags</h4>
               <!-- Name tags -->
               <NameTagComponent
                 v-for="item in nametags"
@@ -137,6 +134,7 @@
               />
             </div>
 
+            <h4 class="text-xl font-bold">Borders</h4>
             <!-- Borders -->
             <BorderComponent
               v-for="item in borders"

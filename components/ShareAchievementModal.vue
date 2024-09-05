@@ -33,15 +33,15 @@
           <p class="mb-2">Score: {{ score }}</p>
           <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
 
-          <div class="flex flex-wrap gap-2 mt-4 justify-center">
-            <BadgeComponent
-              v-for="item in badges"
-              :key="item.id"
-              :name="item.name"
-              :img="item.img"
-              :owned="item.owned"
-            />
-          </div>
+          <!-- Badges -->
+          <h4 class="text-xl font-bold">Badges</h4>
+          <BadgeComponent
+            v-for="item in badges"
+            :key="item.id"
+            :name="item.name"
+            :img="item.img"
+            :owned="item.owned"
+          />
         </div>
       </div>
 

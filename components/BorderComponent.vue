@@ -23,16 +23,13 @@
 
   <!-- Border profile view -->
   <div v-else-if="mode === 'profile'" class="main-four col w-1/2">
-    <div class="mt-4">
-      <h4 class="text-xl font-bold">Borders</h4>
-      <div class="flex flex-wrap gap-2 mt-4">
-        <img
-          v-if="owned == true"
-          :src="img"
-          :alt="name"
-          class="w-16 h-16 border"
-        />
-      </div>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <img
+        v-if="owned == true"
+        :src="img"
+        :alt="name"
+        class="w-16 h-16 border"
+      />
     </div>
   </div>
 </template>
