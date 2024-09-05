@@ -35,7 +35,7 @@
 
           <!-- Badges -->
           <h4 class="text-xl font-bold">Badges</h4>
-          <div class="flex flex-wrap gap-2 mt-4 justify-center">
+          <div class="flex flex-wrap gap-2 justify-center">
             <BadgeComponent
               v-for="item in badges"
               :key="item.id"

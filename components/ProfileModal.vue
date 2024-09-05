@@ -114,36 +114,44 @@
               <!-- Badges -->
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
               <h4 class="text-xl font-bold">Badges</h4>
-              <BadgeComponent
-                v-for="item in badges"
-                :key="item.id"
-                :name="item.name"
-                :img="item.img"
-                :owned="item.owned"
-              />
+              <div class="flex flex-wrap gap-2">
+                <BadgeComponent
+                  v-for="item in badges"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                />
+              </div>
 
-              <h4 class="text-xl font-bold">Name Tags</h4>
               <!-- Name tags -->
-              <NameTagComponent
-                v-for="item in nametags"
-                :key="item.id"
-                :name="item.name"
-                :img="item.img"
-                :owned="item.owned"
-                :mode="'profile'"
-              />
+              <h4 class="text-xl font-bold mt-4">Name Tags</h4>
+              <div class="flex flex-wrap gap-2">
+                <NameTagComponent
+                  v-for="item in nametags"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                  :mode="'profile'"
+                />
+              </div>
             </div>
 
-            <h4 class="text-xl font-bold">Borders</h4>
             <!-- Borders -->
-            <BorderComponent
-              v-for="item in borders"
-              :key="item.id"
-              :name="item.name"
-              :img="item.img"
-              :owned="item.owned"
-              :mode="'profile'"
-            />
+            <div class="main-four col w-1/2">
+              <h4 class="text-xl font-bold">Borders</h4>
+              <div class="flex flex-wrap gap-2">
+                <BorderComponent
+                  v-for="item in borders"
+                  :key="item.id"
+                  :name="item.name"
+                  :img="item.img"
+                  :owned="item.owned"
+                  :mode="'profile'"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
