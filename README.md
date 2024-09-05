@@ -47,7 +47,7 @@
 </details>
 
 # About The Project
-Project assigned by SIM GE - UOL for the purpose of CM2040 Databases, Networks and The Web 
+Project assigned by SIM GE - UOL for the purpose of CM2020 Agile Software Project 
 
 ## Built With
 ![NuxtJS](https://img.shields.io/badge/NuxtJS-00C58E?style=for-the-badge&logo=nuxt.js&logoColor=FFFFFF)
