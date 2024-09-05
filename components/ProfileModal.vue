@@ -65,7 +65,9 @@
                     v-if="editing"
                     class="btn btn-primary btn-sm"
                     :class="[
-                      originalUserName == userName ? 'btn-disabled' : '',
+                      originalUserName == userName || !userName
+                        ? 'btn-disabled'
+                        : '',
                     ]"
                     @click="saveUsername"
                   >
