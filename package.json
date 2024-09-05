@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "@webzlodimir/vue-avatar": "^0.0.8",
     "bootstrap-icons": "^1.11.3",
     "flowbite": "^2.5.1",
     "flowbite-vue": "^0.1.5",
