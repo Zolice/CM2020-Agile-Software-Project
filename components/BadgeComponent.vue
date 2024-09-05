@@ -1,14 +1,10 @@
 <template>
-  <div v-if="owned == true" class="mt-4">
-    <img
-      :src="img"
-      :alt="name"
-      class="w-16 h-16 rounded transition-transform transform group-hover:scale-110 border"
-    />
+  <div v-if="owned" class="relative group mt-4">
+    <img :src="img" :alt="name" class="w-16 h-16 rounded border" />
     <div
-      class="absolute flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110"
+      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
     >
-      {{ name }}
+      <span class="text-center px-2">{{ name }}</span>
     </div>
   </div>
 </template>
