@@ -125,6 +125,10 @@
                   :name="item.name"
                   :img="item.img"
                   :owned="item.owned"
+                  :selected="
+                    selectedBadges.some((selected) => selected.id === item.id)
+                  "
+                  @click="toggleBadgeSelection(item)"
                 />
               </div>
 
@@ -187,6 +191,7 @@ const editing = ref(false);
 const badges = ref([]);
 const nametags = ref([]);
 const borders = ref([]);
+const selectedBadges = ref([]);
 
 onMounted(() => {
   // Get profile name and user name)
@@ -194,7 +199,28 @@ onMounted(() => {
 
   const profile = backendProfile.value.getProfileData();
   avatar.value = profile.avatar;
+
+  selectedBadges.value =
+    JSON.parse(localStorage.getItem("selectedBadges")) || [];
 });
+
+function toggleBadgeSelection(badge) {
+  // Check if the badge is already selected by comparing badge ids
+  const badgeIndex = selectedBadges.value.findIndex(
+    (selectedBadge) => selectedBadge.id === badge.id
+  );
+
+  if (badgeIndex !== -1) {
+    // If the badge is already selected, remove it from the array
+    selectedBadges.value.splice(badgeIndex, 1);
+  } else {
+    // If the badge is not selected, add the whole badge object
+    selectedBadges.value.push(badge);
+  }
+
+  // Save the updated selected badges to localStorage (store as JSON string)
+  localStorage.setItem("selectedBadges", JSON.stringify(selectedBadges.value));
+}
 
 function openProfileModal() {
   // Get username from backend
