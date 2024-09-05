@@ -10,7 +10,7 @@
   <h3 align="center">TaskMaster</h3>
 
   <p align="center">
-    Project assigned by SIM GE - UOL for the purpose of CM2020 Agile Software Project
+    Project assigned by SIM GE - UOL for the purpose of CM2020 Agile Software Project 
     <br />
     <a href="https://github.com/Zolice/CM2020-Agile-Software-Project">View Demo</a>
     ·
