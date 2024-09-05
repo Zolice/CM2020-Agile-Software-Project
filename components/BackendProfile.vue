@@ -41,6 +41,24 @@ function saveUsername(userName) {
 }
 
 /**
+ * Get the selected badges from localStorage
+ *
+ * @returns {Array}
+ */
+function getSelectedBadges() {
+  return JSON.parse(localStorage.getItem("selectedBadges")) || [];
+}
+
+/**
+ * Set the selected badges in localStorage
+ *
+ * @param {Array} badges
+ */
+function setSelectedBadges(badges) {
+  localStorage.setItem("selectedBadges", JSON.stringify(badges));
+}
+
+/**
  * Get the profile data from localStorage
  * Create a new localStorage for profileData if it doesn't exist
  *
@@ -143,5 +161,7 @@ defineExpose({
   saveUsername,
   getProfileData,
   updateProfileData,
+  getSelectedBadges,
+  setSelectedBadges,
 });
 </script>

@@ -200,8 +200,7 @@ onMounted(() => {
   const profile = backendProfile.value.getProfileData();
   avatar.value = profile.avatar;
 
-  selectedBadges.value =
-    JSON.parse(localStorage.getItem("selectedBadges")) || [];
+  selectedBadges.value = backendProfile.value.getSelectedBadges();
 });
 
 function toggleBadgeSelection(badge) {
@@ -218,8 +217,8 @@ function toggleBadgeSelection(badge) {
     selectedBadges.value.push(badge);
   }
 
-  // Save the updated selected badges to localStorage (store as JSON string)
-  localStorage.setItem("selectedBadges", JSON.stringify(selectedBadges.value));
+  // Save the updated selected badges to localStorage
+  backendProfile.value.setSelectedBadges(selectedBadges.value);
 }
 
 function openProfileModal() {

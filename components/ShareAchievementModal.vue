@@ -82,6 +82,8 @@ function openShareModal() {
   isModalOpen.value = true;
 
   userName.value = backendProfile.value.getUserName();
+  // Get the selected badges from the backend profile
+  badges.value = backendProfile.value.getSelectedBadges();
 
   const profile = backendProfile.value.getProfileData();
   avatar.value = profile.avatar;
@@ -89,7 +91,6 @@ function openShareModal() {
   score.value = profile.score;
   maxScore.value = profile.maxScore;
   highestStreak.value = profile.highestStreak;
-  badges.value = profile.badges;
 
   scoreWidth.value = (score.value / maxScore.value) * 100;
 
