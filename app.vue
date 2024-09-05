@@ -193,6 +193,7 @@
       />
     </div>
   </div>
+  <BackendGamification ref="backendGamification" />
 </template>
 
 <script setup lang="jsx">
