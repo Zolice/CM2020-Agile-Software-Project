@@ -1,5 +1,4 @@
 <template>
-  <!-- <div v-for="badge in badges" :key="badge.id"> -->
   <img
     v-if="owned == true"
     :src="img"
@@ -11,7 +10,6 @@
   >
     {{ name }}
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup lang="jsx">

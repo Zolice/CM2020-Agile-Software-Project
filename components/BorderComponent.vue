@@ -26,14 +26,12 @@
     <div class="mt-4">
       <h4 class="text-xl font-bold">Borders</h4>
       <div class="flex flex-wrap gap-2 mt-4">
-        <!-- <div v-for="border in borders" :key="border.id"> -->
         <img
           v-if="owned == true"
           :src="img"
           :alt="name"
           class="w-16 h-16 border"
         />
-        <!-- </div> -->
       </div>
     </div>
   </div>
