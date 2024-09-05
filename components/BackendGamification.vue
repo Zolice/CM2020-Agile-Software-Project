@@ -1,27 +1,35 @@
-<template></template>
+<template>
+  <BackendProfile ref="backendProfile" />
+</template>
 
 <script setup lang="jsx">
+const backendProfile = ref(null);
+
 // Initialise points and score
-const points = ref(200);
-const score = ref(0);
+const streak = ref({});
 
 onMounted(() => {
-  initGame();
+  backendProfile;
+  getStreak();
 });
 
-function initGame() {
+function getStreak() {
   if (typeof window !== "undefined") {
-    const storedPoints = localStorage.getItem("points") || points.value;
-    const storedScore = localStorage.getItem("score") || score.value;
+    const storedStreak = localStorage.getItem("streak");
 
-    if (!storedPoints) {
-      localStorage.setItem("points", points.value);
-    }
-
-    if (!storedScore) {
-      localStorage.setItem("score", score.value);
+    if (!storedStreak) {
+      streak.value = { streak: 1, lastDate: "" };
+      localStorage.setItem("streak", JSON.stringify(streak.value));
     }
   }
+  return streak.value;
+}
+
+function addStreak() {
+  localStorage.setItem("userName", {
+    streak: getStreak() + 1,
+    lastDate: new Date(),
+  });
 }
 
 /**
@@ -31,9 +39,7 @@ function initGame() {
  */
 function getPoints() {
   // Get the points
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("points") || points.value;
-  }
+  return backendProfile.value.getProfileData.rewardPoints;
 }
 
 /**
@@ -42,24 +48,43 @@ function getPoints() {
  * @returns {Number}
  */
 function getScore() {
-  // Add points to the user
-  if (typeof window !== "undefined") {
-    return localStorage.setItem("score", score.value);
-  }
+  return backendProfile.value.getProfileData().score;
 }
 
 function addPoints(addedPoints) {
-  points.value = getPoints();
-
-  localStorage.setItem("points", points.value + addedPoints);
+  const profile = backendProfile.value.getProfileData();
+  profile.rewardPoints += addedPoints;
+  backendProfile.value.updateProfileData(profile);
 }
 
 function addScore(addedScore) {
-  score.value = getScore();
+  const profile = backendProfile.value.getProfileData();
+  profile.score += addedScore;
+  backendProfile.value.updateProfileData(profile);
+}
 
-  localStorage.setItem("score", score.value + addedScore);
+function completeTask() {
+  currentDate = new Date();
+
+  // Return if points and score has been collected for the day
+  if (currentDate == getStreak().lastDate) {
+    return "You have earn points and score for today!";
+  }
+
+  // Else add streak, points and score
+  addStreak();
+  addScore(max(50 * getStreak(), 300));
+  addPoints(max(100 * getStreak(), 400));
 }
 
 // Expose functions for use
-defineExpose({ getPoints, getScore, addPoints, addScore });
+defineExpose({
+  getStreak,
+  addStreak,
+  getPoints,
+  getScore,
+  addPoints,
+  addScore,
+  completeTask,
+});
 </script>
