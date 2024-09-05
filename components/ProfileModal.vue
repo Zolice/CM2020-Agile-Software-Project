@@ -5,7 +5,8 @@
     class="btn btn-md btn-accent w-full flex flex-row"
     @click="openProfileModal"
   >
-    <img :src="avatar" alt="Avatar" class="rounded-full w-6 h-6" />
+    <vue-avatar :size="35" :username="userName" />
+
     <span class="grow text-center"> {{ userName }} </span>
   </button>
 
@@ -27,7 +28,7 @@
           <div class="flex flex-row w-full px-2 gap-4">
             <!-- Avatar and Username -->
             <div class="flex-shrink-0 w-2/5 flex items-center justify-center">
-              <img :src="avatar" alt="Avatar" class="rounded-full w-35 h-35" />
+              <vue-avatar :size="150" :username="userName" />
             </div>
             <div
               class="flex-grow w-3/5 flex flex-col items-center justify-center text-center"
@@ -163,6 +164,8 @@
 
 <script setup lang="jsx">
 import { ref } from "vue";
+import VueAvatar from "@webzlodimir/vue-avatar";
+import "@webzlodimir/vue-avatar/dist/style.css";
 
 // Backend Profile Component
 const backendProfile = ref(null);
