@@ -1,9 +1,11 @@
-<script setup>
+<script setup lang="jsx">
 const toggleLeftSidebar = inject("toggleLeftSidebar");
 const toggleRightSidebar = inject("toggleRightSidebar");
 
 const backendSettings = ref(null);
 const calendarViewType = ref("Monthly");
+
+const watchRefresh = inject("watchRefresh");
 
 const watchDate = inject("watchDate");
 const startDate = inject("startDate");
@@ -52,6 +54,7 @@ const hours = [
 ];
 const dates = ref([]);
 const weeklyDates = ref([]);
+const dailyDate = ref({});
 
 const previousDates = ref([]);
 const nextDates = ref([]);
@@ -64,7 +67,7 @@ let day = new Date().getDate();
 
 onMounted(() => {
   // check if device is mobile
-  if(/Mobi|Android/i.test(window.navigator.userAgent)){
+  if (/Mobi|Android/i.test(window.navigator.userAgent)) {
     // redirect to m-index
     window.location.href = "/m-index";
   }
@@ -82,31 +85,100 @@ onMounted(() => {
     updateDates();
     updateDisplayText(calendarViewType.value);
   });
+
+  // register refresh callback
+  watchRefresh(() => {
+    updateDates();
+    updateDisplayText(calendarViewType.value);
+  });
 });
 
 watch(calendarViewType, (value) => {
   localStorage.setItem("calendarViewType", value);
   updateDates();
   updateDisplayText(value);
+
+  // refresh();
 });
 
 function updateDates() {
   // Assume the value months and year are set
-  // Clear the dates array
-  dates.value = [];
+  // Clear all previous values
   weeklyDates.value = [];
+  dates.value = [];
+  dailyDate.value = {};
 
+  // Get updated calendar list
+  const calendar = JSON.parse(localStorage.getItem("calendars")) || {};
+
+  // Get today's date
+  const today = new Date(year, month);
+  today.setHours(0, 0, 0, 0);
+
+  // get all dates between 1st day and the day before next month
   let d = new Date(year, month);
   if (!!d.getTime() && month <= 11 && month >= 0) {
     //to handle errors if arguments are not valid.
     while (d.getMonth() == month) {
-      dates.value.push({ date: d.getDate(), day: d.getDay() });
+      dates.value.push({
+        date: d.getDate(),
+        day: d.getDay(),
+        raw: d,
+        tasks: [],
+      });
       d = new Date(d.getTime() + 1000 * 60 * 60 * 24);
     }
     firstSatDate = 7 - dates.value[0].day; //compute the date of the first Saturday of the given month
   } else {
     dates.value.push({}); //push an empty object into the 'dates' array
   }
+
+  const lastDay = dates.value[dates.value.length - 1].raw;
+  lastDay.setDate(lastDay.getDate() + 1);
+
+  // for each calendar, if it's to be displayed, parse through all the tasks
+  // get list of keys
+  const keys = Object.keys(calendar);
+  const allTasks = [];
+
+  // get each calendar
+  keys.forEach((key) => {
+    if (calendar[key].display) {
+      const tasks = Object.keys(calendar[key].calendar);
+      // get each task
+      tasks.forEach((taskKey) => {
+        // if the task is overdue, add it to the overdueTasks list
+        const task = calendar[key].calendar[taskKey];
+
+        const taskDate = new Date(task.end);
+        if (taskDate >= today && taskDate < lastDay) {
+          const pushTask = {
+            calendar: key,
+            task: task,
+          };
+          allTasks.push(pushTask);
+        }
+      });
+    }
+  });
+
+  // sort task base done date
+  allTasks.sort((a, b) => new Date(a.task.end) - new Date(b.task.end));
+
+  // for each day, add tasks to the taskList
+  dates.value.forEach((day) => {
+    const lastDay = new Date(day.raw);
+    lastDay.setDate(lastDay.getDate() + 1);
+    allTasks.forEach((task) => {
+      const taskEndDate = new Date(task.task.end);
+      const taskStartDate = new Date(task.task.start);
+      if (taskEndDate >= day.raw && taskEndDate < lastDay) {
+        day.tasks.push(task);
+      } else if (taskStartDate >= day.raw && taskStartDate <= lastDay) {
+        day.tasks.push(task);
+      }
+    });
+  });
 
   // Check which day the first day of the month falls on
   // If not the start of the week, add the previous month's dates
@@ -151,9 +223,103 @@ function updateDates() {
       weeklyDates.value.push({
         date: startOfWeek.getDate(),
         day: startOfWeek.getDay(),
+        raw: new Date(startOfWeek),
+        tasks: [],
       });
       startOfWeek.setDate(startOfWeek.getDate() + 1);
     }
+
+    // for each day, add tasks to the taskList
+    weeklyDates.value.forEach((day) => {
+      const lastDay = new Date(day.raw);
+      lastDay.setDate(lastDay.getDate() + 1);
+      allTasks.forEach((task) => {
+        const taskEndDate = new Date(task.task.end);
+        const taskStartDate = new Date(task.task.start);
+        if (taskEndDate >= day.raw && taskEndDate < lastDay) {
+          day.tasks.push(task);
+        } else if (taskStartDate >= day.raw && taskStartDate <= lastDay) {
+          day.tasks.push(task);
+        }
+      });
+    });
+
+    // For each day, separate tasks by hour
+    weeklyDates.value.forEach((day) => {
+      day.hours = [];
+
+      for (let i = 0; i < 24; i++) {
+        const newTime = new Date(day.raw);
+        newTime.setTime(newTime.getTime() + i * 60 * 60 * 1000);
+        day.hours.push({
+          time: newTime,
+          tasks: [],
+        });
+      }
+
+      // check if the task is within the hour
+      day.tasks.forEach((task) => {
+        const start = new Date(task.task.start);
+        const end = new Date(task.task.end);
+
+        // check if the task is within the hour
+        day.hours.forEach((hour) => {
+          if (start <= hour.time && end >= hour.time) {
+            hour.tasks.push(task);
+          }
+        });
+      });
+    });
+  }
+
+  // daily view
+  if (calendarViewType.value === "Daily") {
+    dailyDate.value = {
+      date: day,
+      day: new Date(year, month, day).getDay(),
+      raw: new Date(year, month, day),
+      tasks: [],
+    };
+
+    allTasks.forEach((task) => {
+      const taskEndDate = new Date(task.task.end);
+      const taskStartDate = new Date(task.task.start);
+      if (taskEndDate >= dailyDate.value.raw && taskEndDate < lastDay) {
+        dailyDate.value.tasks.push(task);
+      } else if (
+        taskStartDate >= dailyDate.value.raw &&
+        taskStartDate <= lastDay
+      ) {
+        dailyDate.value.tasks.push(task);
+      }
+    });
+
+    // For each props.date, separate tasks by hour
+    dailyDate.value.hours = [];
+
+    for (let i = 0; i < 24; i++) {
+      const newTime = new Date(dailyDate.value.raw);
+      newTime.setTime(newTime.getTime() + i * 60 * 60 * 1000);
+      dailyDate.value.hours.push({
+        time: newTime,
+        tasks: [],
+      });
+    }
+
+    // check if the task is within the hour
+    dailyDate.value.tasks.forEach((task) => {
+      const start = new Date(task.task.start);
+      const end = new Date(task.task.end);
+
+      // check if the task is within the hour
+      dailyDate.value.hours.forEach((hour) => {
+        if (start <= hour.time && end >= hour.time) {
+          hour.tasks.push(task);
+        }
+      });
+    });
+  } else {
+    dailyDate.value = {};
   }
 }
 
@@ -252,10 +418,7 @@ function navigateCalendar(view, direction) {
   <div class="flex flex-col h-full">
     <div class="flex flex-row w-full p-2 px-4 justify-between items-center">
       <div class="flex gap-2">
-        <button
-          class="btn btn-sm btn-ghost"
-          @click="toggleLeftSidebar"
-        >
+        <button class="btn btn-sm btn-ghost" @click="toggleLeftSidebar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -288,10 +451,7 @@ function navigateCalendar(view, direction) {
       <div class="flex gap-2">
         <!-- Add Task Button -->
         <AddTaskModal />
-        <button
-          class="btn btn-sm btn-ghost w-fit"
-          @click="toggleRightSidebar"
-        >
+        <button class="btn btn-sm btn-ghost w-fit" @click="toggleRightSidebar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -333,54 +493,12 @@ function navigateCalendar(view, direction) {
       />
 
       <!-- Render Daily view -->
-      <DailyView v-else-if="calendarViewType === 'Daily'" :hours="hours" />
-
-      <!-- Test for Listing tasks - to remove later -->
-      <!-- <div
-        class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col p-2 w-full"
-      >
-        <div
-          class="flex bg-gray-200 text-s leading-6 text-gray-700 lg:flex-auto"
-        >
-          <div
-            class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"
-          >
-            <div class="relative bg-gray-50 px-3 py-2 text-black">
-              <time datetime="2024-5-26">10</time>
-              <ol class="mt-2">
-                <li>
-                  <a href="#" class="group flex">
-                    <p
-                      class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
-                    >
-                      Assignment Due -- Algorithms and Data Structures II
-                    </p>
-                    <time
-                      datetime="2022-01-03T10:00"
-                      class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
-                      >10AM</time
-                    >
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="group flex">
-                    <p
-                      class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600"
-                    >
-                      Assignment Due -- Databases, Networks and the Web
-                    </p>
-                    <time
-                      datetime="2022-01-03T14:00"
-                      class="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
-                      >2PM</time
-                    >
-                  </a>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      <DailyView
+        v-else-if="calendarViewType === 'Daily'"
+        :hours="hours"
+        :day-names="dayNames"
+        :date="dailyDate"
+      />
     </div>
   </div>
   <BackendSettings ref="backendSettings" />

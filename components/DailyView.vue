@@ -1,28 +1,33 @@
 <template>
-  <div
-    class="lg:flex lg:flex-auto lg:flex-col py-2 px-3 w-full"
-  >
-    <table class="table-auto w-full border-b border-accent-content">
-      <tbody>
-        <tr v-for="(hour, index) in hours" :key="index">
-          <!-- Hours Column -->
-          <td
-            class="px-4 py-2 w-[10%] text-sm leading-6 bg-accent text-accent-content"
-          >
-            <h6 class="w-max">{{ hour }}</h6>
-          </td>
-          <!-- Task Area Column -->
-          <td class="px-4 py-2 w-[90%] border border-base-content">
-            <div class="text-base-content h-full">TODO: Add tasks here</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="grid w-full" style="grid-template-columns: auto 1fr">
+    <!-- Time -->
+    <div
+      v-for="(hour, index) in hours"
+      :key="hour"
+      class="bg-accent text-accent-content px-4 py-2 text-center items-center"
+      :style="`grid-row: ${index + 2};`"
+    >
+      {{ hour }}
+    </div>
+
+    <!-- Evnts -->
+    <template v-for="hour in date.hours">
+      <div
+        v-for="task in hour.tasks"
+        :key="task.uid"
+        class="h-fit"
+        :style="`grid-row: ${date.hours.indexOf(hour) + 2}; grid-column: 2;`"
+      >
+        <DailyCalendarTask :task="task" lines="2" />
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="jsx">
 defineProps({
   hours: Array,
+  dayNames: Array,
+  date: Object,
 });
 </script>

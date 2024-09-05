@@ -13,6 +13,9 @@ export default {
       fontFamily: {
         sans: ["Outfit"],
       },
+      gridTemplateRows: {
+        '25': 'repeat(25, minmax(0, 1fr))',
+      }
     },
   },
   plugins: [require("daisyui")],
