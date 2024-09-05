@@ -112,6 +112,7 @@
           <div class="row flex">
             <div class="main-three col w-1/2">
               <!-- Badges -->
+
               <!-- TODO: Allow users to select the badges, borders and name tags  -->
               <h4 class="text-xl font-bold">Badges</h4>
               <div class="flex flex-wrap gap-2">
