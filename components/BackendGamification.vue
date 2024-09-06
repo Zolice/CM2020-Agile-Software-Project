@@ -35,6 +35,8 @@ function addStreak() {
     streak: storedStreak + 1,
     lastDate: formattedDate,
   };
+
+  // TODO: Add highest streak logic here
   localStorage.setItem("streak", JSON.stringify(streak.value));
 }
 
