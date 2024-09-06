@@ -184,6 +184,8 @@ function resetAllSettings() {
   localStorage.removeItem("calendars");
   localStorage.removeItem("userName");
   localStorage.removeItem("profileData");
+  localStorage.removeItem("selectedBadges");
+  localStorage.removeItem("selectedNametag");
 }
 
 defineExpose({

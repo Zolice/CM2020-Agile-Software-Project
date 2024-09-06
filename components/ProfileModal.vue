@@ -35,6 +35,7 @@
             >
               <!-- Username and buttons-->
               <div class="flex flex-col items-center">
+                
                 <!-- Username -->
                 <div class="flex items-center gap-2">
                   <input
@@ -43,14 +44,23 @@
                     type="text"
                     class="input input-bordered input-lg w-full text-center"
                   />
-                  <h1 v-else class="text-2xl font-bold">
-                    {{ userName }}
-                  </h1>
-                  <i
-                    v-if="!editing"
-                    class="bi bi-pencil-square text-primary fs-5 cursor-pointer"
-                    @click="editUsername"
-                  ></i>
+                  <div v-else class="grid grid-cols-1 grid-rows-1 items-center align-middle">
+                    <img v-if="selectedNametag != {}" class="row-start-1 col-start-1" :src="selectedNametag.img" />
+                    <div
+                      class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-gray-50"
+                    >
+                      <h1 class="text-2xl font-bold"
+                      :style="[selectedNametag.text != '' ? 'color: ' + selectedNametag.text : 'a']"
+                      >
+                        {{ userName }}
+                      </h1>
+                      <i
+                        v-if="!editing"
+                        class="bi bi-pencil-square text-primary fs-5 cursor-pointer"
+                        @click="editUsername"
+                      ></i>
+                    </div>
+                  </div>
                 </div>
                 <!-- Save and cancel buttons for name change -->
                 <div class="flex gap-2 py-2">
@@ -142,6 +152,8 @@
                   :img="item.img"
                   :owned="item.owned"
                   :mode="'profile'"
+                  :click="toggleNameTagSelection"
+                  :item="item"
                 />
               </div>
             </div>
@@ -192,6 +204,7 @@ const badges = ref([]);
 const nametags = ref([]);
 const borders = ref([]);
 const selectedBadges = ref([]);
+const selectedNametag = ref({})
 
 onMounted(() => {
   // Get profile name and user name)
@@ -201,6 +214,8 @@ onMounted(() => {
   avatar.value = profile.avatar;
 
   selectedBadges.value = backendProfile.value.getSelectedBadges();
+
+  selectedNametag.value = backendProfile.value.getSelectedNametag();
 });
 
 function toggleBadgeSelection(badge) {
@@ -219,6 +234,14 @@ function toggleBadgeSelection(badge) {
 
   // Save the updated selected badges to localStorage
   backendProfile.value.setSelectedBadges(selectedBadges.value);
+}
+
+function toggleNameTagSelection(nametag, type) {
+  // Set the selected nametag
+  selectedNametag.value = nametag;
+
+  // Save the selected nametag to localStorage
+  backendProfile.value.setSelectedNametag(selectedNametag.value);
 }
 
 function openProfileModal() {
@@ -240,6 +263,9 @@ function openProfileModal() {
 
   // Derived Values
   scoreWidth.value = (score.value / maxScore.value) * 100;
+
+  // Get selected nametag
+  selectedNametag.value = backendProfile.value.getSelectedNametag();
 
   // Open profile modal
   profile_modal.showModal();

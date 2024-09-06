@@ -58,6 +58,24 @@ function setSelectedBadges(badges) {
   localStorage.setItem("selectedBadges", JSON.stringify(badges));
 }
 
+/** 
+ * Get the selected nametag from localStorage
+ * 
+ * @returns {Object}
+ */
+function getSelectedNametag() {
+  return JSON.parse(localStorage.getItem("selectedNametag")) || {};
+}
+
+/**
+ * Set the selected nametag in localStorage
+ * 
+ * @param {Object} nametag
+ */
+function setSelectedNametag(nametag) {
+  localStorage.setItem("selectedNametag", JSON.stringify(nametag));
+}
+
 /**
  * Get the profile data from localStorage
  * Create a new localStorage for profileData if it doesn't exist
@@ -80,7 +98,7 @@ function getProfileData() {
         level: 1,
         score: 0,
         maxScore: 2000,
-        rewardPoints: 0,
+        rewardPoints: 500,
         currentStreak: 0,
         highestStreak: 0,
         badges: [
@@ -163,5 +181,7 @@ defineExpose({
   updateProfileData,
   getSelectedBadges,
   setSelectedBadges,
+  getSelectedNametag,
+  setSelectedNametag,
 });
 </script>

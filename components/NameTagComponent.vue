@@ -20,7 +20,7 @@
   </div>
 
   <!-- Profile name tag view -->
-  <div v-else-if="mode === 'profile'" class="mt-4">
+  <div v-else-if="mode === 'profile'" class="mt-4" @click="clickHandler">
     <img v-if="owned == true" :src="img" :alt="name" class="w-40 h-10" />
   </div>
 </template>
@@ -33,16 +33,10 @@ const props = defineProps({
   owned: Boolean,
   click: Function,
   mode: String,
+  item: Object,
 });
 
-const item = {
-  name: props.name,
-  points: props.points,
-  img: props.img,
-  owned: props.owned,
-};
-
 function clickHandler() {
-  props.click(item, "nameTag");
+  props.click(props.item, "nameTag");
 }
 </script>
