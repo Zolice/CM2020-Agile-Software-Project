@@ -83,7 +83,7 @@ function getProfileData() {
         score: 0,
         maxScore: 20000,
         rewardPoints: 200,
-        highestStreak: 0,
+        highestStreak: 1,
         badges: [
           {
             id: 1,
