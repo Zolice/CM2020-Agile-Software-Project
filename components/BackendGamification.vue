@@ -21,6 +21,7 @@ function getStreak() {
       localStorage.setItem("streak", JSON.stringify(streak.value));
     } else {
       streak.value = storedStreak;
+      // TODO: Consider adding logic to reset streak if lastDate is not today
     }
   }
   return streak.value;
