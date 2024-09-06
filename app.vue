@@ -222,6 +222,8 @@ const dateCallbacks = ref([]);
 
 const notifications = ref([]);
 
+const backendGamification = ref(null);
+
 onMounted(() => {
   // Theme
   theme.value = localStorage.getItem("theme") || "dark";
@@ -361,6 +363,8 @@ function toggleCompleted() {
 
   // Save the calendar
   localStorage.setItem("calendars", JSON.stringify(calendar));
+
+  backendGamification.value.completeTask();
 
   // Call refresh
   startRefresh();

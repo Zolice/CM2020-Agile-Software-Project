@@ -16,20 +16,25 @@ onMounted(() => {
 function getStreak() {
   if (typeof window !== "undefined") {
     const storedStreak = localStorage.getItem("streak");
-
+    console.log(storedStreak);
     if (!storedStreak) {
       streak.value = { streak: 1, lastDate: "" };
       localStorage.setItem("streak", JSON.stringify(streak.value));
+    } else {
+      streak.value = storedStreak;
     }
   }
   return streak.value;
 }
 
 function addStreak() {
-  localStorage.setItem("userName", {
-    streak: getStreak() + 1,
+  const streak = getStreak().streak;
+  console.log(streak);
+  streak.value = {
+    streak: 2,
     lastDate: new Date(),
-  });
+  };
+  localStorage.setItem("streak", JSON.stringify(streak.value));
 }
 
 /**
@@ -39,7 +44,7 @@ function addStreak() {
  */
 function getPoints() {
   // Get the points
-  return backendProfile.value.getProfileData.rewardPoints;
+  return backendProfile.value.getProfileData().rewardPoints;
 }
 
 /**
@@ -64,7 +69,7 @@ function addScore(addedScore) {
 }
 
 function completeTask() {
-  currentDate = new Date();
+  const currentDate = new Date();
 
   // Return if points and score has been collected for the day
   if (currentDate == getStreak().lastDate) {

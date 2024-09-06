@@ -166,7 +166,6 @@
     </div>
   </dialog>
   <BackendProfile ref="backendProfile" />
-  <BackendGamification ref="backendGamification" />
 </template>
 
 <script setup lang="jsx">
