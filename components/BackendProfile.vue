@@ -82,8 +82,7 @@ function getProfileData() {
         level: 1,
         score: 0,
         maxScore: 20000,
-        rewardPoints: 0,
-        currentStreak: 0,
+        rewardPoints: 200,
         highestStreak: 0,
         badges: [
           {
