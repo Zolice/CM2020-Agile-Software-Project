@@ -154,6 +154,7 @@
                   :mode="'profile'"
                   :click="toggleNameTagSelection"
                   :item="item"
+                  :selected="selectedNametag.id == item.id"
                 />
               </div>
             </div>
