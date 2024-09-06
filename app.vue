@@ -350,6 +350,8 @@ function saveTask() {
 }
 
 function toggleCompleted() {
+  backendGamification.value.completeTask(currentTask.value.completed);
+
   // Set the completed
   currentTask.value.completed = currentTask.value.completed ? false : true;
 
@@ -363,8 +365,6 @@ function toggleCompleted() {
 
   // Save the calendar
   localStorage.setItem("calendars", JSON.stringify(calendar));
-
-  backendGamification.value.completeTask();
 
   // Call refresh
   startRefresh();

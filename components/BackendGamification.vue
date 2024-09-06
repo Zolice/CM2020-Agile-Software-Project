@@ -16,7 +16,6 @@ onMounted(() => {
 function getStreak() {
   if (typeof window !== "undefined") {
     const storedStreak = localStorage.getItem("streak");
-    console.log(storedStreak);
     if (!storedStreak) {
       streak.value = { streak: 1, lastDate: "" };
       localStorage.setItem("streak", JSON.stringify(streak.value));
@@ -28,11 +27,13 @@ function getStreak() {
 }
 
 function addStreak() {
-  const streak = getStreak().streak;
-  console.log(streak);
+  const storedStreak = JSON.parse(getStreak()).streak;
+  const currentDate = new Date();
+  const formattedDate = currentDate.toISOString().slice(0, 10);
+
   streak.value = {
-    streak: 2,
-    lastDate: new Date(),
+    streak: storedStreak + 1,
+    lastDate: formattedDate,
   };
   localStorage.setItem("streak", JSON.stringify(streak.value));
 }
@@ -68,18 +69,23 @@ function addScore(addedScore) {
   backendProfile.value.updateProfileData(profile);
 }
 
-function completeTask() {
+function completeTask(completed) {
   const currentDate = new Date();
+  const formattedDate = currentDate.toISOString().slice(0, 10);
+
+  const streakData = JSON.parse(getStreak());
 
   // Return if points and score has been collected for the day
-  if (currentDate == getStreak().lastDate) {
+  if (formattedDate == streakData.lastDate) {
     return "You have earn points and score for today!";
   }
 
-  // Else add streak, points and score
-  addStreak();
-  addScore(max(50 * getStreak(), 300));
-  addPoints(max(100 * getStreak(), 400));
+  if (!completed) {
+    // If task is originally incomplete, add streak, points and score
+    addStreak();
+    addScore(Math.min(50 * streakData.streak, 300));
+    addPoints(Math.min(100 * streakData.streak, 400));
+  }
 }
 
 // Expose functions for use
