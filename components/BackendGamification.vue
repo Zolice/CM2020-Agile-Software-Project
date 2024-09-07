@@ -89,7 +89,7 @@ function completeTask(completed) {
     const scoreGained = Math.min(50 * streakData.streak, 300);
     const pointGained = Math.min(100 * streakData.streak, 400);
     postNotification(
-      "success",
+      "info",
       "Task Completed!",
       "You have completed a task! You have earned " +
         scoreGained +
