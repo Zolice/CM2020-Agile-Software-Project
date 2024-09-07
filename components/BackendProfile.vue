@@ -1,5 +1,3 @@
-<template></template>
-
 <script setup lang="jsx">
 import { getRandomName } from "../utils/randomNameGenerator.js";
 import { ref } from "vue";
