@@ -193,6 +193,7 @@
       />
     </div>
   </div>
+  <BackendGamification ref="backendGamification" />
 </template>
 
 <script setup lang="jsx">
@@ -220,6 +221,8 @@ const refreshCallbacks = ref([]);
 const dateCallbacks = ref([]);
 
 const notifications = ref([]);
+
+const backendGamification = ref(null);
 
 onMounted(() => {
   // Theme
@@ -347,6 +350,8 @@ function saveTask() {
 }
 
 function toggleCompleted() {
+  backendGamification.value.completeTask(currentTask.value.completed);
+
   // Set the completed
   currentTask.value.completed = currentTask.value.completed ? false : true;
 

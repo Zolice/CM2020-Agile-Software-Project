@@ -79,10 +79,9 @@ function getProfileData() {
         avatar: "https://i.pravatar.cc/150?u=1",
         level: 1,
         score: 0,
-        maxScore: 2000,
-        rewardPoints: 0,
-        currentStreak: 0,
-        highestStreak: 0,
+        maxScore: 20000,
+        rewardPoints: 200,
+        highestStreak: 1,
         badges: [
           {
             id: 1,
