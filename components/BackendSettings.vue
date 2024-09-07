@@ -18,8 +18,6 @@ function defaultSettings() {
   return {
     showWeekend: true,
     startWeekOn: "Sunday",
-    dateFormat: "DD-MM-YY",
-    timeFormat: "12-Hour-Time",
   };
 }
 
@@ -74,34 +72,6 @@ function setStartWeekOn(value) {
 
   // Update the start week on setting
   settings.startWeekOn = value;
-  saveSettings();
-}
-
-/**
- * Set the date format setting
- *
- * @param {String} value - Date format setting
- */
-function setDateFormat(value) {
-  // Update all settings from localsettings first
-  settings = getSettings();
-
-  // Update the date format setting
-  settings.dateFormat = value;
-  saveSettings();
-}
-
-/**
- * Set the time format setting
- *
- * @param {String} value - Time format setting
- */
-function setTimeFormat(value) {
-  // Update all settings from localsettings first
-  settings = getSettings();
-
-  // Update the time format setting
-  settings.timeFormat = value;
   saveSettings();
 }
 
@@ -186,6 +156,7 @@ function resetAllSettings() {
   localStorage.removeItem("profileData");
   localStorage.removeItem("selectedBadges");
   localStorage.removeItem("selectedNametag");
+  localStorage.removeItem("streak");
 }
 
 defineExpose({
@@ -194,8 +165,6 @@ defineExpose({
   getAvailableThemes,
   setShowWeekend,
   setStartWeekOn,
-  setDateFormat,
-  setTimeFormat,
   importCalendar,
   createCalendar,
   getCalendars,

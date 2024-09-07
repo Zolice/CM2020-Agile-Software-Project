@@ -11,4 +11,9 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxt/eslint"],
   eslint: {},
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/ x - icon', href: '/icon.png' }]
+    }
+  }
 });

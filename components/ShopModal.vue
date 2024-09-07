@@ -72,7 +72,7 @@
               </button>
             </div>
             <div
-              class="flex flex-row w-full h-full gap-2 overflow-x-auto transition-all duration-150"
+              class="flex flex-row w-full h-fit gap-2 overflow-x-auto transition-all duration-150"
               :class="[borderExpanded ? 'flex-wrap' : '']"
             >
               <BorderComponent

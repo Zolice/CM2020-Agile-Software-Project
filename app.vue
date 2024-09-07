@@ -77,8 +77,7 @@
             v-model="currentTask.description"
             class="textarea textarea-ghost p-2 h-full"
             placeholder="Description"
-          >
-          </textarea>
+          />
           <div class="flex justify-between">
             <button class="btn btn-sm btn-error" @click="deleteTask">
               Delete

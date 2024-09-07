@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: Make the mobile view of this -->
   <!-- Profile Button -->
   <button
     class="btn btn-md btn-accent w-full flex flex-row"
@@ -35,7 +34,6 @@
             >
               <!-- Username and buttons-->
               <div class="flex flex-col items-center">
-                
                 <!-- Username -->
                 <div class="flex items-center gap-2">
                   <input
@@ -44,13 +42,25 @@
                     type="text"
                     class="input input-bordered input-lg w-full text-center"
                   />
-                  <div v-else class="grid grid-cols-1 grid-rows-1 items-center align-middle">
-                    <img v-if="selectedNametag != {}" class="row-start-1 col-start-1" :src="selectedNametag.img" />
+                  <div
+                    v-else
+                    class="grid grid-cols-1 grid-rows-1 items-center align-middle"
+                  >
+                    <img
+                      v-if="selectedNametag != {}"
+                      class="row-start-1 col-start-1"
+                      :src="selectedNametag.img"
+                    />
                     <div
-                      class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-gray-50"
+                      class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-base-content"
                     >
-                      <h1 class="text-2xl font-bold"
-                      :style="[selectedNametag.text != '' ? 'color: ' + selectedNametag.text : 'a']"
+                      <h1
+                        class="text-xl font-bold md:text-2xl"
+                        :style="[
+                          selectedNametag.text != ''
+                            ? 'color: ' + selectedNametag.text
+                            : '',
+                        ]"
                       >
                         {{ userName }}
                       </h1>
@@ -101,8 +111,8 @@
 
               <!-- Streaks -->
               <div class="w-full items-center justify-around hidden sm:flex">
-                <p>Current Streak: {{ currentStreak }} Days</p>
-                <p>Highest Streak: {{ highestStreak }} Days</p>
+                <p>Current Streak: {{ currentStreak }} Day(s)</p>
+                <p>Highest Streak: {{ highestStreak }} Day(s)</p>
               </div>
             </div>
           </div>
@@ -113,7 +123,7 @@
             </div>
             <div class="flex flex-col">
               <span class="font-bold text-xl text-center">Current Streak</span>
-              <span class="text-center">{{ currentStreak }} Days</span>
+              <span class="text-center">{{ currentStreak }} Day(s)</span>
             </div>
             <div class="flex flex-col">
               <span class="font-bold text-xl text-center">Highest Streak</span>
@@ -125,8 +135,6 @@
           <div class="row flex">
             <div class="main-three col w-1/2">
               <!-- Badges -->
-
-              <!-- TODO: Allow users to select the badges, borders and name tags  -->
               <h4 class="text-xl font-bold">Badges</h4>
               <div class="flex flex-wrap gap-2">
                 <BadgeComponent
@@ -140,6 +148,9 @@
                   "
                   @click="toggleBadgeSelection(item)"
                 />
+                <span v-if="badges.length == 0" class="text-sm">
+                  No badges available
+                </span>
               </div>
 
               <!-- Name tags -->
@@ -156,6 +167,9 @@
                   :item="item"
                   :selected="selectedNametag.id == item.id"
                 />
+                <span v-if="nametags.length == 0" class="text-sm">
+                  No name tags available
+                </span>
               </div>
             </div>
 
@@ -171,6 +185,9 @@
                   :owned="item.owned"
                   :mode="'profile'"
                 />
+                <span v-if="borders.length == 0" class="text-sm">
+                  No borders available
+                </span>
               </div>
             </div>
           </div>
@@ -179,15 +196,16 @@
     </div>
   </dialog>
   <BackendProfile ref="backendProfile" />
+  <BackendGamification ref="backendGamification" />
 </template>
 
 <script setup lang="jsx">
-import { ref } from "vue";
 import VueAvatar from "@webzlodimir/vue-avatar";
 import "@webzlodimir/vue-avatar/dist/style.css";
 
 // Backend Profile Component
 const backendProfile = ref(null);
+const backendGamification = ref(null);
 
 // Profile Data
 const avatar = ref("");
@@ -205,10 +223,10 @@ const badges = ref([]);
 const nametags = ref([]);
 const borders = ref([]);
 const selectedBadges = ref([]);
-const selectedNametag = ref({})
+const selectedNametag = ref({});
 
 onMounted(() => {
-  // Get profile name and user name)
+  // Get profile name and user name
   userName.value = backendProfile.value.getUserName();
 
   const profile = backendProfile.value.getProfileData();
@@ -237,7 +255,7 @@ function toggleBadgeSelection(badge) {
   backendProfile.value.setSelectedBadges(selectedBadges.value);
 }
 
-function toggleNameTagSelection(nametag, type) {
+function toggleNameTagSelection(nametag) {
   // Set the selected nametag
   selectedNametag.value = nametag;
 
@@ -256,8 +274,8 @@ function openProfileModal() {
   score.value = profile.score;
   maxScore.value = profile.maxScore;
   rewardPoints.value = profile.rewardPoints;
-  currentStreak.value = profile.currentStreak;
-  highestStreak.value = profile.highestStreak;
+  currentStreak.value = backendGamification.value.getStreakData().streak;
+  highestStreak.value = backendGamification.value.getHighestStreakData().streak;
   badges.value = profile.badges;
   nametags.value = profile.nametags;
   borders.value = profile.borders;

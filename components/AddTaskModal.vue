@@ -115,8 +115,7 @@
                 placeholder="Add a description or links"
                 class="input input-bordered h-48 p-2"
                 style="resize: none"
-              >
-              </textarea>
+              />
             </div>
           </div>
         </div>
@@ -154,6 +153,9 @@ import { ref } from "vue";
 
 // Import backend components
 const backendSettings = ref(null);
+
+// Refresh callback
+const startRefresh = inject("startRefresh");
 
 // Values
 const calendarCategoryList = ref([]);
@@ -253,6 +255,9 @@ function createTask() {
 
   // Add the event to the calendar
   backendSettings.value.addEvent(calendarCategory.value, event);
+
+  // Call refresh
+  startRefresh();
 
   // Close the modal
   add_task_modal.close();

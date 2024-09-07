@@ -49,6 +49,9 @@
             :display="calendar.display"
             :toggle-display-calendar="toggleDisplayCalendar"
           />
+          <span v-if="calendarList.length == 0" class="text-primary">
+            No calendars found!
+          </span>
         </div>
       </nav>
       <!-- Bottom part of the sidebar -->
