@@ -19,7 +19,7 @@
       class="bg-accent text-accent-content px-4 py-2 text-center items-center"
       :style="`grid-row: ${index + 2};`"
     >
-      {{ hour }}
+      <span> {{ hour }} </span>
     </div>
 
     <!-- For each day, for each event -->
@@ -29,9 +29,11 @@
           v-for="task in hour.tasks"
           :key="task.uid"
           class="h-fit"
-          :style="`grid-row: ${date.hours.indexOf(hour) + 2}; grid-column: ${date.day + 1};`"
+          :style="`grid-row: ${date.hours.indexOf(hour) + 2}; grid-column: ${
+            date.day + 1
+          };`"
         >
-          <DailyCalendarTask :task="task" lines="2"/>
+          <DailyCalendarTask :task="task" lines="2" />
         </div>
       </template>
     </template>

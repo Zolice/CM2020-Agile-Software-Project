@@ -1,4 +1,4 @@
-<!-- TODO: Create Mobile view and make width consistent -->
+
 <template>
   <!-- Modal Trigger -->
   <div class="flex justify-end">
@@ -18,12 +18,8 @@
       <div class="w-[24em] h-[40em] bg-base-100 rounded-box p-4">
         <div ref="modalContent" class="text-center">
           <h2 class="text-xl font-bold mb-4">TASKMASTER</h2>
-          <img
-            :src="avatar"
-            alt="Avatar"
-            class="rounded-full w-24 h-24 mx-auto mb-4"
-          />
-          <div class="flex items-center gap-2">
+          <vue-avatar :size="88" :username="userName" />
+          <div class="flex items-center mt-3 gap-2 justify-center">
             <div class="grid grid-cols-1 grid-rows-1 items-center align-middle">
               <img
                 v-if="selectedNametag != {}"
@@ -31,7 +27,7 @@
                 :src="selectedNametag.img"
               />
               <div
-                class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-gray-50"
+                class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-base-content w-full"
               >
                 <h1
                   class="text-xl font-bold"
@@ -53,7 +49,7 @@
           </div>
 
           <p class="mb-2">Score: {{ score }}</p>
-          <p class="mb-4">Highest Streak: {{ highestStreak }} Days</p>
+          <p class="mb-4">Highest Streak: {{ highestStreak }} Day(s)</p>
 
           <!-- Badges -->
           <h4 class="text-xl font-bold">Badges</h4>
@@ -80,14 +76,17 @@
       </div>
     </div>
   </dialog>
-
   <BackendProfile ref="backendProfile" />
+  <BackendGamification ref="backendGamification" />
+
 </template>
 
 <script setup>
-import { ref } from "vue";
+import VueAvatar from "@webzlodimir/vue-avatar";
+import "@webzlodimir/vue-avatar/dist/style.css";
 
 const backendProfile = ref(null);
+const backendGamification = ref(null);
 const isModalOpen = ref(false);
 
 const avatar = ref("");
@@ -114,7 +113,7 @@ function openShareModal() {
   level.value = profile.level;
   score.value = profile.score;
   maxScore.value = profile.maxScore;
-  highestStreak.value = profile.highestStreak;
+  highestStreak.value = backendGamification.value.getHighestStreakData().streak;
 
   scoreWidth.value = (score.value / maxScore.value) * 100;
 

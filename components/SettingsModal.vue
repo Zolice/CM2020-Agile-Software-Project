@@ -72,32 +72,8 @@
                 <option>Saturday</option>
               </select>
             </div>
-            <!-- Time Date Settings -->
-            <div class="flex flex-col gap-1">
-              <h4 class="text-2xl">Time / Date Format</h4>
-              <span class="text-sm pl-2">Date Format</span>
-              <select
-                v-model="dateFormat"
-                class="select select-bordered select-sm w-fit max-w-xs"
-                @change="dateFormatChanged"
-              >
-                <option>DD-MM-YY</option>
-                <option>MM-DD-YY</option>
-                <option>YY-MM-DD</option>
-              </select>
-              <span class="text-sm pl-2">Time Format</span>
-              <select
-                v-model="timeFormat"
-                class="select select-bordered select-sm w-fit max-w-xs"
-                @change="timeFormatChanged"
-              >
-                <option>12-Hour-Time</option>
-                <option>24-Hour-Time</option>
-              </select>
-            </div>
-            <button class="btn btn-primary w-48">Export Calendars</button>
-            <!-- TODO: Check if this button is necessary -->
-            <button class="btn btn-primary w-48">
+            <button class="btn btn-primary w-48" disabled>Export Calendars</button>
+            <button class="btn btn-primary w-48" disabled>
               Backup to Local Storage
             </button>
             <div class="flex flex-col gap-1">
@@ -367,9 +343,6 @@ const selected = ref(true); // true = general, false = calendar
 // General Settings
 const showWeekend = ref(true);
 const startWeekOn = ref("Monday");
-const dateFormat = ref("DD-MM-YY");
-const timeFormat = ref("12-Hour-Time");
-// const currentTheme = ref("dark");
 const themeList = ref([]);
 
 // Calendar Settings
@@ -392,8 +365,6 @@ function openSettingsModal() {
   const settings = backendSettings.value.getSettings();
   showWeekend.value = settings.showWeekend;
   startWeekOn.value = settings.startWeekOn;
-  dateFormat.value = settings.dateFormat;
-  timeFormat.value = settings.timeFormat;
 
   // Reset all values in calendar to default
   calendarName.value = "";
@@ -432,14 +403,6 @@ function showWeekendChanged(event) {
 
 function startWeekOnChanged(event) {
   backendSettings.value.setStartWeekOn(event.target.value);
-}
-
-function dateFormatChanged(event) {
-  backendSettings.value.setDateFormat(event.target.value);
-}
-
-function timeFormatChanged(event) {
-  backendSettings.value.setTimeFormat(event.target.value);
 }
 
 function themeChanged(item, type) {

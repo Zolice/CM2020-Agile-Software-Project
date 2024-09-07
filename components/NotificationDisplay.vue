@@ -1,7 +1,7 @@
 <template>
   <div
     role="alert"
-    class="alert max-w-md shadow-lg ring-2 ring-base-100 bg-base-300"
+    class="alert flex flex-row max-w-md shadow-lg ring-2 ring-base-100 bg-base-300"
   >
     <svg
       v-if="img == ''"
@@ -41,9 +41,9 @@
     <div v-if="title == ''">
       <div class="text-wrap text-sm">{{ message }}</div>
     </div>
-    <div v-else>
-      <h3 class="font-bold">{{ title }}</h3>
-      <div class="text-xs text-wrap">{{ message }}</div>
+    <div v-else class="">
+      <h3 class="font-bold text-start">{{ title }}</h3>
+      <div class="text-xs text-wrap text-start">{{ message }}</div>
     </div>
   </div>
 </template>
