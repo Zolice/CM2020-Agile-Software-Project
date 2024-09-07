@@ -23,7 +23,6 @@
             alt="Avatar"
             class="rounded-full w-24 h-24 mx-auto mb-4"
           />
-          <!-- <h3 class="text-lg font-semibold pb-3">{{ userName }}</h3> -->
           <div class="flex items-center gap-2">
             <div class="grid grid-cols-1 grid-rows-1 items-center align-middle">
               <img
