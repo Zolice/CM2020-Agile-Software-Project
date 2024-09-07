@@ -21,7 +21,7 @@ function getStreak() {
       streak.value = { streak: 1, lastDate: "" };
       localStorage.setItem("streak", JSON.stringify(streak.value));
     } else {
-      streak.value = storedStreak;
+      streak.value = JSON.parse(storedStreak);
       // TODO: Consider adding logic to reset streak if lastDate is not today
     }
   }
@@ -29,7 +29,7 @@ function getStreak() {
 }
 
 function addStreak() {
-  const storedStreak = JSON.parse(getStreak()).streak;
+  const storedStreak = getStreak().streak;
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().slice(0, 10);
 
@@ -77,7 +77,7 @@ function completeTask(completed) {
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().slice(0, 10);
 
-  const streakData = JSON.parse(getStreak());
+  const streakData = getStreak();
 
   // Return if points and score has been collected for the day
   if (formattedDate == streakData.lastDate) {
