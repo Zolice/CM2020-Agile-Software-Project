@@ -4,6 +4,7 @@
 
 <script setup lang="jsx">
 const backendProfile = ref(null);
+const postNotification = inject("postNotification");
 
 // Initialise points and score
 const streak = ref({});
@@ -85,9 +86,21 @@ function completeTask(completed) {
 
   if (!completed) {
     // If task is originally incomplete, add streak, points and score
+    const scoreGained = Math.min(50 * streakData.streak, 300);
+    const pointGained = Math.min(100 * streakData.streak, 400);
+    postNotification(
+      "success",
+      "Task Completed!",
+      "You have completed a task! You have earned " +
+        scoreGained +
+        " points and " +
+        pointGained +
+        " score!",
+      10000
+    );
     addStreak();
-    addScore(Math.min(50 * streakData.streak, 300));
-    addPoints(Math.min(100 * streakData.streak, 400));
+    addScore(scoreGained);
+    addPoints(pointGained);
   }
 }
 
