@@ -106,28 +106,32 @@ const nameTags = [
     name: "Clouds",
     points: 200,
     owned: false,
-    img: "/nameTags/clouds.png",
+    img: "/nametags/clouds.png",
+    text: "#ffffff",
   },
   {
     id: 2,
     name: "Food",
     points: 400,
     owned: false,
-    img: "/nameTags/food.png",
+    img: "/nametags/food.png",
+    text: "#000000",
   },
   {
     id: 3,
     name: "Frog",
     points: 100,
     owned: false,
-    img: "/nameTags/frog.png",
+    img: "/nametags/frog.png",
+    text: "#00482c",
   },
   {
     id: 4,
     name: "Neon",
     points: 800,
     owned: false,
-    img: "/nameTags/neon.png",
+    img: "/nametags/neon.png",
+    text: "#ec6df5"
   },
 ];
 

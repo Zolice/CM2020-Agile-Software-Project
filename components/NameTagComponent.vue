@@ -20,8 +20,29 @@
   </div>
 
   <!-- Profile name tag view -->
-  <div v-else-if="mode === 'profile'" class="mt-4">
+  <div v-else-if="mode === 'profile'" class="mt-4 relative" @click="clickHandler">
     <img v-if="owned == true" :src="img" :alt="name" class="w-40 h-10" />
+
+    <!-- Checkbox UI for selected badges -->
+    <div
+      v-if="selected"
+      class="absolute top-1 right-1 w-5 h-5 bg-gray-200 border rounded flex items-center justify-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 text-gray-900"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -33,16 +54,11 @@ const props = defineProps({
   owned: Boolean,
   click: Function,
   mode: String,
+  item: Object,
+  selected: Boolean,
 });
 
-const item = {
-  name: props.name,
-  points: props.points,
-  img: props.img,
-  owned: props.owned,
-};
-
 function clickHandler() {
-  props.click(item, "nameTag");
+  props.click(props.item, "nameTag");
 }
 </script>

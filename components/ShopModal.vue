@@ -116,6 +116,7 @@
                 :owned="item.owned"
                 :click="purchase"
                 :mode="'shop'"
+                :item="item"
               />
             </div>
           </div>
@@ -275,6 +276,8 @@ function purchaseConfirm() {
     rewardPoints.value = profile.rewardPoints; // By updating this value, the UI will update accordingly
     return;
   }
+
+  purchaseItem.value.owned = true;
 
   // Switch on the type of item being purchased
   switch (purchaseItemType.value) {

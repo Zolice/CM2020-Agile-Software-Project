@@ -23,7 +23,29 @@
             alt="Avatar"
             class="rounded-full w-24 h-24 mx-auto mb-4"
           />
-          <h3 class="text-lg font-semibold pb-3">{{ userName }}</h3>
+          <div class="flex items-center gap-2">
+            <div class="grid grid-cols-1 grid-rows-1 items-center align-middle">
+              <img
+                v-if="selectedNametag != {}"
+                class="row-start-1 col-start-1"
+                :src="selectedNametag.img"
+              />
+              <div
+                class="flex flex-row gap-2 items-center row-start-1 col-start-1 justify-center text-gray-50"
+              >
+                <h1
+                  class="text-xl font-bold"
+                  :style="[
+                    selectedNametag.text != ''
+                      ? 'color: ' + selectedNametag.text
+                      : 'a',
+                  ]"
+                >
+                  {{ userName }}
+                </h1>
+              </div>
+            </div>
+          </div>
 
           <div class="w-full flex items-center justify-center pb-3">
             <!-- Level progress bar -->
@@ -77,6 +99,8 @@ const highestStreak = ref(0);
 const badges = ref([]);
 const scoreWidth = ref(0);
 
+const selectedNametag = ref({});
+
 // Open the Share Modal
 function openShareModal() {
   isModalOpen.value = true;
@@ -93,6 +117,8 @@ function openShareModal() {
   highestStreak.value = profile.highestStreak;
 
   scoreWidth.value = (score.value / maxScore.value) * 100;
+
+  selectedNametag.value = backendProfile.value.getSelectedNametag();
 
   share_achievement_modal.showModal();
 }

@@ -58,6 +58,24 @@ function setSelectedBadges(badges) {
   localStorage.setItem("selectedBadges", JSON.stringify(badges));
 }
 
+/** 
+ * Get the selected nametag from localStorage
+ * 
+ * @returns {Object}
+ */
+function getSelectedNametag() {
+  return JSON.parse(localStorage.getItem("selectedNametag")) || {};
+}
+
+/**
+ * Set the selected nametag in localStorage
+ * 
+ * @param {Object} nametag
+ */
+function setSelectedNametag(nametag) {
+  localStorage.setItem("selectedNametag", JSON.stringify(nametag));
+}
+
 /**
  * Get the profile data from localStorage
  * Create a new localStorage for profileData if it doesn't exist
@@ -162,5 +180,7 @@ defineExpose({
   updateProfileData,
   getSelectedBadges,
   setSelectedBadges,
+  getSelectedNametag,
+  setSelectedNametag,
 });
 </script>
