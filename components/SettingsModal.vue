@@ -343,7 +343,6 @@ const selected = ref(true); // true = general, false = calendar
 // General Settings
 const showWeekend = ref(true);
 const startWeekOn = ref("Monday");
-// const currentTheme = ref("dark");
 const themeList = ref([]);
 
 // Calendar Settings

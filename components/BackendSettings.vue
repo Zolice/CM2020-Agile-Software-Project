@@ -157,6 +157,7 @@ function resetAllSettings() {
   localStorage.removeItem("selectedBadges");
   localStorage.removeItem("selectedNametag");
   localStorage.removeItem("streak");
+  localStorage.removeItem("highestStreak");
 }
 
 defineExpose({
